@@ -1,0 +1,25 @@
+{
+  "name": "api-ver-system",
+  "version": "1.0.0",
+  "description": "API for app conections",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": "https://github.com/santiellena/ver-ventas.git",
+  "author": "ESanti",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^9.1.4",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "promise-mysql": "^5.0.4"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
