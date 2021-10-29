@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VerSystem | </title>
+
+    <!-- Bootstrap -->
+    <link href="../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../css/custom.min.css" rel="stylesheet">
+  </head>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-eye"></i> <span>Ver System</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="../images/user.png" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Bienvenido,</span>
+                <h2>Administrador</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                  <h3>Modulos</h3>
+                <ul class="nav side-menu">
+                  <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="index.html">Generar venta</a></li>
+                      <li><a href=".html">Generar pedido</a></li>
+                      <li><a href="sells-history.html">Historial</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-table"></i> Ingresos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="buys.html">Cargar ingreso</a></li>
+                      <li><a href="buys-history.html">Historial</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="stats.html">General</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-question"></i> Consultas Ventas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="stats.html">Ventas Generales</a></li>
+                      <li><a href="stats.html">Ventas Detalladas</a></li>
+                      <li><a href="stats.html">Ventas Pendientes</a></li>
+                      <li><a href="stats.html">Ventas Contado</a></li>
+                      <li><a href="stats.html">Ventas Cuenta Corriente</a></li>
+                      <li><a href="stats.html">Ventas por Cliente</a></li>
+                      <li><a href="stats.html">Ventas por Empleado</a></li>
+                      <li><a href="stats.html">Ventas por Detalladas</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-question"></i> Consultas Ingresos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="stats.html">Compras Generales</a></li>
+                        <li><a href="stats.html">Compras Detalladas</a></li>
+                        <li><a href="stats.html">C. Generales Proveedor</a></li>
+                        <li><a href="stats.html">C. Detalles Proveedor</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-database"></i> Stock <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                        <li><a href="stats.html">Kardex Valorizado</a></li>
+                        <li><a href="stats.html">Stock de Productos</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-wrench"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="maintenance.html">General</a></li>
+                      <li><a href="maintenance-branch.html">Sucursal</a></li>
+                      <li><a href="maintenance-staff.html">Empleados</a></li>
+                      <li><a href="maintenance-users.html">Usuarios</a></li>
+                      <li><a href="maintenance-docs.html">Tipo de documentos</a></li>
+                      <li><a href="maintenance-units.html">Unidades de Medida</a></li>
+                    </ul>
+                  </li>
+                  <li><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="dump.html">Copia de seguridad</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+
+            </div>
+            <!-- /sidebar menu -->
+
+            <!-- /menu footer buttons -->
+            <div class="sidebar-footer hidden-small">
+              <a data-toggle="tooltip" data-placement="top" title="Configuraciones">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Pantalla Completa">
+                <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Bloquear Pantalla">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+              </a>
+              <a data-toggle="tooltip" data-placement="top" title="Cerrar Sesión" href="login.html">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+              </a>
+            </div>
+            <!-- /menu footer buttons -->
+          </div>
+        </div>
+        <!-- top navigation -->
+        <div class="top_nav">
+            <div class="nav_menu">
+                <div class="nav toggle">
+                  <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                </div>
+                <nav class="nav navbar-nav">
+                <ul class=" navbar-right">
+                  <li class="nav-item dropdown open" style="padding-left: 15px;">
+                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                      <img src="../images/user.png" alt="">Administrador
+                    </a>
+                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
+                      <a class="dropdown-item"  href="javascript:;"> Perfil</a>
+                        <a class="dropdown-item"  href="javascript:;">
+                          <span class="badge bg-red pull-right">50%</span>
+                          <span>Configuraciones</span>
+                        </a>
+                    <a class="dropdown-item"  href="javascript:;">Ayuda</a>
+                      <a class="dropdown-item"  href="login.html"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a>
+                    </div>
+                  </li>
+  
+                  <li role="presentation" class="nav-item dropdown open">
+                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                      <i class="fa fa-envelope-o"></i>
+                      <span class="badge bg-green">3</span>
+                    </a>
+                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>Empleado 1</span>
+                            <span class="time">Hace 3 minutos</span>
+                          </span>
+                          <span class="message">
+                            Solicitud de facturación del pedido N 1233
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../images/user.png" alt="Profile Image" /></span>
+                          <span>
+                            <span>Empleado 2</span>
+                            <span class="time">Hace 4 minutos</span>
+                          </span>
+                          <span class="message">
+                            Apertura de cuenta corriente, cliente N 54
+                          </span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="dropdown-item">
+                          <span class="image"><img src="../images/img.jpg" alt="Profile Image" /></span>
+                          <span>
+                            <span>Empleado 1</span>
+                            <span class="time">Hace 1 minuto</span>
+                          </span>
+                          <span class="message">
+                            Informe de ventas semanal
+                          </span>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        <!-- /top navigation -->
+
+        <!-- main page -->
+
+
+        <!-- /main page -->
+        
+         <!-- jQuery -->
+    <script src="../js/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+   <script src="../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../js/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../js/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../js/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="../js/Flot/jquery.flot.js"></script>
+    <script src="../js/Flot/jquery.flot.pie.js"></script>
+    <script src="../js/Flot/jquery.flot.time.js"></script>
+    <script src="../js/Flot/jquery.flot.stack.js"></script>
+    <script src="../js/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../js/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../js/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../js/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../js/DateJS/build/date.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../js/moment/min/moment.min.js"></script>
+    <script src="../js/bootstrap-daterangepicker/daterangepicker.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="../js/custom.min.js"></script>
+  </body>
+</html>

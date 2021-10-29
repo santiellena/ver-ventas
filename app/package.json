@@ -1,0 +1,22 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "Ver System Desktop APP",
+  "main": "app.js",
+  "scripts": {
+   "dev": "electron .",
+   "debug": "electron . --trace-deprecation"
+  },
+  "keywords": [
+    "System",
+    "Sells"
+  ],
+  "author": "ESanti",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^15.3.0"
+  },
+  "dependencies": {
+    "electron-hbs": "^2.0.1"
+  }
+}
