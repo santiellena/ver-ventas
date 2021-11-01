@@ -4,7 +4,7 @@
   "description": "Ver System Desktop APP",
   "main": "app.js",
   "scripts": {
-    "dev": "electron .",
+    "dev": "electron .", 
     "debug": "electron . --trace-deprecation",
     "inspect": "electron --inspect=5858 ."
   },

@@ -49,6 +49,7 @@ function createLoginWindow () {
   loginWindow = new BrowserWindow({
     width: 800, height: 600,
     title: 'VerSystem',
+    backgroundColor: 'F7F7F7',
     webPreferences: { 
       nodeIntegration: false,
       contextIsolation: true,
@@ -67,13 +68,14 @@ function createLoginWindow () {
 function createMainWindow  () {
   mainWindow = new BrowserWindow({
     width: 2000, height: 1800,
+    backgroundColor: '2A3F54',
     webPreferences: { 
       nodeIntegration: false,
       preload: `${__dirname}/preload.js`,
     }
   });
 // Load index.hbs into the new BrowserWindow
-mainWindow.loadFile(newHandlebars.render('index.hbs'));
+mainWindow.loadFile(newHandlebars.render('/sells/index.hbs'));
 
  // Listen for window being closed
 mainWindow.on('closed',  () => {

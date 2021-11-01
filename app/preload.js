@@ -5,7 +5,7 @@ contextBridge.exposeInMainWorld(
         send: (channel, data) => {
             let validChannels = [
                 'login',
-                'load-index',
+                'load-page-main',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

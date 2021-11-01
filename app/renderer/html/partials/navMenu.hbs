@@ -3,8 +3,8 @@
       <div class="main_container">
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
-            <div class="navbar nav_title" style="border: 0;">
-              <a class="site_title"><i class="fa fa-eye" id="nav-main-logo"></i> <span>Ver System</span></a>
+            <div class="navbar nav_title" style="border: 0;" id="nav-main-logo">
+              <a class="site_title"><i class="fa fa-eye"></i> <span>Ver System</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -30,61 +30,61 @@
                 <ul class="nav side-menu" style="">
                   <li class="active"><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: block;">
-                      <li class="current-page"><a >Generar venta</a></li>
-                      <li><a >Generar pedido</a></li>
-                      <li><a >Historial</a></li>
+                      <li class="current-page"><a id="generate-sell-page">Generar venta</a></li>
+                      <li><a id="generate-order-page">Generar pedido</a></li>
+                      <li><a id="view-history-page">Historial</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-table"></i> Ingresos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a >Cargar ingreso</a></li>
-                      <li><a >Historial</a></li>
+                      <li><a id="buys-page">Cargar ingreso</a></li>
+                      <li><a id="buys-history-page">Historial</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a >General</a></li>
+                      <li><a id="stats-page">General</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-question"></i> Consultas Ventas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a >Ventas Generales</a></li>
-                      <li><a >Ventas Detalladas</a></li>
-                      <li><a >Ventas Pendientes</a></li>
-                      <li><a >Ventas Contado</a></li>
-                      <li><a >Ventas Cuenta Corriente</a></li>
-                      <li><a >Ventas por Cliente</a></li>
-                      <li><a >Ventas por Empleado</a></li>
-                      <li><a >Ventas por Empleado Detalladas</a></li>
+                      <li><a id="query-sells-page">Ventas Generales</a></li>
+                      <li><a id="query-sells-detail-page">Ventas Detalladas</a></li>
+                      <li><a id="query-sells-pending-page">Ventas Pendientes</a></li>
+                      <li><a id="query-sells-cash-page">Ventas Contado</a></li>
+                      <li><a id="query-sells-credit-page">Ventas Cuenta Corriente</a></li>
+                      <li><a id="query-sells-customer-page">Ventas por Cliente</a></li>
+                      <li><a id="query-sells-employee-page">Ventas por Empleado</a></li>
+                      <li><a id="query-sells-employee-detail-page">Ventas por Empleado Detalladas</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-question"></i> Consultas Ingresos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li><a >Compras Generales</a></li>
-                        <li><a >Compras Detalladas</a></li>
-                        <li><a >C. Generales Proveedor</a></li>
-                        <li><a >C. Detalles Proveedor</a></li>
+                        <li><a id="query-buys-page">Compras Generales</a></li>
+                        <li><a id="query-buys-detail-page">Compras Detalladas</a></li>
+                        <li><a id="query-buys-supplier-page">C. Generales Proveedor</a></li>
+                        <li><a id="query-buys-supplier-detail-page">C. Detalles Proveedor</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-database"></i> Stock <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li><a >Kardex Valorizado</a></li>
-                        <li><a >Stock de Productos</a></li>
+                        <li><a id="kardex-page">Kardex Valorizado</a></li>
+                        <li><a id="stock-page">Stock de Productos</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-wrench"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a >General</a></li>
-                      <li><a >Sucursal</a></li>
-                      <li><a >Empleados</a></li>
-                      <li><a >Usuarios</a></li>
-                      <li><a >Tipo de documentos</a></li>
-                      <li><a >Unidades de Medida</a></li>
+                      <li><a id="maintenance-page">General</a></li>
+                      <li><a id="maintenance-branch-page">Sucursal</a></li>
+                      <li><a id="maintenance-employees-page">Empleados</a></li>
+                      <li><a id="maintenance-users-page">Usuarios</a></li>
+                      <li><a id="maintenance-docs-page">Tipo de documentos</a></li>
+                      <li><a id="maintenance-units-page">Unidades de Medida</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a >Copia de seguridad</a></li>
+                      <li><a id="dump-page">Copia de seguridad</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -96,7 +96,7 @@
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
               <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Configuraciones">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                <span class="glyphicon glyphicon-cog" aria-hidden="true" id="settings-page"></span>
               </a>
               <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Pantalla Completa">
                 <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
@@ -124,8 +124,8 @@
                       <img src="../../images/user.png" alt="">Administrador
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="javascript:;"> Perfil</a>
-                        <a class="dropdown-item" href="javascript:;">
+                      <a class="dropdown-item" href="javascript:;" id="profile-page"> Perfil</a>
+                        <a class="dropdown-item" href="javascript:;" id="settings-page">
                           <span class="badge bg-red pull-right">50%</span>
                           <span>Configuraciones</span>
                         </a>

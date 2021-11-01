@@ -18,10 +18,10 @@ module.exports = ({
         }
       });
 
-    ipcMain.on('load-index', (e, args) => {
+    ipcMain.on('load-page-main', (e, pageName) => {
         const mainWindow = returnMainWindow()
         if( mainWindow != null && mainWindow != undefined ) {
-            mainWindow.loadFile(newHandlebars.render('index.hbs'));
+            mainWindow.loadFile(newHandlebars.render(pageName));
         } else {
             console.log('Is still undefinded');
         }
