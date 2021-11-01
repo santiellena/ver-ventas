@@ -5,9 +5,12 @@ contextBridge.exposeInMainWorld(
         send: (channel, data) => {
             let validChannels = [
                 'login',
+                'load-index',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
+            } else {
+                console.log(`${channel} IS NOT A VALID CHANNEL`);
             }
         },
         on: (channel, func) => {
@@ -16,6 +19,8 @@ contextBridge.exposeInMainWorld(
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
+            } else {
+                console.log(`${channel} IS NOT A VALID CHANNEL`);
             }
         },
         invoke: async (channel, args) => {
@@ -24,6 +29,8 @@ contextBridge.exposeInMainWorld(
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);
+            } else {
+                console.log(`${channel} IS NOT A VALID CHANNEL`);
             }
         },
     }

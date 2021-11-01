@@ -1,11 +1,18 @@
+'use strict'
 // Modules
 const { app, BrowserWindow, Tray, Menu, ipcMain } = require('electron');
 const path = require('path');
 const handlebarsHbs = require('esanti-electron-hbs');
+const devTools = require('./devtools');
+const ipcMainEvents = require('./ipcMainEvents');
 
 // Declaratios of windows
-let mainMindow, loginWindow;
+let mainWindow, loginWindow;
 let tray;
+
+if(process.env.NODE_ENV == 'development'){
+  devTools();
+}
 
 function createTray () {
   tray = new Tray('./renderer/images/user.png');
@@ -15,6 +22,14 @@ function createTray () {
   ]);
   tray.setToolTip('VerSystem');
   tray.setContextMenu(contextMenu);
+  tray.on('click', () => {
+    if( mainWindow != null && mainWindow != undefined ) {
+
+        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    } else if( loginWindow != null && loginWindow != undefined ) {
+        loginWindow.isVisible() ? loginWindow.hide() : loginWindow.show();
+    }
+  })
 }
  
 // initialization Custom handlebars
@@ -33,6 +48,7 @@ function createLoginWindow () {
   createTray();
   loginWindow = new BrowserWindow({
     width: 800, height: 600,
+    title: 'VerSystem',
     webPreferences: { 
       nodeIntegration: false,
       contextIsolation: true,
@@ -41,9 +57,6 @@ function createLoginWindow () {
   });
 
   loginWindow.loadFile(`${__dirname}/renderer/html/login.html`);
-
-  // Open DevTools - Remove for PRODUCTION!
-  loginWindow.webContents.openDevTools();
 
   loginWindow.on('closed',  () => {
     loginWindow = null;
@@ -59,11 +72,8 @@ function createMainWindow  () {
       preload: `${__dirname}/preload.js`,
     }
   });
-// Load index.html into the new BrowserWindow
+// Load index.hbs into the new BrowserWindow
 mainWindow.loadFile(newHandlebars.render('index.hbs'));
-
-// Open DevTools - Remove for PRODUCTION!
-mainWindow.webContents.openDevTools();
 
  // Listen for window being closed
 mainWindow.on('closed',  () => {
@@ -87,17 +97,14 @@ app.on('activate', () => {
 // removes all rendered files 
 app.on("quit", () => {
     newHandlebars.clearTemps();
-})
+});
 
-ipcMain.handle('login', (e, args) => {
-  const { username, password } = args;
-  if(username == 'admin' &&  password == 'admin'){ 
-  
-    
-    createMainWindow();
-    return true;
-  } else {
-    
-    return false;
-  }
+function returnMainWindow () {
+  return mainWindow;
+}
+
+ipcMainEvents({
+  createMainWindow,
+  returnMainWindow,
+  newHandlebars,
 });

@@ -4,9 +4,9 @@
   "description": "Ver System Desktop APP",
   "main": "app.js",
   "scripts": {
-   "dev": "electron .",
-   "debug": "electron . --trace-deprecation",
-   "inspect": "electron --inspect=5858 ."
+    "dev": "electron .",
+    "debug": "electron . --trace-deprecation",
+    "inspect": "electron --inspect=5858 ."
   },
   "keywords": [
     "System",
@@ -18,6 +18,8 @@
     "electron": "^15.3.0"
   },
   "dependencies": {
+    "electron-compile": "^6.4.4",
+    "electron-debug": "^3.2.0",
     "esanti-electron-hbs": "https://github.com/santiellena/electron-hbs.git"
   }
 }
