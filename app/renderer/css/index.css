@@ -1,0 +1,39 @@
+.method {
+    margin-right: 1rem;
+    font-size: 1rem;
+    color: #222;
+    margin-bottom: 1rem;
+}
+
+.input-list {
+    width: 5rem;
+}
+
+.button-delete {
+    width: .6rem;
+    height: 1.4rem;
+    text-align: center;
+    display: flex;
+}
+td {
+    padding: .2rem .2rem !important;
+}
+
+.form-price-list{
+    display: flex; 
+    height: 1.3rem; 
+    align-items:center;
+}
+
+.select-price-list{
+    height: 1.8rem;
+    font-size: .8rem;
+}
+
+.div-form-price{
+    display: flex;
+    height: 2rem;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+}

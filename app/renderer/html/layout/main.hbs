@@ -21,11 +21,18 @@
     <!-- Custom Theme Style -->
     <link href="../../css/custom.min.css" rel="stylesheet">
   </head>
-  <body class="nav-md">
-
+  <body class="nav-sm" onload="startTime()">
+    <div class="container body">
+      <div class="main_container">
+        
     {{> navMenu }}
 
     {{{ body }}}
+
+    {{> footer }}
+
+      </div>
+    </div>
         
          <!-- jQuery -->
     <script src="../../js/jquery/dist/jquery.min.js"></script>
@@ -54,8 +61,12 @@
     <!-- bootstrap-daterangepicker -->
     <script src="../../js/moment/min/moment.min.js"></script>
     <script src="../../js/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <script src="../../js/footer.js"></script>
     
     <!-- Custom Theme Scripts -->
     <script src="../../js/custom.min.js"></script>
+            <!-- /page content -->
+    <script src="../../js/dates-sells.js"></script>
   </body>
 </html>

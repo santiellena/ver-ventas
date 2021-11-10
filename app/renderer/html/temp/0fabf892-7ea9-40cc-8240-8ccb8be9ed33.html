@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VerSystem</title>
+
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.min.css" rel="stylesheet">
+  </head>
+  <body class="nav-sm" onload="startTime()">
+    <div class="container body">
+      <div class="main_container">
+        
+    <link rel="stylesheet" href="../../css/navMenu.css">
+    <div class="container body">
+          <div class="main_container">
+            <div class="col-md-3 left_col">
+              <div class="left_col scroll-view">
+                <div class="navbar nav_title" style="border: 0;" id="nav-main-logo">
+                  <a class="site_title"><i class="fa fa-eye"></i> <span>Ver System</span></a>
+                </div>
+    
+                <div class="clearfix"></div>
+    
+                <!-- menu profile quick info -->
+                <div class="profile clearfix">
+                  <div class="profile_pic">
+                    <img src="../../images/user.png" alt="..." class="img-circle profile_img">
+                  </div>
+                  <div class="profile_info">
+                    <span>Bienvenido,</span>
+                    <h2>Administrador</h2>
+                  </div>
+                </div>
+                <!-- /menu profile quick info -->
+    
+                <br>
+    
+                <!-- sidebar menu -->
+                <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+                  <div class="menu_section active">
+                      <h3>Modulos</h3>
+                    <ul class="nav side-menu" style="">
+                      <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu" style="display: none;">
+                          <li class="current-page"><a id="generate-sell-page">Generar venta</a></li>
+                          <li><a id="generate-order-page">Generar pedido</a></li>
+                          <li><a id="view-history-page">Historial</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-table"></i> Ingresos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a id="buys-page">Cargar ingreso</a></li>
+                          <li><a id="buys-history-page">Historial</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a id="stats-page">General</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-question"></i> Consultas Ventas <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a id="query-sells-page">Ventas Generales</a></li>
+                          <li><a id="query-sells-detail-page">Ventas Detalladas</a></li>
+                          <li><a id="query-sells-pending-page">Ventas Pendientes</a></li>
+                          <li><a id="query-sells-cash-page">Ventas Contado</a></li>
+                          <li><a id="query-sells-credit-page">Ventas Cuenta Corriente</a></li>
+                          <li><a id="query-sells-customer-page">Ventas por Cliente</a></li>
+                          <li><a id="query-sells-employee-page">Ventas por Empleado</a></li>
+                          <li><a id="query-sells-employee-detail-page">Ventas por Empleado Detalladas</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-question"></i> Consultas Ingresos <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a id="query-buys-page">Compras Generales</a></li>
+                            <li><a id="query-buys-detail-page">Compras Detalladas</a></li>
+                            <li><a id="query-buys-supplier-page">C. Generales Proveedor</a></li>
+                            <li><a id="query-buys-supplier-detail-page">C. Detalles Proveedor</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-database"></i> Stock <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            <li><a id="kardex-page">Kardex Valorizado</a></li>
+                            <li><a id="stock-page">Stock de Productos</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-wrench"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a id="maintenance-page">General</a></li>
+                          <li><a id="maintenance-branch-page">Sucursal</a></li>
+                          <li><a id="maintenance-employees-page">Empleados</a></li>
+                          <li><a id="maintenance-users-page">Usuarios</a></li>
+                          <li><a id="maintenance-docs-page">Tipo de documentos</a></li>
+                          <li><a id="maintenance-units-page">Unidades de Medida</a></li>
+                        </ul>
+                      </li>
+                      <li><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                          <li><a id="dump-page">Copia de seguridad</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+    
+                </div>
+                <!-- /sidebar menu -->
+    
+                <!-- /menu footer buttons -->
+                <div class="sidebar-footer hidden-small">
+                  <a data-toggle="tooltip" data-placement="top" id="settings-button-footer" title="" data-original-title="Configuraciones">
+                    <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span>
+                  </a>
+                  <a data-toggle="tooltip" data-placement="top" id="fullscreen-button" title="" data-original-title="Pantalla Completa">
+                    <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+                  </a>
+                  <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear Pantalla">
+                    <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+                  </a>
+                  <a data-toggle="tooltip" data-placement="top" id="logout-button-footer" title=""  data-original-title="Cerrar Sesión">
+                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                  </a>
+                </div>
+                <!-- /menu footer buttons -->
+              </div>
+            </div>
+            <!-- top navigation -->
+            <div class="top_nav">
+                <div class="nav_menu">
+                    <div class="nav toggle">
+                      <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+                    </div>
+                    <nav class="nav navbar-nav">
+                    <ul class=" navbar-right">
+      
+                      <li role="presentation" class="nav-item dropdown open">
+                        <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                          <i class="fa fa-envelope-o"></i>
+                          <span class="badge bg-green">3</span>
+                        </a>
+                        <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+                          <li class="nav-item">
+                            <a class="dropdown-item">
+                              <span class="image"><img src="../../images/img.jpg" alt="Profile Image"></span>
+                              <span>
+                                <span>Empleado 1</span>
+                                <span class="time">Hace 3 minutos</span>
+                              </span>
+                              <span class="message">
+                                Solicitud de facturación del pedido N 1233
+                              </span>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="dropdown-item">
+                              <span class="image"><img src="../../images/user.png" alt="Profile Image"></span>
+                              <span>
+                                <span>Empleado 2</span>
+                                <span class="time">Hace 4 minutos</span>
+                              </span>
+                              <span class="message">
+                                Apertura de cuenta corriente, cliente N 54
+                              </span>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            <a class="dropdown-item">
+                              <span class="image"><img src="../../images/img.jpg" alt="Profile Image"></span>
+                              <span>
+                                <span>Empleado 1</span>
+                                <span class="time">Hace 1 minuto</span>
+                              </span>
+                              <span class="message">
+                                Informe de ventas semanal
+                              </span>
+                            </a>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </nav>
+                </div>
+              </div>
+          </div>
+    </div>
+    <script src="../../js/viewsLoader.js"></script>
+    <!-- Switchery -->
+	<link href="../../css/switchery/dist/switchery.min.css" rel="stylesheet">
+<!-- IndexFile -->
+    <link rel="stylesheet" href="../../css/index.css">
+<!-- iCheck -->
+	<link href="../../css/iCheck/skins/flat/green.css" rel="stylesheet">    
+<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  
+                  <div class="x_content">
+
+                    <section class="content invoice">
+
+                      <!-- Table row -->
+                      <div class="row">
+                        <div class="  table">
+                          <table class="table table-striped table-bordered">
+                            <thead>
+                              <tr>
+                                <th style="width: 2.4rem;">Cant.</th>
+                                <th>Producto</th>
+                                <th>Código #</th>
+                                <th>Stock</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                                <th style="width: 1.6rem;">Eliminar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                   <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Gall. Terrabussi</td>
+                                <td>455-981-221</td>
+                                <td>20</td>
+                                <td>$105.50</td>
+                                <td>$105.50</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                               <td>
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Coca Cola 1,5lts</td>
+                                <td>247-925-726</td>
+                                <td>22</td>
+                                <td>$350.30</td>
+                                <td>$350.30</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                                <td >
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Jamón Cocido</td>
+                                <td>735-845-642</td>
+                                <td>12</td>
+                                <td>$90.75</td>
+                                <td>$90.75</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                                <td >
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Puré de Tomate</td>
+                                <td>422-568-642</td>
+                                <td>35</td>
+                                <td>$125.99</td>
+                                <td>$125.99</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+
+                      <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-md-6">
+                          <p class="lead">Cargar productos</p>
+                          <form class="form-label-left input_mask">
+							<div class="col-md-10 col-sm-6  form-group has-feedback">
+                <span class="fa fa-hashtag form-control-feedback left" aria-hidden="true"></span>
+								<input type="number" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Código de barra">
+                <input type="text" class="form-control has-feedback-left" readonly="readonly" placeholder="Producto">
+							
+							</div>
+                          </form>
+                           <button class="btn btn-info">F11 - Buscar Producto</button>
+                            <button class="btn btn-warning pull-right">F12 - Cobrar</button> 
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                          <p class="lead">Resumen <span class="date-sell"></span></p>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <tbody>
+                                <tr>
+                                  <th style="width:50%">Subtotal:</th>
+                                  <td>$672.54</td>
+                                </tr>
+                                <tr>
+                                  <th>Impuesto (0%)</th>
+                                  <td>$0</td>
+                                </tr>
+                                <tr>
+                                  <th>Total:</th>
+                                  <td>$672.54</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+
+
+                       <!-- title row -->
+                     
+
+                      <!-- accepted payments column 
+                        <div class="col-md-10">
+                          <p class="lead">Metodos de pago:</p>
+                        <div style="display: flex;">
+                            <div class="method">Tarjeta  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="card-payment" value="card" checked="" required /></div>
+                            <div class="method">Cuenta Corriente  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="credit-payment" value="credit" /></div>
+						    <div class="method">Contado  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="cash-method" value="cash" checked="" required /></div>
+                        </div>
+                        
+                               this row will not appear when printing                            
+                            <div class=" ">
+                                <div class=" pull-right">
+										 <label>
+											<input type="checkbox" class="js-switch" checked /> <span class="lead">Imprimir Recibo</span> 
+										</label> 
+								</div>
+                                                                          </div>
+                        </div>
+                         -->
+                    </section>
+                  </div>
+                </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <!-- Switchery -->
+	<script src="../../js/switchery/dist/switchery.min.js"></script>
+    <!-- iCheck -->
+	<script src="../../js/iCheck/icheck.min.js"></script>
+
+    <link rel="stylesheet" href="../../css/footer.css">
+    <footer id="mobile-footer">
+                      <div id="mobile-footer-container">
+                        <div class="left-col">
+                            <p class="lead text-center" style="color: #222;">
+                                Cajero en turno: <span class="whois" style="color:rgb(0, 46, 197);">Administrador</span>
+                            </p>
+                        </div>
+                        <div class="navbar-right">
+                            <span class="lead text-center date-sell" style="color: #222;"></span><span  class="lead text-center" style="color: #222;"> - </span></span> <span class="lead text-center hour-sell" style="color: #222;"></span>
+                        </div>
+                        
+                      </div>
+                  </footer>
+      </div>
+    </div>
+        
+         <!-- jQuery -->
+    <script src="../../js/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+   <script src="../../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../js/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../js/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../../js/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="../../js/Flot/jquery.flot.js"></script>
+    <script src="../../js/Flot/jquery.flot.pie.js"></script>
+    <script src="../../js/Flot/jquery.flot.time.js"></script>
+    <script src="../../js/Flot/jquery.flot.stack.js"></script>
+    <script src="../../js/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../../js/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../../js/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../../js/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../../js/DateJS/build/date.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../js/moment/min/moment.min.js"></script>
+    <script src="../../js/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    <script src="../../js/footer.js"></script>
+    
+    <!-- Custom Theme Scripts -->
+    <script src="../../js/custom.min.js"></script>
+            <!-- /page content -->
+    <script src="../../js/dates-sells.js"></script>
+  </body>
+</html>

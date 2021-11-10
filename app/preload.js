@@ -6,6 +6,9 @@ contextBridge.exposeInMainWorld(
             let validChannels = [
                 'login',
                 'load-page-main',
+                'logout',
+                'fullscreen-mainwindow',
+                'load-settings',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

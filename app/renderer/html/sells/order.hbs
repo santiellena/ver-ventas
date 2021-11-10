@@ -1,0 +1,183 @@
+<!-- Switchery -->
+	<link href="../../css/switchery/dist/switchery.min.css" rel="stylesheet">
+<!-- IndexFile -->
+    <link rel="stylesheet" href="../../css/index.css">
+<!-- iCheck -->
+	<link href="../../css/iCheck/skins/flat/green.css" rel="stylesheet">    
+<!-- page content -->
+        <div class="right_col" role="main">
+          <div class="">
+            <div class="clearfix"></div>
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="x_panel">
+                  
+                  <div class="x_content">
+                    <div class="form-group row div-form-price">
+                      <form action="" class="form-price-list">
+                        
+                          <label class="control-label col-md-5 col-sm-3 ">Lista de precios:</label>
+											  <div class="col-md-10 col-sm-2 ">
+												  <select class="form-control select-price-list">
+												  	  <option>Venta al público</option>
+													    <option>Mayorista/Distribuidor</option>
+												    </select>
+											    </div>   
+                        
+                      </form>
+                      <button class="btn btn-danger navbar-right col-md-2 col-sm-2 button-newsell">F5 - Nuevo Pedido</button>
+										</div>
+                    <section class="content invoice">
+
+                      <!-- Table row -->
+                      <div class="row">
+                        <div class="table">
+                          <table class="table table-striped table-bordered">
+                            <thead style="padding:0%;">
+                              <tr>
+                                <th style="width: 2.4rem;">Cant.</th>
+                                <th>Producto</th>
+                                <th>Código #</th>
+                                <th>Stock</th>
+                                <th>Precio Unitario</th>
+                                <th>Subtotal</th>
+                                <th style="width: 1.6rem;">Eliminar</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                   <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Gall. Terrabussi</td>
+                                <td>455-981-221</td>
+                                <td>20</td>
+                                <td>$105.50</td>
+                                <td>$105.50</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                               <td>
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Coca Cola 1,5lts</td>
+                                <td>247-925-726</td>
+                                <td>22</td>
+                                <td>$350.30</td>
+                                <td>$350.30</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                                <td >
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Jamón Cocido</td>
+                                <td>735-845-642</td>
+                                <td>12</td>
+                                <td>$90.75</td>
+                                <td>$90.75</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                              <tr>
+                                <td >
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Puré de Tomate</td>
+                                <td>422-568-642</td>
+                                <td>35</td>
+                                <td>$125.99</td>
+                                <td>$125.99</td>
+                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+
+                      <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-md-6">
+                          <p class="lead">Cargar productos</p>
+                          <form class="form-label-left input_mask">
+							<div class="col-md-10 col-sm-6  form-group has-feedback">
+                <span class="fa fa-hashtag form-control-feedback left" aria-hidden="true"></span>
+								<input type="number" class="form-control has-feedback-left" id="inputSuccess2" autofocus placeholder="Código de barra">
+                <input type="text" class="form-control has-feedback-left" disabled="disabled" readonly="readonly" placeholder="Producto">
+							
+							</div>
+                            {{!-- <div class="form-group row col-md-10 col-sm-6  form-group has-feedback">
+								<label class="col-form-label col-md-5 col-sm-3 ">Precio unitario</label>
+									<div class="col-md-8 col-sm-9 ">
+									    <input type="number" class="form-control">
+									</div>
+							</div> --}}
+                          </form>
+                           <button class="btn btn-info">F11 - Buscar Producto</button>
+                            <button class="btn btn-warning pull-right">F12 - Agregar Pedido</button> 
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-md-6">
+                          <p class="lead">Resumen <span class="date-sell"></span></p>
+                          <div class="table-responsive">
+                            <table class="table">
+                              <tbody>
+                                <tr>
+                                  <th style="width:50%">Subtotal:</th>
+                                  <td>$672.54</td>
+                                </tr>
+                                <tr>
+                                  <th>Impuesto (0%)</th>
+                                  <td>$0</td>
+                                </tr>
+                                <tr>
+                                  <th>Total:</th>
+                                  <td>$672.54</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <!-- /.col -->
+                      </div>
+                      <!-- /.row -->
+
+
+                       <!-- title row -->
+                     
+
+                      <!-- accepted payments column 
+                        <div class="col-md-10">
+                          <p class="lead">Metodos de pago:</p>
+                        <div style="display: flex;">
+                            <div class="method">Tarjeta  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="card-payment" value="card" checked="" required /></div>
+                            <div class="method">Cuenta Corriente  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="credit-payment" value="credit" /></div>
+						    <div class="method">Contado  <input type="radio" class="flat iradio_flat-green" name="payment-method" id="cash-method" value="cash" checked="" required /></div>
+                        </div>
+                        
+                               this row will not appear when printing                            
+                            <div class=" ">
+                                <div class=" pull-right">
+										 <label>
+											<input type="checkbox" class="js-switch" checked /> <span class="lead">Imprimir Recibo</span> 
+										</label> 
+								</div>
+                                                                          </div>
+                        </div>
+                         -->
+                    </section>
+                  </div>
+                </div>
+                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+    <!-- Switchery -->
+	<script src="../../js/switchery/dist/switchery.min.js"></script>
+    <!-- iCheck -->
+	<script src="../../js/iCheck/icheck.min.js"></script>

@@ -28,8 +28,8 @@
               <div class="menu_section active">
                   <h3>Modulos</h3>
                 <ul class="nav side-menu" style="">
-                  <li class="active"><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu" style="display: block;">
+                  <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none;">
                       <li class="current-page"><a id="generate-sell-page">Generar venta</a></li>
                       <li><a id="generate-order-page">Generar pedido</a></li>
                       <li><a id="view-history-page">Historial</a></li>
@@ -66,8 +66,9 @@
                         <li><a id="query-buys-supplier-detail-page">C. Detalles Proveedor</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-database"></i> Stock <span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-database"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                        <li><a id="agregar-producto">Agregar Producto</a></li>
                         <li><a id="kardex-page">Kardex Valorizado</a></li>
                         <li><a id="stock-page">Stock de Productos</a></li>
                     </ul>
@@ -95,16 +96,16 @@
 
             <!-- /menu footer buttons -->
             <div class="sidebar-footer hidden-small">
-              <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Configuraciones">
-                <span class="glyphicon glyphicon-cog" aria-hidden="true" id="settings-page"></span>
+              <a data-toggle="tooltip" data-placement="top" id="settings-button-footer" title="" data-original-title="Configuraciones">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true" ></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Pantalla Completa">
+              <a data-toggle="tooltip" data-placement="top" id="fullscreen-button" title="" data-original-title="Pantalla Completa">
                 <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
               </a>
               <a data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear Pantalla">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title=""  data-original-title="Cerrar Sesión">
+              <a data-toggle="tooltip" data-placement="top" id="logout-button-footer" title=""  data-original-title="Cerrar Sesión">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -119,20 +120,6 @@
                 </div>
                 <nav class="nav navbar-nav">
                 <ul class=" navbar-right">
-                  <li class="nav-item dropdown open" style="padding-left: 15px;">
-                    <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="../../images/user.png" alt="">Administrador
-                    </a>
-                    <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                      <a class="dropdown-item" href="javascript:;" id="profile-page"> Perfil</a>
-                        <a class="dropdown-item" href="javascript:;" id="settings-page">
-                          <span class="badge bg-red pull-right">50%</span>
-                          <span>Configuraciones</span>
-                        </a>
-                    <a class="dropdown-item" href="javascript:;">Ayuda</a>
-                      <a class="dropdown-item"><i class="fa fa-sign-out pull-right"></i> Cerrar Sesión</a>
-                    </div>
-                  </li>
   
                   <li role="presentation" class="nav-item dropdown open">
                     <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">

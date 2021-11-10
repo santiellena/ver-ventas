@@ -5,9 +5,10 @@ const path = require('path');
 const handlebarsHbs = require('esanti-electron-hbs');
 const devTools = require('./devtools');
 const ipcMainEvents = require('./ipcMainEvents');
+const handleErrors = require('./handleErrors');
 
 // Declaratios of windows
-let mainWindow, loginWindow;
+let mainWindow, loginWindow, settingsWindow;
 let tray;
 
 if(process.env.NODE_ENV == 'development'){
@@ -41,6 +42,7 @@ const newHandlebars = new handlebarsHbs(
     path.join(__dirname, '/renderer/html', 'partials'),
     {
       navMenu: 'navMenu.hbs',
+      footer: 'footer.hbs'
     },
 );
 
@@ -48,7 +50,7 @@ function createLoginWindow () {
   createTray();
   loginWindow = new BrowserWindow({
     width: 800, height: 600,
-    title: 'VerSystem',
+    title: 'VerSystem | Login',
     backgroundColor: 'F7F7F7',
     webPreferences: { 
       nodeIntegration: false,
@@ -59,6 +61,8 @@ function createLoginWindow () {
 
   loginWindow.loadFile(`${__dirname}/renderer/html/login.html`);
 
+  handleErrors(loginWindow);
+
   loginWindow.on('closed',  () => {
     loginWindow = null;
   });
@@ -67,15 +71,18 @@ function createLoginWindow () {
 // Create a new BrowserWindow when `app` is ready
 function createMainWindow  () {
   mainWindow = new BrowserWindow({
-    width: 2000, height: 1800,
+    width: 3000, height: 2800,
     backgroundColor: '2A3F54',
     webPreferences: { 
       nodeIntegration: false,
       preload: `${__dirname}/preload.js`,
+      contextIsolation: true,
     }
   });
 // Load index.hbs into the new BrowserWindow
 mainWindow.loadFile(newHandlebars.render('/sells/index.hbs'));
+
+handleErrors(mainWindow);
 
  // Listen for window being closed
 mainWindow.on('closed',  () => {
@@ -83,8 +90,34 @@ mainWindow.on('closed',  () => {
 });
 
 }
-// Main window
-app.on('ready', createLoginWindow);
+
+function createSettingsWindow () {
+  settingsWindow = new BrowserWindow({
+    width: 800, height: 600,
+    title: 'VerSystem | Configuraciones',
+    backgroundColor: 'F7F7F7',
+    webPreferences: { 
+      nodeIntegration: false,
+      preload: `${__dirname}/preload.js`,
+      contextIsolation: true,
+    },
+    parent: mainWindow,
+    modal: true,
+  });
+  // Load index.hbs into the new BrowserWindow
+  settingsWindow.loadFile(`${__dirname}/renderer/html/settings.html`);
+  
+  handleErrors(settingsWindow);
+  
+  // Listen for window being closed
+  settingsWindow.on('closed',  () => {
+  settingsWindow = null;
+  });
+  
+}
+
+// Login window
+app.on('ready', createMainWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -105,8 +138,20 @@ function returnMainWindow () {
   return mainWindow;
 }
 
+function returnLoginWindow () {
+  return loginWindow;
+}
+
+function returnSettingsWindow () {
+  return settingsWindow;
+}
+
 ipcMainEvents({
   createMainWindow,
+  createLoginWindow,
+  createSettingsWindow,
   returnMainWindow,
+  returnLoginWindow,
+  returnSettingsWindow,
   newHandlebars,
 });

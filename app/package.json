@@ -4,9 +4,17 @@
   "description": "Ver System Desktop APP",
   "main": "app.js",
   "scripts": {
-    "dev": "electron .", 
+    "dev": "electron .",
+    "watch": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/evm .",
+    "start": "electron .",
     "debug": "electron . --trace-deprecation",
     "inspect": "electron --inspect=5858 ."
+  },
+  "build": {
+    "electronDownload": {
+      "version": "7.1.2",
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    }
   },
   "keywords": [
     "System",
@@ -15,10 +23,12 @@
   "author": "ESanti",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^15.3.0"
+    "@ekoneko/evm": "^1.0.5",
+    "electron": "^15.3.0",
+    "nodemon": "^2.0.14"
   },
   "dependencies": {
-    "electron-compile": "^6.4.4",
+    "cross-env": "^7.0.3",
     "electron-debug": "^3.2.0",
     "esanti-electron-hbs": "https://github.com/santiellena/electron-hbs.git"
   }

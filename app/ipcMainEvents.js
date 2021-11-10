@@ -2,7 +2,11 @@ const { ipcMain } = require('electron');
 
 module.exports = ({
     createMainWindow,
+    createLoginWindow,
+    createSettingsWindow,
     returnMainWindow,
+    returnLoginWindow,
+    returnSettingsWindow,
     newHandlebars,
 }) => {
     ipcMain.handle('login', (e, args) => {
@@ -27,4 +31,17 @@ module.exports = ({
         }
         
     });
+
+    ipcMain.on('logout', (e, args) => {
+        createLoginWindow();
+    });
+
+    ipcMain.on('fullscreen-mainwindow', (e, args) => {
+
+    });
+
+    ipcMain.on('load-settings', (e, args) => {
+       createSettingsWindow();
+    });
+
 }   

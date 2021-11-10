@@ -60,8 +60,4 @@ document.getElementById('maintenance-units-page').addEventListener('click', () =
 
 document.getElementById('dump-page').addEventListener('click', () => loadPageInMain('/security/dump.hbs'));
 
-document.getElementById('settings-page').addEventListener('click', () => loadPageInMain('settings.hbs'));
-
-document.getElementById('profile-page').addEventListener('click', () => loadPageInMain('profile.hbs'));
-
 // document.getElementById('').addEventListener('click', () => loadPageInMain(''));
