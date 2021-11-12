@@ -10,7 +10,9 @@ document.getElementById('generate-sell-page').addEventListener('click', () => lo
 
 document.getElementById('generate-order-page').addEventListener('click', () => loadPageInMain('/sells/order.hbs'));
 
-document.getElementById('view-history-page').addEventListener('click', () => loadPageInMain('/sells/history.hbs'));
+document.getElementById('view-history-page').addEventListener('click', () => {
+    ipcRenderer.send('open-sells-history');
+});
 
 document.getElementById('buys-page').addEventListener('click', () => loadPageInMain('buys/buys.hbs'));
 

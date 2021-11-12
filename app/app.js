@@ -8,7 +8,7 @@ const ipcMainEvents = require('./ipcMainEvents');
 const handleErrors = require('./handleErrors');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow;
 let tray;
 
 if(process.env.NODE_ENV == 'development'){
@@ -34,7 +34,7 @@ function createTray () {
 }
  
 // initialization Custom handlebars
-const newHandlebars = new handlebarsHbs(
+const mainHandlebars = new handlebarsHbs(
     path.join(__dirname, '/renderer/html'),
     path.join(__dirname, '/renderer/html', 'layout'),
     'main.hbs',
@@ -44,6 +44,16 @@ const newHandlebars = new handlebarsHbs(
       navMenu: 'navMenu.hbs',
       footer: 'footer.hbs'
     },
+);
+
+const historyHandlebars = new handlebarsHbs(
+  path.join(__dirname, '/renderer/html'),
+  path.join(__dirname, '/renderer/html', 'layout'),
+  'historyPreset.hbs',
+  path.join(__dirname, '/renderer/html', 'temp'),
+  path.join(__dirname, '/renderer/html', 'partials'),
+  {
+  },
 );
 
 function createLoginWindow () {
@@ -80,7 +90,7 @@ function createMainWindow  () {
     }
   });
 // Load index.hbs into the new BrowserWindow
-mainWindow.loadFile(newHandlebars.render('/sells/index.hbs'));
+mainWindow.loadFile(mainHandlebars.render('/sells/index.hbs'));
 
 handleErrors(mainWindow);
 
@@ -116,8 +126,38 @@ function createSettingsWindow () {
   
 }
 
+function createSellsHistoryWindow () {
+  const actualDate = new Date();
+  const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
+
+  sellsHistoryWindow = new BrowserWindow({
+    width: 1200, height: 700,
+    title: `VerSystem-Historial de Ventas-${date}`,
+    backgroundColor: 'F7F7F7',
+    webPreferences: { 
+      nodeIntegration: false,
+      preload: `${__dirname}/preload.js`,
+      contextIsolation: true,
+    },
+    parent: mainWindow,
+    modal: true,
+  });
+
+ 
+  // Load index.hbs into the new BrowserWindow
+  sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/history.hbs'));
+  
+  handleErrors(sellsHistoryWindow);
+  
+  // Listen for window being closed
+  sellsHistoryWindow.on('closed',  () => {
+    sellsHistoryWindow = null;
+  });
+  
+}
+
 // Login window
-app.on('ready', createMainWindow);
+app.on('ready', createSellsHistoryWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -131,7 +171,7 @@ app.on('activate', () => {
  
 // removes all rendered files 
 app.on("quit", () => {
-    newHandlebars.clearTemps();
+    mainHandlebars.clearTemps();
 });
 
 function returnMainWindow () {
@@ -146,12 +186,19 @@ function returnSettingsWindow () {
   return settingsWindow;
 }
 
+function returnSellsHistoryWindow () {
+  return sellsHistoryWindow;
+}
+
 ipcMainEvents({
   createMainWindow,
   createLoginWindow,
   createSettingsWindow,
+  createSellsHistoryWindow,
   returnMainWindow,
   returnLoginWindow,
   returnSettingsWindow,
-  newHandlebars,
+  returnSellsHistoryWindow,
+  mainHandlebars,
+  historyHandlebars,
 });

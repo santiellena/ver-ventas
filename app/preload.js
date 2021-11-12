@@ -9,6 +9,7 @@ contextBridge.exposeInMainWorld(
                 'logout',
                 'fullscreen-mainwindow',
                 'load-settings',
+                'open-sells-history',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

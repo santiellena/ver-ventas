@@ -4,10 +4,12 @@ module.exports = ({
     createMainWindow,
     createLoginWindow,
     createSettingsWindow,
+    createSellsHistoryWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
-    newHandlebars,
+    returnSellsGistoryWindow,
+    mainHandlebars,
 }) => {
     ipcMain.handle('login', (e, args) => {
         const { username, password } = args;
@@ -25,7 +27,7 @@ module.exports = ({
     ipcMain.on('load-page-main', (e, pageName) => {
         const mainWindow = returnMainWindow()
         if( mainWindow != null && mainWindow != undefined ) {
-            mainWindow.loadFile(newHandlebars.render(pageName));
+            mainWindow.loadFile(mainHandlebars.render(pageName));
         } else {
             console.log('Is still undefinded');
         }
@@ -42,6 +44,10 @@ module.exports = ({
 
     ipcMain.on('load-settings', (e, args) => {
        createSettingsWindow();
+    });
+    
+    ipcMain.on('open-sells-history', () => {
+        createSellsHistoryWindow();
     });
 
 }   
