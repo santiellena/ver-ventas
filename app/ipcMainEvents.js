@@ -5,11 +5,14 @@ module.exports = ({
     createLoginWindow,
     createSettingsWindow,
     createSellsHistoryWindow,
+    createPaymentWindow,
     returnMainWindow,
-    returnLoginWindow,
+     returnLoginWindow,
     returnSettingsWindow,
-    returnSellsGistoryWindow,
+    returnSellsHistoryWindow,
+    returnPaymentMethod,
     mainHandlebars,
+    historyHandlebars,
 }) => {
     ipcMain.handle('login', (e, args) => {
         const { username, password } = args;
@@ -48,6 +51,43 @@ module.exports = ({
     
     ipcMain.on('open-sells-history', () => {
         createSellsHistoryWindow();
+    });
+
+    ipcMain.handle('get-sell-detail', (e, args) => {
+        const details = {
+            detail1: [
+                4, 
+                'Mayonesa',
+                '$1200'
+            ],
+
+            detail2: [
+                4, 
+                'Ketchup',
+                '$1000'
+            ],
+        };
+
+        return details;
+    });
+
+    ipcMain.handle('search-sells-by-date', (e, args) => {
+        const sells = {
+            sell1: [
+                2, 
+                args.fromDate,
+                '$2000',
+                'Consumidor final',
+                'Principal',
+                'Cuenta corriente'
+            ],
+        };
+
+        return sells;
+    });
+
+    ipcMain.on('load-payment-window', (e, args) => {
+        createPaymentWindow();
     });
 
 }   

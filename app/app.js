@@ -8,7 +8,7 @@ const ipcMainEvents = require('./ipcMainEvents');
 const handleErrors = require('./handleErrors');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow;
 let tray;
 
 if(process.env.NODE_ENV == 'development'){
@@ -101,6 +101,31 @@ mainWindow.on('closed',  () => {
 
 }
 
+function createPaymentWindow () {
+  paymentWindow = new BrowserWindow({
+    width: 800, height: 600,
+    title: 'VerSystem | Metodos de pago',
+    backgroundColor: 'F7F7F7',
+    webPreferences: { 
+      nodeIntegration: false,
+      preload: `${__dirname}/preload.js`,
+      contextIsolation: true,
+    },
+    parent: mainWindow,
+    modal: true,
+  });
+  // Load index.hbs into the new BrowserWindow
+  paymentWindow.loadFile(`${__dirname}/renderer/html/sells/payment.html`);
+  
+  handleErrors(paymentWindow);
+  
+  // Listen for window being closed
+  paymentWindow.on('closed',  () => {
+  paymentWindow = null;
+  });
+  
+}
+
 function createSettingsWindow () {
   settingsWindow = new BrowserWindow({
     width: 800, height: 600,
@@ -127,6 +152,7 @@ function createSettingsWindow () {
 }
 
 function createSellsHistoryWindow () {
+  console.log('AQUI')
   const actualDate = new Date();
   const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
 
@@ -143,9 +169,27 @@ function createSellsHistoryWindow () {
     modal: true,
   });
 
+  const sells = [
+    {
+      id: 33,
+      date: Date.now().toString(),
+      amount: '$2200',
+      branch: 'Principal',
+      customer: 'Consumidor final',
+      howPaid: 'Contado',
+    },
+    {
+      id: 22,
+      date: Date.now().toString(),
+      amount: '$1200',
+      branch: 'Principal',
+      customer: 'Baez Pedro',
+      howPaid: 'Cuenta corriente',
+    },
+  ];
  
   // Load index.hbs into the new BrowserWindow
-  sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/history.hbs'));
+  sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/history.hbs', {sells}));
   
   handleErrors(sellsHistoryWindow);
   
@@ -157,7 +201,7 @@ function createSellsHistoryWindow () {
 }
 
 // Login window
-app.on('ready', createSellsHistoryWindow);
+app.on('ready', createPaymentWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -190,15 +234,21 @@ function returnSellsHistoryWindow () {
   return sellsHistoryWindow;
 }
 
+function returnPaymentMethod () {
+  return paymentWindow;
+}
+
 ipcMainEvents({
   createMainWindow,
   createLoginWindow,
   createSettingsWindow,
   createSellsHistoryWindow,
+  createPaymentWindow,
   returnMainWindow,
   returnLoginWindow,
   returnSettingsWindow,
   returnSellsHistoryWindow,
+  returnPaymentMethod,
   mainHandlebars,
   historyHandlebars,
 });

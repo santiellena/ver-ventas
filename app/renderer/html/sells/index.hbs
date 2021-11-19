@@ -55,7 +55,7 @@
                                 <td>20</td>
                                 <td>$105.50</td>
                                 <td>$105.50</td>
-                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                                <td><button class="btn btn-danger">X</button></td>
                               </tr>
                               <tr>
                                <td>
@@ -66,7 +66,18 @@
                                 <td>22</td>
                                 <td>$350.30</td>
                                 <td>$350.30</td>
-                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                                <td><button class="btn btn-danger">X</button></td>
+                              </tr>
+                              <tr>
+                               <td>
+                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
+                                </td>
+                                <td>Coca Cola 1,5lts</td>
+                                <td>247-925-726</td>
+                                <td>22</td>
+                                <td>$350.30</td>
+                                <td>$350.30</td>
+                                <td><button class="btn btn-danger">X</button></td>
                               </tr>
                               <tr>
                                 <td >
@@ -77,8 +88,8 @@
                                 <td>12</td>
                                 <td>$90.75</td>
                                 <td>$90.75</td>
-                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
-                              </tr>
+                                <td><button class="btn btn-danger">X</button></td>                              
+                                </tr>
                               <tr>
                                 <td >
                                     <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
@@ -88,7 +99,7 @@
                                 <td>35</td>
                                 <td>$125.99</td>
                                 <td>$125.99</td>
-                                <td><button class="btn btn-danger button-delete"><span class="fa fa-close"></span></button></td>
+                                <td><button class="btn btn-danger">X</button></td>
                               </tr>
                             </tbody>
                           </table>
@@ -115,8 +126,8 @@
 									</div>
 							</div> --}}
                           </form>
-                           <button class="btn btn-info">F11 - Buscar Producto</button>
-                            <button class="btn btn-warning pull-right">F12 - Cobrar</button> 
+                           <button class="btn btn-info">F10 - Buscar Producto</button>
+                            <button class="btn btn-warning pull-right" id="payment-button">F12 - Cobrar</button> 
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">
@@ -181,3 +192,5 @@
 	<script src="../../js/switchery/dist/switchery.min.js"></script>
     <!-- iCheck -->
 	<script src="../../js/iCheck/icheck.min.js"></script>
+
+  <script src="../../js/loadWindows.js"></script>

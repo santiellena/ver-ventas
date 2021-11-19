@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/paymentWindow.css">
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.min.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container body">
+        <div class="main_container" style="display: flex;">
+            <div class="x_content">
+                <div class="bs-example" data-example-id="simple-jumbotron">
+                  <div class="jumbotron col-md-5" style="height: 98vh; margin-bottom: 0;">
+                    <div class="methods-container">
+                        <h2>Número de artículos: <span id="articles-quant">3</span></h4>
+                        <button class="btn btn-warning button-method"><span class="fa fa-money icn-method"></span>Efectivo</button>
+                        <button class="btn btn-warning button-method"><span class="fa fa-credit-card icn-method"></span>Tarjeta</button>
+                        <button class="btn btn-danger button-method"><span class="fa fa-circle-o icn-method"></span>Cuenta Corriente</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="second-content">
+                    <h2 style="font-size: 1.7rem;" class="lead">Total a Cobrar</h2>
+                    <h3 style="color: #0f0;">$ <span id="total-amount">320</span></h3>
+                    <div class="col-md-6 col-sm-6  form-group has-feedback">
+                        <input type="number" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Efectivo">
+                        <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    <h3 style="color: #f00;">$ <span id="return-amount">20</span></h3>
+                    <br>
+                    <button class="btn btn-success" style="width: 50%;"><span class="fa fa-check icn-method"></span>Cobrar</button>
+                    <button class="btn btn-danger" style="width: 50%;"><span class="fa fa-close icn-method"></span>Cancelar</button>
+                </div>
+              </div>
+        </div>
+    </div>
+    <script>
+        const ipcRenderer = window.app;
+    </script>
+
+    <!-- JS -->
+         <!-- jQuery -->
+         <script src="../../js/jquery/dist/jquery.min.js"></script>
+         <!-- Bootstrap -->
+        <script src="../../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+         <!-- FastClick -->
+         <script src="../../js/fastclick/lib/fastclick.js"></script>
+         <!-- NProgress -->
+         <script src="../../js/nprogress/nprogress.js"></script>
+         <!-- jQuery Sparklines -->
+         <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+         <!-- Custom Theme Scripts -->
+         <script src="../../js/custom.min.js"></script>
+</body>
+</html>

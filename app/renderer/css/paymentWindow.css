@@ -1,0 +1,30 @@
+.methods-container {
+    color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding:  4rem 0;
+    width: 100%;
+}
+
+.button-method {
+    width: 70%;
+}
+
+.icn-method {
+    margin-right: 1rem;
+}
+
+.second-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    padding: 6rem 0;
+}
+
+h2 {
+    font-size: 5rem;
+}

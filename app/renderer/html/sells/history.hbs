@@ -38,10 +38,10 @@
                         <div class="history-table">
                           <div class="search-bytime">
                                   <label for="from-date">Busqueda por fecha del:</label>
-                                  <input id="" name="from-date" placeholder="dd-mm-yyyy" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+                                  <input id="from-date" name="from-date" placeholder="dd-mm-yyyy" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
 												
                                   <label for="to-date"> al:</label>
-                                  <input id="" name="to-date" placeholder="dd-mm-yyyy" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+                                  <input id="to-date" name="to-date" placeholder="dd-mm-yyyy" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
                                   <script>
 											function timeFunctionLong(input) {
 												setTimeout(function() {
@@ -49,6 +49,7 @@
 												}, 60000);
 											}
 								</script>
+                  <button class="btn btn-info" onclick="searchByDate()">Buscar</button>
                           </div>
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
@@ -64,16 +65,18 @@
                           <th>Detalles</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody id="tbody-sells">
+                        {{#each sells}}
                         <tr>
-                          <th>2</th>
-                          <th>11/22/12</th>
-                          <th>$10000</th>
-                          <th>Pedro Raul</th>
-                          <th>Principal</th>
-                          <th>Contado</th>
-                          <th><button class="btn btn-info" onclick="seeDetail()">Ver</button></th>
+                          <th>{{this.id}}</th>
+                          <th>{{this.date}}</th>
+                          <th>{{this.amount}}</th>
+                          <th>{{this.customer}}</th>
+                          <th>{{this.branch}}</th>
+                          <th>{{this.howPaid}}</th>
+                          <th><button class="btn btn-info" onclick="seeDetail({{id}})">Ver</button></th>
                         </tr>
+                        {{/each}}
                       </tbody>
                     </table>
                   </div>
@@ -85,13 +88,10 @@
                    <tr>
                      <th>Cantidad</th>
                      <th style="col-md-5">Producto</th>
+                     <th>Precio</th>
                    </tr>
                  </thead>
                  <tbody id="tbody-details">
-                   <tr>
-                     <th>2</th>
-                     <th>Casancrem</th>
-                   </tr>
                  </tbody>
                </table>
               </div>
@@ -100,3 +100,4 @@
                 </div>
               </div>
 <script src="../../js/seeDetails.js"></script>
+<script src="../../js/searchSellsByDate.js"></script>

@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld(
                 'fullscreen-mainwindow',
                 'load-settings',
                 'open-sells-history',
+                'load-payment-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -30,6 +31,8 @@ contextBridge.exposeInMainWorld(
         invoke: async (channel, args) => {
             let validChannels = [
                 'login',
+                'get-sell-detail',
+                'search-sells-by-date',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);
