@@ -1,4 +1,5 @@
 const { ipcMain } = require('electron');
+const { mainHandlebars, historyHandlebars } = require('./createWindows');
 
 module.exports = ({
     createMainWindow,
@@ -7,12 +8,10 @@ module.exports = ({
     createSellsHistoryWindow,
     createPaymentWindow,
     returnMainWindow,
-     returnLoginWindow,
+    returnLoginWindow,
     returnSettingsWindow,
     returnSellsHistoryWindow,
     returnPaymentMethod,
-    mainHandlebars,
-    historyHandlebars,
 }) => {
     ipcMain.handle('login', (e, args) => {
         const { username, password } = args;
