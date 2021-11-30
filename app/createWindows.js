@@ -1,12 +1,12 @@
-
-const { app, BrowserWindow, Tray, Menu} = require('electron');
+const { app, BrowserWindow, Tray, Menu, session } = require('electron');
 
 const handleErrors = require('./handleErrors');
 const handlebarsHbs = require('esanti-electron-hbs');
 const path = require('path');
+const storeProducts = require('./components/products/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -96,7 +96,10 @@ function createMainWindow  () {
 }
 
 
-function createPaymentWindow () {
+function createPaymentWindow ({
+  totalAmount,
+  articlesQuantity
+}) {
     paymentWindow = new BrowserWindow({
       width: 800, height: 600,
       title: 'VerSystem | Metodos de pago',
@@ -110,7 +113,7 @@ function createPaymentWindow () {
       modal: true,
     });
     // Load index.hbs into the new BrowserWindow
-    paymentWindow.loadFile(`${__dirname}/renderer/html/sells/payment.html`);
+    paymentWindow.loadFile(historyHandlebars.render(`sells/payment.hbs`, { totalAmount, articlesQuantity }));
     
     handleErrors(paymentWindow);
     
@@ -148,7 +151,6 @@ function createPaymentWindow () {
   }
 
   function createSellsHistoryWindow () {
-    console.log('AQUI')
     const actualDate = new Date();
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
@@ -195,6 +197,59 @@ function createPaymentWindow () {
     });
     
   }
+
+  function createSearchProductsWindow () {
+    searchProductsWindow = new BrowserWindow({
+      width: 1200, height: 700,
+      title: `VerSystem - Buscar Productos`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+
+    const products = storeProducts.getAllProducts();
+    const arrayProducts = Object.entries(products);
+    
+    //[n][0] == ID // [n][1] == description // [n][2] == stock // [n][3] == unitPrice (Data from fake store)
+    sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', {arrayProducts}));
+    
+    handleErrors(searchProductsWindow);
+    
+    // Listen for window being closed
+    searchProductsWindow.on('closed',  () => {
+      searchProductsWindow = null;
+    });
+    
+  };
+
+  function returnMainWindow () {
+    return mainWindow;
+  };
+  
+  function returnLoginWindow () {
+    return loginWindow;
+  };
+  
+  function returnSettingsWindow () {
+    return settingsWindow;
+  };
+  
+  function returnSellsHistoryWindow () {
+    return sellsHistoryWindow;
+  };
+  
+  function returnPaymentWindow () {
+    return paymentWindow;
+  };
+
+  function returnSearchProductsWindow () {
+    return searchProductsWindow;
+  };
   
 module.exports = {
     createLoginWindow,
@@ -202,6 +257,13 @@ module.exports = {
     createPaymentWindow,
     createSellsHistoryWindow,
     createSettingsWindow,
+    createSearchProductsWindow,
+    returnMainWindow,
+    returnLoginWindow,
+    returnSettingsWindow,
+    returnSellsHistoryWindow,
+    returnPaymentWindow,
+    returnSearchProductsWindow,
     mainHandlebars,
     historyHandlebars,
 }

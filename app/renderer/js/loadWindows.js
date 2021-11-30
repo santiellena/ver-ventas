@@ -1,3 +1,9 @@
 document.getElementById('payment-button').addEventListener('click', () => {
-    ipcRenderer.send('load-payment-window');
+    const totalAmount = document.getElementById('total-amount').value;
+    const articlesQuantity = getAllItemSession().length;
+    const dataSell = {
+        totalAmount,
+        articlesQuantity,
+    }
+    ipcRenderer.send('load-payment-window', dataSell);
 });

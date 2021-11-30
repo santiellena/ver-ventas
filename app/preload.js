@@ -11,6 +11,11 @@ contextBridge.exposeInMainWorld(
                 'load-settings',
                 'open-sells-history',
                 'load-payment-window',
+                'update-box-bo-sell',
+                'sell-cash-confirmation',
+                'sell-card-confirmation',
+                'update-product-quantity-cookies',
+                'add-product-list-cookies',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -21,6 +26,8 @@ contextBridge.exposeInMainWorld(
         on: (channel, func) => {
             let validChannels = [
                 'login-success',
+                'receive-total-amount',
+                'clear-product-list',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -33,6 +40,11 @@ contextBridge.exposeInMainWorld(
                 'login',
                 'get-sell-detail',
                 'search-sells-by-date',
+                'get-product-list',
+                'search-product-byid',
+                'check-product-incookies',
+                'get-tax-percentage',
+
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

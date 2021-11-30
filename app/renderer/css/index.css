@@ -37,3 +37,11 @@ td {
     text-align: center;
     align-items: center;
 }
+
+.total-amount {
+    background-color: transparent;
+    padding: 0px;
+    border: initial;
+    font: inherit;
+    margin: 0px;
+}

@@ -27,24 +27,24 @@
                 <div class="bs-example" data-example-id="simple-jumbotron">
                   <div class="jumbotron col-md-5" style="height: 98vh; margin-bottom: 0;">
                     <div class="methods-container">
-                        <h2>Número de artículos: <span id="articles-quant">3</span></h4>
+                        <h2>Número de artículos: <span id="articles-quant">{{articlesQuantity}}</span></h4>
                         <button class="btn btn-warning button-method"><span class="fa fa-money icn-method"></span>Efectivo</button>
-                        <button class="btn btn-warning button-method"><span class="fa fa-credit-card icn-method"></span>Tarjeta</button>
+                        <button class="btn btn-warning button-method" onclick="payWithCard()"><span class="fa fa-credit-card icn-method"></span>Tarjeta</button>
                         <button class="btn btn-danger button-method"><span class="fa fa-circle-o icn-method"></span>Cuenta Corriente</button>
                     </div>
                   </div>
                 </div>
                 <div class="second-content">
                     <h2 style="font-size: 1.7rem;" class="lead">Total a Cobrar</h2>
-                    <h3 style="color: #0f0;">$ <span id="total-amount">320</span></h3>
+                    <h3 style="color: #0f0;">$ <span id="total-amount">{{ totalAmount }}</span></h3>
                     <div class="col-md-6 col-sm-6  form-group has-feedback">
-                        <input type="number" class="form-control has-feedback-left" id="inputSuccess2" placeholder="Efectivo">
+                        <input type="number" class="form-control has-feedback-left" id="cash" placeholder="Efectivo" onkeyup="amountToReturn()">
                         <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
                     </div>
-                    <h3 style="color: #f00;">$ <span id="return-amount">20</span></h3>
+                    <h3 style="color: #f00;">$ <span id="return-amount">0</span></h3>
                     <br>
-                    <button class="btn btn-success" style="width: 50%;"><span class="fa fa-check icn-method"></span>Cobrar</button>
-                    <button class="btn btn-danger" style="width: 50%;"><span class="fa fa-close icn-method"></span>Cancelar</button>
+                    <button class="btn btn-success" style="width: 50%;" onclick="getMoney();"><span class="fa fa-check icn-method"></span>Cobrar</button>
+                    <button class="btn btn-danger" style="width: 50%;" onclick="window.close();"><span class="fa fa-close icn-method"></span>Cancelar</button>
                 </div>
               </div>
         </div>
@@ -66,5 +66,10 @@
          <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
          <!-- Custom Theme Scripts -->
          <script src="../../js/custom.min.js"></script>
+
+         <script src="../../js/productList.js"></script>
+
+         <script src="../../js/amountToBeReturned.js"></script>
+
 </body>
 </html>

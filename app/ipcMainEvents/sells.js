@@ -1,59 +1,21 @@
 const { ipcMain, dialog } = require('electron');
 
-const storeArticles = require('./components/articles/store');
+const storeProducts = require('../components/products/store');
 
 const { mainHandlebars,
         historyHandlebars,
-        returnMainWindow,
-        returnLoginWindow,
-        returnSettingsWindow,
         returnSellsHistoryWindow,
         returnPaymentWindow,
+        returnMainWindow,
+        returnSearchProductsWindow,
         
-} = require('./createWindows');
+} = require('../createWindows');
 
 module.exports = ({
-    createMainWindow,
-    createLoginWindow,
-    createSettingsWindow,
     createSellsHistoryWindow,
     createPaymentWindow,
+    createSearchProductsWindow,
 }) => {
-    ipcMain.handle('login', (e, args) => {
-        const { username, password } = args;
-        if(username == 'admin' &&  password == 'admin'){ 
-        
-          
-          createMainWindow();
-          return true;
-        } else {
-          
-          return false;
-        }
-      });
-
-    ipcMain.on('load-page-main', (e, pageName) => {
-        const mainWindow = returnMainWindow()
-        if( mainWindow != null && mainWindow != undefined ) {
-            mainWindow.loadFile(mainHandlebars.render(pageName));
-        } else {
-            console.log('Is still undefinded');
-        }
-        
-    });
-
-    ipcMain.on('logout', (e, args) => {
-        createLoginWindow();
-    });
-
-    ipcMain.on('fullscreen-mainwindow', (e, args) => {
-
-    });
-
-    ipcMain.on('load-settings', (e, args) => {
-       createSettingsWindow();
-    });
-    
     ipcMain.on('open-sells-history', () => {
         createSellsHistoryWindow();
     });
@@ -99,6 +61,10 @@ module.exports = ({
         });
     });
 
+    ipcMain.on('load-searchproductys-window', (e, args) => {
+        createSearchProductsWindow();
+    });
+
     ipcMain.on('sell-cash-confirmation', (e, args) => {
         const paymentWindow = returnPaymentWindow();
         dialog.showMessageBoxSync(paymentWindow, {
@@ -108,6 +74,9 @@ module.exports = ({
             buttons: ['Cerrar'],
         });
         paymentWindow.close();
+        const mainWindow = returnMainWindow();
+
+        mainWindow.webContents.send('clear-product-list');
     });
 
     ipcMain.on('sell-card-confirmation', (e, args) => {
@@ -129,7 +98,20 @@ module.exports = ({
         }
     });
 
-    
+    ipcMain.handle('get-product-list', (e, args) => {
 
+    });
 
-}   
+    ipcMain.handle('search-product-byid', (e, id) => {
+        const product = storeProducts.getProduct(id);
+        if(product == null){
+            return 'Producto no encontrado. F10-Buscar'
+        }
+        return product;
+    });
+
+    ipcMain.handle('get-tax-percentage', (e, args) => {
+        return 0;
+    });
+
+}

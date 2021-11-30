@@ -1,8 +1,13 @@
 'use strict'
 // Modules
-const { app, BrowserWindow, Tray, Menu, ipcMain } = require('electron');
+const { app } = require('electron');
 const devTools = require('./devtools');
-const ipcMainEvents = require('./ipcMainEvents');
+
+const ipcMainEvents = {
+  main: require('./ipcMainEvents/main'),
+  sells: require('./ipcMainEvents/sells'),
+  
+}
 
 const {
   createLoginWindow,
@@ -10,6 +15,7 @@ const {
   createPaymentWindow,
   createSellsHistoryWindow,
   createSettingsWindow,
+  createSearchProductsWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -17,7 +23,7 @@ if(process.env.NODE_ENV == 'development'){
 }
 
 // Login window
-app.on('ready', createPaymentWindow);
+app.on('ready', createMainWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -34,35 +40,14 @@ app.on("quit", () => {
     mainHandlebars.clearTemps();
 });
 
-function returnMainWindow () {
-  return mainWindow;
-}
-
-function returnLoginWindow () {
-  return loginWindow;
-}
-
-function returnSettingsWindow () {
-  return settingsWindow;
-}
-
-function returnSellsHistoryWindow () {
-  return sellsHistoryWindow;
-}
-
-function returnPaymentMethod () {
-  return paymentWindow;
-}
-
-ipcMainEvents({
+ipcMainEvents.main({
   createMainWindow,
   createLoginWindow,
   createSettingsWindow,
+});
+
+ipcMainEvents.sells({
   createSellsHistoryWindow,
   createPaymentWindow,
-  returnMainWindow,
-  returnLoginWindow,
-  returnSettingsWindow,
-  returnSellsHistoryWindow,
-  returnPaymentMethod,
+  createSearchProductsWindow,
 });

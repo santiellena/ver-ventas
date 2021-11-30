@@ -26,7 +26,7 @@
 											    </div>   
                         
                       </form>
-                      <button class="btn btn-danger navbar-right col-md-2 col-sm-2 button-newsell">F5 - Nueva Venta</button>
+                      <button class="btn btn-danger navbar-right col-md-2 col-sm-2 button-newsell" id="clear-list" onclick="clearProductList();">F5 - Nueva Venta</button>
 										</div>
                     <section class="content invoice">
 
@@ -45,8 +45,23 @@
                                 <th style="width: 1.6rem;">Eliminar</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="tbody-list">
+                              {{#if storedProductList}}
+                                  {{#each storedProductList}}
                               <tr>
+                                <td>
+                                   <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="{{this.quantity}}"/>
+                                </td>
+                                <td>{{this.description}}</td>
+                                <td>{{this.code}}</td>
+                                <td>{{this.stock}}</td>
+                                <td>${{this.unitPrice}}</td>
+                                <td>${{this.subTotal}}</td>
+                                <td><button class="btn btn-danger">X</button></td>
+                              </tr>
+                                  {{/each}}
+                              {{/if}}
+                              {{!-- <tr>
                                 <td>
                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
                                 </td>
@@ -57,52 +72,12 @@
                                 <td>$105.50</td>
                                 <td><button class="btn btn-danger">X</button></td>
                               </tr>
-                              <tr>
-                               <td>
-                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
-                                </td>
-                                <td>Coca Cola 1,5lts</td>
-                                <td>247-925-726</td>
-                                <td>22</td>
-                                <td>$350.30</td>
-                                <td>$350.30</td>
-                                <td><button class="btn btn-danger">X</button></td>
-                              </tr>
-                              <tr>
-                               <td>
-                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
-                                </td>
-                                <td>Coca Cola 1,5lts</td>
-                                <td>247-925-726</td>
-                                <td>22</td>
-                                <td>$350.30</td>
-                                <td>$350.30</td>
-                                <td><button class="btn btn-danger">X</button></td>
-                              </tr>
-                              <tr>
-                                <td >
-                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
-                                </td>
-                                <td>Jamón Cocido</td>
-                                <td>735-845-642</td>
-                                <td>12</td>
-                                <td>$90.75</td>
-                                <td>$90.75</td>
-                                <td><button class="btn btn-danger">X</button></td>                              
-                                </tr>
-                              <tr>
-                                <td >
-                                    <input type="number" id="quantArticle" class="form-control input-list" name="quantArticle" required value="1"/>
-                                </td>
-                                <td>Puré de Tomate</td>
-                                <td>422-568-642</td>
-                                <td>35</td>
-                                <td>$125.99</td>
-                                <td>$125.99</td>
-                                <td><button class="btn btn-danger">X</button></td>
-                              </tr>
+                               --}}
                             </tbody>
                           </table>
+                          <div id="div-alert-list">
+                            <h3 style="text-align: center; width: 50rem;">Ningún Producto Agregado</h3>
+                            </div>
                         </div>
                         <!-- /.col -->
                       </div>
@@ -115,8 +90,8 @@
                           <form class="form-label-left input_mask">
 							<div class="col-md-10 col-sm-6  form-group has-feedback">
                 <span class="fa fa-hashtag form-control-feedback left" aria-hidden="true"></span>
-								<input type="number" class="form-control has-feedback-left" id="inputSuccess2" autofocus placeholder="Código de barra">
-                <input type="text" class="form-control has-feedback-left" disabled="disabled" readonly="readonly" placeholder="Producto">
+								<input type="number" class="form-control has-feedback-left" id="id-product" onkeyup="searchProduct();" autofocus placeholder="Código de barra">
+                <input type="text" class="form-control has-feedback-left" disabled="disabled" id="product-shower" readonly="readonly" placeholder="Producto">
 							
 							</div>
                             {{!-- <div class="form-group row col-md-10 col-sm-6  form-group has-feedback">
@@ -137,15 +112,15 @@
                               <tbody>
                                 <tr>
                                   <th style="width:50%">Subtotal:</th>
-                                  <td>$672.54</td>
+                                  <td>$ <input id="subtotal-amount" class="total-amount"></td>
                                 </tr>
                                 <tr>
                                   <th>Impuesto (0%)</th>
-                                  <td>$0</td>
+                                  <td>$ 0</td>
                                 </tr>
                                 <tr>
                                   <th>Total:</th>
-                                  <td>$672.54</td>
+                                  <td>$ <input id="total-amount" class="total-amount"></td>
                                 </tr>
                               </tbody>
                             </table>
@@ -187,10 +162,15 @@
             </div>
           </div>
         </div>
-
     <!-- Switchery -->
 	<script src="../../js/switchery/dist/switchery.min.js"></script>
     <!-- iCheck -->
 	<script src="../../js/iCheck/icheck.min.js"></script>
 
   <script src="../../js/loadWindows.js"></script>
+
+  <script src="../../js/sessionStorage.js"></script>
+
+  <script src="../../js/renderSellList.js"></script>
+
+  <script src="../../js/productList.js"></script>
