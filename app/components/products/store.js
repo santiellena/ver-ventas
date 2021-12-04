@@ -4,12 +4,14 @@ const products = {
         description: 'Mayonesa 200ml',
         stock: 22,
         unitPrice: 120,
+        wholesalerPrice: 100,
     },
     2: {
         id: 2,
         description: 'Ketchup 300ml',
         stock: 12,
         unitPrice: 320,
+        wholesalerPrice: 270,
     },
 }
 

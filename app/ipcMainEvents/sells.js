@@ -111,7 +111,7 @@ module.exports = ({
     });
 
     ipcMain.handle('get-tax-percentage', (e, args) => {
-        return 0;
+        return 21;
     });
 
 }

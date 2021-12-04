@@ -207,7 +207,7 @@ function createPaymentWindow ({
   function createSearchProductsWindow () {
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1200, height: 700,
+      width: 800, height: 700,
       title: `Mercadito 1990 - Buscar Productos`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 

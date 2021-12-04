@@ -27,6 +27,7 @@ if(items.length != 0){
         const tdId = document.createElement('td');
         const tdStock = document.createElement('td');
         const tdUnitPrice = document.createElement('td');
+        tdUnitPrice.setAttribute('id', `unitPrice${id}`);
         const tdSubTotal = document.createElement('td');
         tdSubTotal.setAttribute('id', `sub-total${id}`);
         const tdButton = document.createElement('td');

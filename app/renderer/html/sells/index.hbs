@@ -19,9 +19,9 @@
                         
                           <label class="control-label col-md-5 col-sm-3 ">Lista de precios:</label>
 											  <div class="col-md-10 col-sm-2 ">
-												  <select class="form-control select-price-list">
-												  	  <option>Venta al público</option>
-													    <option>Mayorista/Distribuidor</option>
+												  <select class="form-control select-price-list" id="price-list-select" onchange="updatePriceList();">
+												  	  <option value="public">Venta al público</option>
+													    <option value="wholesaler">Mayorista/Distribuidor</option>
 												    </select>
 											    </div>   
                         
@@ -115,8 +115,8 @@
                                   <td>$ <input id="subtotal-amount" class="total-amount"></td>
                                 </tr>
                                 <tr>
-                                  <th>Impuesto (0%)</th>
-                                  <td>$ 0</td>
+                                  <th id="tax-percentage">Impuesto (0%)</th>
+                                  <td id="tax-amount">$ 0</td>
                                 </tr>
                                 <tr>
                                   <th>Total:</th>
