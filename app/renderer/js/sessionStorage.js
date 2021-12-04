@@ -22,6 +22,10 @@ function getAllItemSession() { //Returns an Array where [n][0] is the product ID
     return Object.entries(sessionStorage);
 }
 
+function removeItemSession(id) {
+    sessionStorage.removeItem(id);
+}
+
 function clearAllItemSession() {
     sessionStorage.clear();
 }

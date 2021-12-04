@@ -7,3 +7,7 @@ document.getElementById('payment-button').addEventListener('click', () => {
     }
     ipcRenderer.send('load-payment-window', dataSell);
 });
+
+document.getElementById('search-product-button').addEventListener('click', () => {
+    ipcRenderer.send('load-search-products-window');
+});

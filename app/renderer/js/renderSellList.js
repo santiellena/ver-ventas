@@ -11,6 +11,7 @@ if(items.length != 0){
         const product = await ipcRenderer.invoke('search-product-byid', id);
         const { stock, unitPrice, description } = product;
         const tr = document.createElement('tr');
+        tr.setAttribute('id', `tr${id}`);
         const tdInputQuantity = document.createElement('td');
         const inputQuantity = document.createElement('input');
         inputQuantity.setAttribute('type', 'number');

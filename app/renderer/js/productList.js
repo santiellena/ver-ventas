@@ -3,7 +3,7 @@ async function checkProductExistense(){
     //const existence = await ipcRenderer.invoke('check-product-incookies', idProduct);
     const product = getItemSession(idProduct);
 
-    if(product != null){
+    if(product != null || product != undefined){
         let actualProductQuantity = document.getElementById(`quantArticle${idProduct}`).value;
         actualProductQuantity++;
         updateItemSession(idProduct, actualProductQuantity);
@@ -28,6 +28,7 @@ function loadProduct({ id, description, unitPrice, stock }) {
     document.getElementById('div-alert-list').innerHTML = '';
 
     const tr = document.createElement('tr');
+    tr.setAttribute('id', `tr${id}`);
     const tdInputQuantity = document.createElement('td');
     const inputQuantity = document.createElement('input');
     inputQuantity.setAttribute('type', 'number');
@@ -78,7 +79,7 @@ async function addProduct(){
 
     const product = await ipcRenderer.invoke('search-product-byid', idProduct);
 
-    if(product == null){
+    if(product.id == null || product.id == undefined){
         showProduct.value = 'Producto no encontrado.'
     } else {
         const quantity = 1;
@@ -135,7 +136,6 @@ async function updateTotal(subTotal) {
     const totalAmount = document.getElementById('total-amount');
     const tax = await ipcRenderer.invoke('get-tax-percentage', '');
     const newTotalAmount = subTotal + (subTotal * tax);
-    console.log('Total :' + newTotalAmount);
     totalAmount.value = newTotalAmount;
 };
 
@@ -154,11 +154,9 @@ function updateSubTotal() {
         const justTheNumberString = subTotal.innerText.slice(2,);
 
         const justTheNumber = parseFloat(justTheNumberString);
-        console.log('Just the number :' + justTheNumber);
+        
         newSubTotal += justTheNumber;
     });
-
-    console.log('Subtotal :' + newSubTotal);
 
     subTotalAmount.value = newSubTotal;
 
@@ -169,3 +167,10 @@ ipcRenderer.on('clear-product-list', () => {
     clearProductList();
     updateSubTotal();
 });
+
+function deleteProductList(id) {
+    removeItemSession(id);
+
+    const tr = document.getElementById(`tr${id}`);
+    tr.remove();
+};

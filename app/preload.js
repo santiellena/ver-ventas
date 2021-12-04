@@ -11,6 +11,7 @@ contextBridge.exposeInMainWorld(
                 'load-settings',
                 'open-sells-history',
                 'load-payment-window',
+                'load-search-products-window',
                 'update-box-bo-sell',
                 'sell-cash-confirmation',
                 'sell-card-confirmation',

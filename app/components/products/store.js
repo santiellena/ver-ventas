@@ -1,10 +1,12 @@
 const products = {
     1: {
+        id: 1,
         description: 'Mayonesa 200ml',
         stock: 22,
         unitPrice: 120,
     },
     2: {
+        id: 2,
         description: 'Ketchup 300ml',
         stock: 12,
         unitPrice: 320,
@@ -14,7 +16,6 @@ const products = {
 function getProduct (code) {
     if(products[code] != null && products[code] != undefined){
         const product = products[code];
-        product.id = code;
         return product;
     } else {
         return null;
@@ -22,7 +23,8 @@ function getProduct (code) {
 }
 
 function getAllProducts () {
-    return products;
+    return products
+
 }
 
 module.exports = {

@@ -61,7 +61,7 @@ module.exports = ({
         });
     });
 
-    ipcMain.on('load-searchproductys-window', (e, args) => {
+    ipcMain.on('load-search-products-window', () => {
         createSearchProductsWindow();
     });
 

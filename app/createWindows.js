@@ -33,12 +33,12 @@ const historyHandlebars = new handlebarsHbs(
 );
 
 function createTray () {
-    tray = new Tray('./renderer/images/user.png');
+    tray = new Tray('./renderer/images/logo-tray.png');
   
     const contextMenu = Menu.buildFromTemplate([
       { role: 'quit' },
     ]);
-    tray.setToolTip('VerSystem');
+    tray.setToolTip('Mercadito 1990');
     tray.setContextMenu(contextMenu);
     tray.on('click', () => {
       if( mainWindow != null && mainWindow != undefined ) {
@@ -53,8 +53,9 @@ function createTray () {
 function createLoginWindow () {
   createTray();
   loginWindow = new BrowserWindow({
+    icon: `${__dirname}/renderer/images/favicon.png`,
     width: 800, height: 600,
-    title: 'VerSystem | Login',
+    title: 'Mercadito 1990 | Login',
     backgroundColor: 'F7F7F7',
     webPreferences: { 
       nodeIntegration: false,
@@ -74,7 +75,9 @@ function createLoginWindow () {
 
 // Create a new BrowserWindow when `app` is ready
 function createMainWindow  () {
+  createTray();
     mainWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
       width: 3000, height: 2800,
       backgroundColor: '2A3F54',
       webPreferences: { 
@@ -101,8 +104,9 @@ function createPaymentWindow ({
   articlesQuantity
 }) {
     paymentWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
-      title: 'VerSystem | Metodos de pago',
+      title: 'Mercadito 1990 | Metodos de pago',
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -127,8 +131,9 @@ function createPaymentWindow ({
 
   function createSettingsWindow () {
     settingsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
-      title: 'VerSystem | Configuraciones',
+      title: 'Mercadito 1990 | Configuraciones',
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -155,8 +160,9 @@ function createPaymentWindow ({
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
     sellsHistoryWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
-      title: `VerSystem-Historial de Ventas-${date}`,
+      title: `Mercadito 1990-Historial de Ventas-${date}`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -200,8 +206,9 @@ function createPaymentWindow ({
 
   function createSearchProductsWindow () {
     searchProductsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
-      title: `VerSystem - Buscar Productos`,
+      title: `Mercadito 1990 - Buscar Productos`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -213,10 +220,8 @@ function createPaymentWindow ({
     });
 
     const products = storeProducts.getAllProducts();
-    const arrayProducts = Object.entries(products);
-    
-    //[n][0] == ID // [n][1] == description // [n][2] == stock // [n][3] == unitPrice (Data from fake store)
-    sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', {arrayProducts}));
+  
+    searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
     
     handleErrors(searchProductsWindow);
     
