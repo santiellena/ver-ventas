@@ -8,6 +8,7 @@ const { mainHandlebars,
         returnPaymentWindow,
         returnMainWindow,
         returnSearchProductsWindow,
+        retrunCustomerListWindow,
         
 } = require('../createWindows');
 
@@ -15,6 +16,7 @@ module.exports = ({
     createSellsHistoryWindow,
     createPaymentWindow,
     createSearchProductsWindow,
+    createCustomerListWindow
 }) => {
     ipcMain.on('open-sells-history', () => {
         createSellsHistoryWindow();
@@ -98,10 +100,6 @@ module.exports = ({
         }
     });
 
-    ipcMain.handle('get-product-list', (e, args) => {
-
-    });
-
     ipcMain.handle('search-product-byid', (e, id) => {
         const product = storeProducts.getProduct(id);
         if(product == null){
@@ -112,6 +110,25 @@ module.exports = ({
 
     ipcMain.handle('get-tax-percentage', (e, args) => {
         return 21;
+    });
+
+    let idSellList;
+    ipcMain.on('add-product-tosell-list', (e, id) => {
+        const mainWindow = returnMainWindow();
+        if(id != undefined && id != null){
+            mainWindow.webContents.send('add-product-tosell-list');     
+        }
+        idSellList = id;
+    });
+
+    ipcMain.handle('get-id-forsell-list', () => {
+        const id = idSellList;
+        delete idSellList;
+        return id;
+    });
+
+    ipcMain.on('load-customer-list', (e, args) => {
+        createCustomerListWindow();
     });
 
 }

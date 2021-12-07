@@ -1,4 +1,3 @@
-
 async function renderList(){
 const items = getAllItemSession();
 const tbody = document.getElementById('tbody-list');
@@ -55,6 +54,8 @@ if(items.length != 0){
         tbody.appendChild(tr);
     });
 }
+
+    updateSubTotal();
 }
 
 renderList();

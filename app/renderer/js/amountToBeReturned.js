@@ -21,5 +21,9 @@ function getMoney () {
 
 function payWithCard () {
     ipcRenderer.send('sell-card-confirmation', totalAmount);
-}
+};
+
+function payWithCredit () {
+    ipcRenderer.send('load-customer-list', '');
+};
 

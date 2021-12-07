@@ -11,7 +11,7 @@ async function checkProductExistense(){
     //const existence = await ipcRenderer.invoke('check-product-incookies', idProduct);
     const product = getItemSession(idProduct);
 
-    if(product != null || product != undefined){
+    if(product != null && product != undefined){
         let actualProductQuantity = document.getElementById(`quantArticle${idProduct}`).value;
         actualProductQuantity++;
         updateItemSession(idProduct, actualProductQuantity);
@@ -160,7 +160,7 @@ async function updateTotal(subTotal) {
     const tax = await ipcRenderer.invoke('get-tax-percentage', '');
     const taxAmount = tax / 100 * subTotal;
     const taxAmountShower = document.getElementById('tax-amount');
-    taxAmountShower.innerText = `$ ${taxAmount}`;
+    taxAmountShower.innerText = `$ ${taxAmount.toFixed(2)}`;
     const newTotalAmount = subTotal + taxAmount;
     const newTotalWithoutComas = newTotalAmount.toFixed(2);
     totalAmount.value = newTotalWithoutComas;
@@ -257,3 +257,42 @@ function updatePriceList() {
     });
     
 };
+
+ipcRenderer.on('add-product-tosell-list', async () => {
+    const idProduct = await ipcRenderer.invoke('get-id-forsell-list');
+    const product = await ipcRenderer.invoke('search-product-byid', idProduct);
+    const { id, description, stock, unitPrice, wholesalerPrice } = product;
+    const sessionProduct = getItemSession(idProduct);
+    if(sessionProduct != null && sessionProduct != undefined){
+        let actualProductQuantity = document.getElementById(`quantArticle${idProduct}`).value;
+        actualProductQuantity++;
+        updateItemSession(idProduct, actualProductQuantity);
+
+        const subTotal = document.getElementById(`sub-total${idProduct}`);
+        const quantityInput = document.getElementById(`quantArticle${idProduct}`);
+
+         if(checkPriceList() == 'public'){     
+            const newSubTotal = product.unitPrice * actualProductQuantity;
+            quantityInput.value = actualProductQuantity;
+            subTotal.innerText = `$ ${newSubTotal}`;
+
+        } else {
+            const newSubTotal = product.wholesalerPrice * actualProductQuantity;
+            quantityInput.value = actualProductQuantity;
+            subTotal.innerText = `$ ${newSubTotal}`;
+        }
+
+        updateSubTotal();
+    } else {
+        const quantity = 1;
+        setItemSession(idProduct, quantity);
+        if(checkPriceList() == 'public'){
+
+            loadProduct({id, description, stock, unitPrice, quantity});
+        } else {
+
+            loadProduct({id, description, stock, unitPrice: wholesalerPrice, quantity});   
+        };
+    }
+    
+});

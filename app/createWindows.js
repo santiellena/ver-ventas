@@ -6,7 +6,7 @@ const path = require('path');
 const storeProducts = require('./components/products/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -232,6 +232,34 @@ function createPaymentWindow ({
     
   };
 
+  function createCustomerListWindow () {
+    customerListWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 700,
+      title: `Mercadito 1990 - Lista de Clientes`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: paymentWindow,
+      modal: true,
+    });
+
+   // const customers = storeCustomers.getAllCustomers();
+  
+    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs'/*, { customers}*/ ));
+    
+    handleErrors(customerListWindow);
+    
+    // Listen for window being closed
+    customerListWindow.on('closed',  () => {
+      customerListWindow = null;
+    });
+    
+  };
+
   function returnMainWindow () {
     return mainWindow;
   };
@@ -255,6 +283,10 @@ function createPaymentWindow ({
   function returnSearchProductsWindow () {
     return searchProductsWindow;
   };
+
+  function retrunCustomerListWindow () {
+    return customerListWindow;
+  }
   
 module.exports = {
     createLoginWindow,
@@ -263,12 +295,14 @@ module.exports = {
     createSellsHistoryWindow,
     createSettingsWindow,
     createSearchProductsWindow,
+    createCustomerListWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
     returnSellsHistoryWindow,
     returnPaymentWindow,
     returnSearchProductsWindow,
+    retrunCustomerListWindow,
     mainHandlebars,
     historyHandlebars,
 }

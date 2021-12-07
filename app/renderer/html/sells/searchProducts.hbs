@@ -17,7 +17,7 @@
 <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Historial de Ventas</h2>
+                    <h2>Lista de Productos</h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -45,6 +45,8 @@
                           <th>Descipción</th>
                           <th>Stock</th>
                           <th>Precio Unitario</th>
+                          <th>Precio Mayorista</th>
+                          <th>Agregar</th>
                         </tr>
                       </thead>
                       <tbody id="tbody-sells">
@@ -53,7 +55,9 @@
                           <th>{{this.id}}</th>
                           <th>{{this.description}}</th>
                           <th>{{this.stock}}</th>
-                          <th>{{this.unitPrice}}</th>
+                          <th>$ {{this.unitPrice}}</th>
+                          <th>$ {{this.wholesalerPrice}}</th>
+                          <th><button class="btn btn-success" onclick="addToSellList({{this.id}});">+</button></th>
                         </tr>
                         {{/each}}
                       </tbody>
@@ -63,5 +67,6 @@
               </div>
               </div>
             </div>
-                </div>
-              </div>
+          </div>
+      </div>
+      <script src="../../js/addToSellList.js"></script>

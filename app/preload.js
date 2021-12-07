@@ -17,6 +17,8 @@ contextBridge.exposeInMainWorld(
                 'sell-card-confirmation',
                 'update-product-quantity-cookies',
                 'add-product-list-cookies',
+                'add-product-tosell-list',
+                'load-customer-list',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -29,6 +31,7 @@ contextBridge.exposeInMainWorld(
                 'login-success',
                 'receive-total-amount',
                 'clear-product-list',
+                'add-product-tosell-list',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -45,6 +48,7 @@ contextBridge.exposeInMainWorld(
                 'search-product-byid',
                 'check-product-incookies',
                 'get-tax-percentage',
+                'get-id-forsell-list',
 
             ];
             if(validChannels.includes(channel)) {
