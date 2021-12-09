@@ -7,16 +7,26 @@ const orders = {
     41242: {
       id: 41242,
       date: date,
-      amount: '$2200',
+      amount: 2200,
       branch: 'Principal',
       customer: 2,
     },
     21414: {
       id: 21414,
       date: date,
-      amount: '$15000',
+      amount: 15000,
       branch: 'Principal',
       customer: 4,
+      details: [
+          {
+                idProducto: 1,
+                quantity: 3,
+          },
+          {
+                idProducto: 2,
+                quantity: 2,
+          }
+      ],
     },
 };
 
