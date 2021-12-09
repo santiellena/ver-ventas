@@ -17,6 +17,7 @@ const {
   createSettingsWindow,
   createSearchProductsWindow,
   createCustomerListWindow,
+  createOrdersWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -52,4 +53,5 @@ ipcMainEvents.sells({
   createPaymentWindow,
   createSearchProductsWindow,
   createCustomerListWindow,
+  createOrdersWindow,
 });

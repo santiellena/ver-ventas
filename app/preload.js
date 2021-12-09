@@ -19,6 +19,8 @@ contextBridge.exposeInMainWorld(
                 'add-product-list-cookies',
                 'add-product-tosell-list',
                 'load-customer-list',
+                'select-customer-whopays',
+                'load-orders-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

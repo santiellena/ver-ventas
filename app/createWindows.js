@@ -4,9 +4,10 @@ const handleErrors = require('./handleErrors');
 const handlebarsHbs = require('esanti-electron-hbs');
 const path = require('path');
 const storeProducts = require('./components/products/store');
+const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -232,7 +233,9 @@ function createPaymentWindow ({
     
   };
 
-  function createCustomerListWindow () {
+  function createCustomerListWindow ({
+    totalAmount,
+  }) {
     customerListWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
@@ -247,9 +250,9 @@ function createPaymentWindow ({
       modal: true,
     });
 
-   // const customers = storeCustomers.getAllCustomers();
+    const customers = storeCustomers.getAllCustomers();
   
-    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs'/*, { customers}*/ ));
+    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount }));
     
     handleErrors(customerListWindow);
     
@@ -259,6 +262,35 @@ function createPaymentWindow ({
     });
     
   };
+
+  function createOrdersWindow({
+    orders,
+  }) {
+    ordersWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1200, height: 700,
+      title: `Mercadito 1990- Pedidos`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    ordersWindow.loadFile(historyHandlebars.render('/sells/orders.hbs', {orders}));
+    
+    handleErrors(ordersWindow);
+    
+    // Listen for window being closed
+    ordersWindow.on('closed',  () => {
+      ordersWindow = null;
+    });
+    
+  }
 
   function returnMainWindow () {
     return mainWindow;
@@ -284,8 +316,12 @@ function createPaymentWindow ({
     return searchProductsWindow;
   };
 
-  function retrunCustomerListWindow () {
+  function returnCustomerListWindow () {
     return customerListWindow;
+  }
+
+  function returnOrdersWindow () {
+    return ordersWindow;
   }
   
 module.exports = {
@@ -296,13 +332,15 @@ module.exports = {
     createSettingsWindow,
     createSearchProductsWindow,
     createCustomerListWindow,
+    createOrdersWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
     returnSellsHistoryWindow,
     returnPaymentWindow,
     returnSearchProductsWindow,
-    retrunCustomerListWindow,
+    returnCustomerListWindow,
+    returnOrdersWindow,
     mainHandlebars,
     historyHandlebars,
 }

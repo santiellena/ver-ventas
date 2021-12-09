@@ -8,7 +8,9 @@ document.getElementById('nav-main-logo').addEventListener('click', () => loadPag
 
 document.getElementById('generate-sell-page').addEventListener('click', () => loadPageInMain('/sells/index.hbs'));
 
-document.getElementById('generate-order-page').addEventListener('click', () => loadPageInMain('/sells/order.hbs'));
+document.getElementById('load-orders-window').addEventListener('click', () => {
+    ipcRenderer.send('load-orders-window');
+});
 
 document.getElementById('view-history-page').addEventListener('click', () => {
     ipcRenderer.send('open-sells-history');

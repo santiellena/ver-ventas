@@ -1,0 +1,74 @@
+<title>Mercadito 1990 - Buscar Productos</title>
+ <!-- Bootstrap -->
+    <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->   
+
+<!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Clientes</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Clientes activos</a>
+                          </div>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                        <div class="history-table">
+                          <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+                                <p class="text-muted font-13 m-b-30">
+                                    Seleccione la cuenta corriente a la que agregar el saldo de la venta: $ <span> {{ totalAmount }} </span>
+                                </p>
+                    <table id="datatable-buttons" class="table table-striped table-compact dt-responsive nowrap table-bordered" style="width:100%;"  cellspacing="0">
+                     <thead>
+                        <tr>
+                          <th>Código</th>
+                          <th>Nombre</th>
+                          <th>Documento</th>
+                          <th>Saldo actual</th>
+                          <th>Seleccionar</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbody-sells">
+                        {{#each customers}}
+                        <tr>
+                          <th>{{this.id}}</th>
+                          <th>{{this.name}}</th>
+                          <th>{{this.document}}</th>
+                          <th>$ {{this.debts}}</th>
+                          <th><button class="btn btn-success" onclick="selectCustomer({{this.id}});">+</button></th>
+                        </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      <script>
+         const ipcRenderer = window.app;
+         window.totalAmount = {{totalAmount}};
+      </script>
+    <script src="../../js/customerWhoPays.js"></script>

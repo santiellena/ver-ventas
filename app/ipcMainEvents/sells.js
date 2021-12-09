@@ -1,6 +1,8 @@
 const { ipcMain, dialog } = require('electron');
 
 const storeProducts = require('../components/products/store');
+const storeCustomers = require('../components/customers/store');
+const storeOrders = require('../components/orders/store');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -8,7 +10,8 @@ const { mainHandlebars,
         returnPaymentWindow,
         returnMainWindow,
         returnSearchProductsWindow,
-        retrunCustomerListWindow,
+        returnCustomerListWindow,
+        returnOrdersWindow,
         
 } = require('../createWindows');
 
@@ -16,7 +19,8 @@ module.exports = ({
     createSellsHistoryWindow,
     createPaymentWindow,
     createSearchProductsWindow,
-    createCustomerListWindow
+    createCustomerListWindow,
+    createOrdersWindow,
 }) => {
     ipcMain.on('open-sells-history', () => {
         createSellsHistoryWindow();
@@ -127,8 +131,50 @@ module.exports = ({
         return id;
     });
 
-    ipcMain.on('load-customer-list', (e, args) => {
-        createCustomerListWindow();
+    ipcMain.on('load-customer-list', (e, totalAmount) => {
+        createCustomerListWindow({
+            totalAmount,
+        });
     });
 
+    ipcMain.on('select-customer-whopays', (e, args) => {
+        let customer;
+        if(args.id != null && args.id != undefined){
+           customer = storeCustomers.getCustomer(args.id);
+        };
+
+        const customerList = returnCustomerListWindow();
+        const customerConfirmation = dialog.showMessageBoxSync(customerList, {
+            title: `Cliente Seleccionado: ${customer.id} ${customer.name}`,
+            message: 'Confirmar cuenta corriente',
+            type: 'info',
+            buttons: ['Cancelar', 'Confirmar'],
+        });
+
+        if(customerConfirmation == 1){
+            customerList.close();
+            const paymentWindow = returnPaymentWindow();
+
+            const sellConfirmation = dialog.showMessageBoxSync(paymentWindow, {
+                title: `Cliente: ${customer.id} ${customer.name}`,
+                message: `Monto: $ ${args.totalAmount}. 
+                Agregar a cuenta corriente.`,
+                type: 'info',
+                buttons: ['Cancelar','Confirmar'],
+            });
+
+            if(sellConfirmation == 1){
+                const mainWindow = returnMainWindow();
+                //confirmar venta function, update deuda, update stock, update todo
+                mainWindow.webContents.send('clear-product-list');
+                paymentWindow.close();
+            }
+        }
+
+    });
+
+    ipcMain.on('load-orders-window', (e, args) => {
+        const orders = storeOrders.getAllOrders();
+        createOrdersWindow({orders});
+    });
 }

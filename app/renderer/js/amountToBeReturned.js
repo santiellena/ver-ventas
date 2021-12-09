@@ -16,14 +16,26 @@ function amountToReturn () {
 };
 
 function getMoney () {
-    ipcRenderer.send('sell-cash-confirmation', totalAmount);
+    if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
+        ipcRenderer.send('sell-cash-confirmation', totalAmount);
+    } else {
+        alert('EL MONTO DEBE SER MAYOR A $0');
+    }
 };
 
 function payWithCard () {
-    ipcRenderer.send('sell-card-confirmation', totalAmount);
+    if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
+        ipcRenderer.send('sell-card-confirmation', totalAmount);
+    } else {
+        alert('EL MONTO DEBE SER MAYOR A $0');
+    }
 };
 
 function payWithCredit () {
-    ipcRenderer.send('load-customer-list', '');
+    if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
+        ipcRenderer.send('load-customer-list', totalAmount);
+    } else {
+        alert('EL MONTO DEBE SER MAYOR A $0');
+    }
 };
 
