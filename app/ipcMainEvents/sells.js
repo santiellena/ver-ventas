@@ -177,4 +177,29 @@ module.exports = ({
         const orders = storeOrders.getAllOrders();
         createOrdersWindow({orders});
     });
+
+    ipcMain.handle('get-order-details', (e, id) => {
+        const details = storeOrders.getOrderDetails(id);
+        if(details != undefined && details != null){
+            return details;
+        }
+        else {
+            return null;
+        }
+    });
+
+    ipcMain.handle('get-orders-bydate', (e, { from, to }) => {
+        if(from != undefined && from != null && to != undefined && to != null){
+            const orders = storeOrders.getOrdersByDate(from, to);
+
+            return orders;
+        } else {
+            throw new Error('Dates data is invalid');
+        }
+    });
+    
+    ipcMain.handle('get-orders', () => {
+
+        return storeOrders.getAllOrders();
+    });
 }

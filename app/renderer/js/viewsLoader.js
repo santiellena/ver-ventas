@@ -16,9 +16,13 @@ document.getElementById('view-history-page').addEventListener('click', () => {
     ipcRenderer.send('open-sells-history');
 });
 
-document.getElementById('buys-page').addEventListener('click', () => loadPageInMain('buys/buys.hbs'));
+document.getElementById('buys-page').addEventListener('click', () => console.log('A'));
 
 document.getElementById('buys-history-page').addEventListener('click', () => loadPageInMain('/buys/history.hbs'));
+
+document.getElementById('suppliers-page').addEventListener('click', () => {
+    ipcRenderer.send('load-suppliers-window');
+});
 
 document.getElementById('stats-page').addEventListener('click', () => loadPageInMain('stats/stats.hbs'));
 

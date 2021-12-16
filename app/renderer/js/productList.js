@@ -40,9 +40,12 @@ async function checkProductExistense(){
 
 function loadProduct({ id, description, unitPrice, stock }) {
     const tbody = document.getElementById('tbody-list');
-
-    document.getElementById('div-alert-list').innerHTML = '';
-
+    const trAlert = document.getElementById('tr-alert');
+    if(trAlert != null){
+        trAlert.remove();
+    }
+    
+    
     const tr = document.createElement('tr');
     tr.setAttribute('id', `tr${id}`);
     const tdInputQuantity = document.createElement('td');
@@ -138,21 +141,23 @@ async function updateAmountByInput(id) {
 
 function clearProductList() {
     const tbody = document.getElementById('tbody-list');
-    const divAlert = document.getElementById('div-alert-list');
-
-    divAlert.innerHTML = '';
-    clearAllItemSession();
-
-    const h3Alert = document.createElement('h3');
-    divAlert.setAttribute('style', 'text-align: center');
-    h3Alert.setAttribute('style', 'width: 50rem');
-    h3Alert.innerText = 'Ningún Producto Agregado';
-
     tbody.innerHTML = '';
 
-    divAlert.appendChild(h3Alert);
-    updateSubTotal();
+    clearAllItemSession();
 
+    const trAlert = document.createElement('tr');
+    trAlert.setAttribute('class', 'odd');
+    trAlert.setAttribute('id', 'tr-alert');
+    const tdAlert = document.createElement('td');
+    tdAlert.setAttribute('valign', 'top');
+    tdAlert.setAttribute('colspan', '7');
+    tdAlert.setAttribute('class', 'dataTables_empty');
+    tdAlert.innerText = 'Ningún Producto Agregado';
+    trAlert.appendChild(tdAlert);
+    
+    tbody.appendChild(trAlert);
+
+    updateSubTotal();
 };
 
 async function updateTotal(subTotal) {
@@ -207,19 +212,25 @@ function deleteProductList(id) {
 
     if(allItems.length == 0){
         const tbody = document.getElementById('tbody-list');
-        const divAlert = document.getElementById('div-alert-list');
+        const trAlerted = document.getElementById('tr-alert');
     
-        divAlert.innerHTML = '';
+        if(trAlerted != null){
+            trAlerted.remove();
+        }
         clearAllItemSession();
     
-        const h3Alert = document.createElement('h3');
-        divAlert.setAttribute('style', 'text-align: center');
-        h3Alert.setAttribute('style', 'width: 50rem');
-        h3Alert.innerText = 'Ningún Producto Agregado';
-    
-        tbody.innerHTML = '';
-    
-        divAlert.appendChild(h3Alert);
+        const trAlert = document.createElement('tr');
+        trAlert.setAttribute('class', 'odd');
+        trAlert.setAttribute('id', 'tr-alert');
+        const tdAlert = document.createElement('td');
+        tdAlert.setAttribute('valign', 'top');
+        tdAlert.setAttribute('colspan', '7');
+        tdAlert.setAttribute('class', 'dataTables_empty');
+        tdAlert.innerText = 'Ningún Producto Agregado';
+        trAlert.appendChild(tdAlert);
+        
+        console.log('aa');
+        tbody.appendChild(trAlert);
     };
 
 };

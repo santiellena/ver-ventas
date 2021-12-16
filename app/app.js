@@ -6,7 +6,8 @@ const devTools = require('./devtools');
 const ipcMainEvents = {
   main: require('./ipcMainEvents/main'),
   sells: require('./ipcMainEvents/sells'),
-  
+  login: require('./ipcMainEvents/login'),
+  buys: require('./ipcMainEvents/buys'),
 }
 
 const {
@@ -18,6 +19,8 @@ const {
   createSearchProductsWindow,
   createCustomerListWindow,
   createOrdersWindow,
+  createSuppliersWindow,
+  createSuppliersEditWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -25,7 +28,7 @@ if(process.env.NODE_ENV == 'development'){
 }
 
 // Login window
-app.on('ready', createMainWindow);
+app.on('ready', createSuppliersEditWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -55,3 +58,13 @@ ipcMainEvents.sells({
   createCustomerListWindow,
   createOrdersWindow,
 });
+
+ipcMainEvents.login({
+  createMainWindow,
+  createLoginWindow,
+});
+
+ipcMainEvents.buys({
+  createSuppliersWindow,
+  createSuppliersEditWindow,
+})

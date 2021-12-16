@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -39,7 +39,7 @@ function createTray () {
     const contextMenu = Menu.buildFromTemplate([
       { role: 'quit' },
     ]);
-    tray.setToolTip('Mercadito 1990');
+    tray.setToolTip('Mercado 1990');
     tray.setContextMenu(contextMenu);
     tray.on('click', () => {
       if( mainWindow != null && mainWindow != undefined ) {
@@ -56,7 +56,7 @@ function createLoginWindow () {
   loginWindow = new BrowserWindow({
     icon: `${__dirname}/renderer/images/favicon.png`,
     width: 800, height: 600,
-    title: 'Mercadito 1990 | Login',
+    title: 'Mercado 1990 | Login',
     backgroundColor: 'F7F7F7',
     webPreferences: { 
       nodeIntegration: false,
@@ -107,7 +107,7 @@ function createPaymentWindow ({
     paymentWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
-      title: 'Mercadito 1990 | Metodos de pago',
+      title: 'Mercado 1990 | Metodos de pago',
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -134,7 +134,7 @@ function createPaymentWindow ({
     settingsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
-      title: 'Mercadito 1990 | Configuraciones',
+      title: 'Mercado 1990 | Configuraciones',
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -163,7 +163,7 @@ function createPaymentWindow ({
     sellsHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
-      title: `Mercadito 1990-Historial de Ventas-${date}`,
+      title: `Mercado 1990-Historial de Ventas-${date}`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -209,7 +209,7 @@ function createPaymentWindow ({
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
-      title: `Mercadito 1990 - Buscar Productos`,
+      title: `Mercado 1990 - Buscar Productos`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -239,7 +239,7 @@ function createPaymentWindow ({
     customerListWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
-      title: `Mercadito 1990 - Lista de Clientes`,
+      title: `Mercado 1990 - Lista de Clientes`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -269,7 +269,7 @@ function createPaymentWindow ({
     ordersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
-      title: `Mercadito 1990- Pedidos`,
+      title: `Mercado 1990- Pedidos`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -279,6 +279,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
     });
+
    
     // Load index.hbs into the new BrowserWindow
     ordersWindow.loadFile(historyHandlebars.render('/sells/orders.hbs', {orders}));
@@ -289,8 +290,62 @@ function createPaymentWindow ({
     ordersWindow.on('closed',  () => {
       ordersWindow = null;
     });
+  };
+
+  function createSuppliersWindow({
+    suppliers,
+  }) {
+    suppliersWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1200, height: 700,
+      title: `Mercado 1990- Proveedores`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
     
-  }
+    // Load index.hbs into the new BrowserWindow
+    suppliersWindow.loadFile(historyHandlebars.render('/buys/suppliers.hbs', {suppliers}));
+    
+    handleErrors(suppliersWindow);
+    
+    // Listen for window being closed
+    suppliersWindow.on('closed',  () => {
+      suppliersWindow = null;
+    });
+  };
+
+  function createSuppliersEditWindow({ suppliers }) {
+    suppliersEditWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 700, height: 1000,
+      title: `Mercado 1990- Proveedores- Agregar/Eliminar/Editar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: suppliersWindow,
+      modal: false,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    suppliersEditWindow.loadFile(historyHandlebars.render('/buys/suppliersEdit.hbs', {suppliers}));
+    
+    handleErrors(suppliersEditWindow);
+    
+    // Listen for window being closed
+    suppliersEditWindow.on('closed',  () => {
+      suppliersEditWindow = null;
+    });
+  };
+
 
   function returnMainWindow () {
     return mainWindow;
@@ -318,11 +373,19 @@ function createPaymentWindow ({
 
   function returnCustomerListWindow () {
     return customerListWindow;
-  }
+  };
 
   function returnOrdersWindow () {
     return ordersWindow;
-  }
+  };
+
+  function returnSuppliersWindow () {
+    return suppliersWindow;
+  };
+
+  function returnSuppliersEditWindow (){
+    return suppliersEditWindow;
+  };
   
 module.exports = {
     createLoginWindow,
@@ -333,6 +396,8 @@ module.exports = {
     createSearchProductsWindow,
     createCustomerListWindow,
     createOrdersWindow,
+    createSuppliersWindow,
+    createSuppliersEditWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -341,6 +406,8 @@ module.exports = {
     returnSearchProductsWindow,
     returnCustomerListWindow,
     returnOrdersWindow,
+    returnSuppliersWindow,
+    returnSuppliersEditWindow,
     mainHandlebars,
     historyHandlebars,
-}
+};

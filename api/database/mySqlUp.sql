@@ -177,6 +177,7 @@ CREATE TABLE `versystem`.`persona` (
   `num-documento` INT NOT NULL,
   `direccion-departamento` VARCHAR(45) NOT NULL,
   `direccion-provincia` VARCHAR(45) NOT NULL,
+  `direccion-localidad` VARCHAR(45) NOT NULL,
   `direccion-codigopostal` SMALLINT NOT NULL,
   `direccion-calle` VARCHAR(45) NOT NULL,
   `cuit` INT NOT NULL,

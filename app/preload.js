@@ -21,6 +21,8 @@ contextBridge.exposeInMainWorld(
                 'load-customer-list',
                 'select-customer-whopays',
                 'load-orders-window',
+                'load-suppliers-window',
+                'load-editsupplier-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -51,6 +53,9 @@ contextBridge.exposeInMainWorld(
                 'check-product-incookies',
                 'get-tax-percentage',
                 'get-id-forsell-list',
+                'get-orders',
+                'get-order-details',
+                'get-orders-bydate',
 
             ];
             if(validChannels.includes(channel)) {
