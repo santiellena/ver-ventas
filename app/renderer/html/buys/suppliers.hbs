@@ -34,7 +34,7 @@
                       <div class="row">
                         <div class="history-table" style="width: 100%;">
                           <div class="pull-right">
-                            <button class="btn btn-info pull-right" onclick="loadEditWindow()">Agregar/Eliminar/Editar</button>
+                            <button class="btn btn-info pull-right" onclick="loadAddWindow();">Agregar Proveedor</button>
                           </div>
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
@@ -53,6 +53,7 @@
                           <th>Código Postal</th>
                           <th>Localidad</th>
                           <th>Dirección</th>
+                          <th>Acciones</th>
                         </tr>
                       </thead>
                       <tbody id="tbody-suppliers">
@@ -70,6 +71,9 @@
                           <th>{{this.dirPostCode}}</th>
                           <th>{{this.dirCity}}</th>
                           <th>{{this.dirStreet}}</th>
+                          <th>
+                            <button class="btn btn-warning" onclick="loadEditWindow({{this.id}});">Editar</button>
+                          </th>
                         </tr>
                         {{/each}}
                       </tbody>
@@ -84,7 +88,11 @@
       <script>
          const ipcRenderer = window.app;
 
-         function loadEditWindow() {
-           ipcRenderer.send('load-editsupplier-window');
+         function loadEditWindow(id) {
+           ipcRenderer.send('load-editsupplier-window', id);
+         };
+
+         function loadAddWindow() {
+           ipcRenderer.send('load-addsupplier-window');
          };
       </script>

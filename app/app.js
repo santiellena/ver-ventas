@@ -21,6 +21,7 @@ const {
   createOrdersWindow,
   createSuppliersWindow,
   createSuppliersEditWindow,
+  createSuppliersAddWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -28,7 +29,7 @@ if(process.env.NODE_ENV == 'development'){
 }
 
 // Login window
-app.on('ready', createSuppliersEditWindow);
+app.on('ready', createMainWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -67,4 +68,5 @@ ipcMainEvents.login({
 ipcMainEvents.buys({
   createSuppliersWindow,
   createSuppliersEditWindow,
+  createSuppliersAddWindow,
 })

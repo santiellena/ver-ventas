@@ -23,6 +23,7 @@ contextBridge.exposeInMainWorld(
                 'load-orders-window',
                 'load-suppliers-window',
                 'load-editsupplier-window',
+                'load-addsupplier-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

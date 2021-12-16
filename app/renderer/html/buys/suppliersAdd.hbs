@@ -15,7 +15,7 @@
 <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Proveedores - MODIFICAR/ELIMINAR</h2> <small>(Todos los campos son obligatorios)</small>
+                    <h2>Proveedores - AGREGAR</h2> <small>(Todos los campos son obligatorios)</small>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -32,78 +32,78 @@
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Razón Social</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="name" required="required" class="form-control" value="{{supplier.name}}">
+			                        <input type="text" id="name" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="form-group row">
 											<label class="control-label col-md-3 col-sm-3 ">Tipo de Documento</label>
 											<div class="col-md-6 col-sm-6 ">
-												<select class="form-control" required="required" id="docType">
-													<option selected>{{supplier.docType}}</option>
-													<option value="DNI">DNI</option>
-													<option value="PASAPORTE">Pasaporte</option>
-													<option value="RUC">RUC</option>
+												<select class="form-control" required="required">
+													<option>Elija...</option>
+													<option>DNI</option>
+													<option>Pasaporte</option>
+													<option>RUC</option>
 												</select>
 											</div>
 									</div>
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="numDoc">Número de Documento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="numDoc" required="required" class="form-control" value="{{supplier.numDoc}}">
+			                        <input type="number" id="numDoc" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cuit">CUIT</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="cuit" required="required" class="form-control" value="{{supplier.cuit}}">
+			                        <input type="number" id="cuit" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Provincia</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirProv" required="required" class="form-control" value="{{supplier.dirProv}}">
+			                        <input type="text" id="name" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Departamento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirDepto" required="required" class="form-control" value="{{supplier.dirDepto}}">
+			                        <input type="text" id="name" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="postCode">Código Postal</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="postCode" required="required" class="form-control" value="{{supplier.dirPostCode}}">
+			                        <input type="number" id="postCode" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirCity">Localidad</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">Localidad</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirCity" required="required" class="form-control" value="{{supplier.dirCity}}">
+			                        <input type="text" id="city" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirStreet">Dirección</label>
 			                        <div class="col-md-6 col-sm-6">
-			                        <input type="text" id="dirStreet" required="required" class="form-control" value="{{supplier.dirStreet}}">
+			                        <input type="text" id="dirStreet" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="phoneNumber">Teléfono</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="phoneNumber" required="required" class="form-control" value="{{supplier.phoneNumber}}">
+			                        <input type="number" id="phoneNumber" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                  <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="email" id="email" required="required" class="form-control" value="{{supplier.email}}">
+			                        <input type="email" id="email" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cbu">CBU</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="cbu" required="required" class="form-control" value="{{supplier.cbu}}">
+			                        <input type="number" id="cbu" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="ln_solid"></div>
@@ -111,7 +111,7 @@
 										<div class="col-md-6 col-sm-9 offset-md-3">
 											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
 											<button class="btn btn-warning" type="reset">Reiniciar</button>
-											<button type="submit" class="btn btn-success">Modificar</button>
+											<button type="submit" class="btn btn-success">Agregar</button>
 										</div>
 								</div>
                             </form>
@@ -123,6 +123,5 @@
 </div>
 <script>
     const ipcRenderer = window.app;
-	const supplier = {{supplier}};
+    const suppliers = {{suppliers}}; 
 </script>
-<script src="../../js/suppliersEdit.js"></script>

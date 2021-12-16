@@ -11,7 +11,8 @@ const { mainHandlebars,
 
 module.exports = ({
     createSuppliersWindow,
-    createSuppliersEditWindow
+    createSuppliersEditWindow,
+    createSuppliersAddWindow,
 }) => {
 
     ipcMain.on('load-suppliers-window', () => {
@@ -21,11 +22,15 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('load-editsupplier-window', () => {
-        const suppliers = storeSuppliers.getAllSuppliers();
-        if(suppliers != undefined && suppliers != null){
-            createSuppliersEditWindow({suppliers});
+    ipcMain.on('load-editsupplier-window', (e, id) => {
+        const supplier = storeSuppliers.getSupplier(id);
+        if(supplier != undefined && supplier != null){
+            createSuppliersEditWindow({supplier});
         };
+    });
+
+    ipcMain.on('load-addsupplier-window', () => {
+        createSuppliersAddWindow();
     });
 
 };

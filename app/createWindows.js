@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -320,11 +320,11 @@ function createPaymentWindow ({
     });
   };
 
-  function createSuppliersEditWindow({ suppliers }) {
+  function createSuppliersEditWindow({ supplier}) {
     suppliersEditWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
-      title: `Mercado 1990- Proveedores- Agregar/Eliminar/Editar`,
+      title: `Mercado 1990- Proveedores- Editar/Eliminar`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
         nodeIntegration: false,
@@ -332,17 +332,43 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: suppliersWindow,
-      modal: false,
+      modal: true,
     });
     
     // Load index.hbs into the new BrowserWindow
-    suppliersEditWindow.loadFile(historyHandlebars.render('/buys/suppliersEdit.hbs', {suppliers}));
+    suppliersEditWindow.loadFile(historyHandlebars.render('/buys/suppliersEdit.hbs', {supplier}));
     
     handleErrors(suppliersEditWindow);
     
     // Listen for window being closed
     suppliersEditWindow.on('closed',  () => {
       suppliersEditWindow = null;
+    });
+  };
+
+  function createSuppliersAddWindow() {
+    suppliersAddWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 700, height: 1000,
+      title: `Mercado 1990- Proveedores- Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: suppliersWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    suppliersAddWindow.loadFile(historyHandlebars.render('/buys/suppliersAdd.hbs'));
+    
+    handleErrors(suppliersAddWindow);
+    
+    // Listen for window being closed
+    suppliersAddWindow.on('closed',  () => {
+      suppliersAddWindow = null;
     });
   };
 
@@ -387,6 +413,10 @@ function createPaymentWindow ({
     return suppliersEditWindow;
   };
   
+  function returnSuppliersAddWindow (){
+    return suppliersAddWindow;
+  };
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -398,6 +428,7 @@ module.exports = {
     createOrdersWindow,
     createSuppliersWindow,
     createSuppliersEditWindow,
+    createSuppliersAddWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -408,6 +439,7 @@ module.exports = {
     returnOrdersWindow,
     returnSuppliersWindow,
     returnSuppliersEditWindow,
+    returnSuppliersAddWindow,
     mainHandlebars,
     historyHandlebars,
 };
