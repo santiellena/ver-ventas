@@ -73,9 +73,11 @@ module.exports = ({
 
     ipcMain.on('sell-cash-confirmation', (e, args) => {
         const paymentWindow = returnPaymentWindow();
+        const { totalAmount, amountToBeReturned } = args;
         dialog.showMessageBoxSync(paymentWindow, {
-            title: 'Venta',
-            message: 'Venta finalizada',
+            title: 'Venta Finalizada',
+            message: `Cobrar: $ ${totalAmount}.
+                     Vuelto: $ ${amountToBeReturned}`,
             type: 'info',
             buttons: ['Cerrar'],
         });
@@ -83,6 +85,24 @@ module.exports = ({
         const mainWindow = returnMainWindow();
 
         mainWindow.webContents.send('clear-product-list');
+    });
+
+    ipcMain.on('sell-cash-incompleted', (e, debt) => {
+        createCustomerListWindow({ totalAmount: debt });
+        const customerList = returnCustomerListWindow();
+
+        const response = dialog.showMessageBoxSync(customerList, {
+            title: 'Confirmación',
+            message: `El monto restante de la venta en efectivo ($ ${debt}) se agregará a la cuenta corriente del cliente que seleccione...`,
+            type: 'info',
+            buttons: ['Aceptar', 'Cancelar'],
+        });
+
+        if(response == 0){
+            return
+        } else {
+            customerList.close();
+        };
     });
 
     ipcMain.on('sell-card-confirmation', (e, args) => {

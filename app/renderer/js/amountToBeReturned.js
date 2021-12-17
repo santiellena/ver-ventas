@@ -17,7 +17,17 @@ function amountToReturn () {
 
 function getMoney () {
     if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
-        ipcRenderer.send('sell-cash-confirmation', totalAmount);
+        const howMuchCash = document.getElementById('cash').value;
+        const amountToBeReturned = howMuchCash - totalAmount;
+
+        if(amountToBeReturned < 0){
+            const debt = amountToBeReturned * (-1);
+            const debtFixed = debt.toFixed(2);
+            ipcRenderer.send('sell-cash-incompleted', debtFixed);
+        } else {
+            ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});
+        };
+
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }

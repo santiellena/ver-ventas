@@ -3,5 +3,4 @@ function selectCustomer (id) {
         if(id != null && id != undefined && totalAmount != null && totalAmount != undefined){
             ipcRenderer.send('select-customer-whopays', {id, totalAmount});  
         };
-        console.log(totalAmount);
 };
