@@ -8,6 +8,7 @@ const ipcMainEvents = {
   sells: require('./ipcMainEvents/sells'),
   login: require('./ipcMainEvents/login'),
   buys: require('./ipcMainEvents/buys'),
+  stock:  require('./ipcMainEvents/stock'),
 }
 
 const {
@@ -22,6 +23,10 @@ const {
   createSuppliersWindow,
   createSuppliersEditWindow,
   createSuppliersAddWindow,
+  createBuysWindow,
+  createAddBuyWindow,
+  createSearchProductsBuysWindow,
+  createStockWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -69,4 +74,11 @@ ipcMainEvents.buys({
   createSuppliersWindow,
   createSuppliersEditWindow,
   createSuppliersAddWindow,
-})
+  createBuysWindow,
+  createAddBuyWindow,
+  createSearchProductsBuysWindow,
+});
+
+ipcMainEvents.stock({
+  createStockWindow,
+});

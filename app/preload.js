@@ -25,6 +25,18 @@ contextBridge.exposeInMainWorld(
                 'load-editsupplier-window',
                 'load-addsupplier-window',
                 'sell-cash-incompleted',
+                'delete-supplier',
+                'add-supplier',
+                'edit-supplier-info',
+                'load-buys-window',
+                'load-addBuys-window',
+                'load-searchproduct-buys-window',
+                'load-id-to-buy',
+                'buys-product-alreadyadded',
+                'product-not-found',
+                'added-productbuy',
+                'buy-end',
+                'load-stock-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -38,6 +50,11 @@ contextBridge.exposeInMainWorld(
                 'receive-total-amount',
                 'clear-product-list',
                 'add-product-tosell-list',
+                'delete-supplier-selected',
+                'load-new-supplier',
+                'load-edited-supplier',
+                'added-to-buy',
+                'buy-confirmation',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -58,7 +75,12 @@ contextBridge.exposeInMainWorld(
                 'get-orders',
                 'get-order-details',
                 'get-orders-bydate',
-
+                'get-supplier-added',
+                'get-supplier-edited',
+                'search-buys-by-date',
+                'get-buys-detail',
+                'get-added-tobuy',
+                'get-suppliers',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

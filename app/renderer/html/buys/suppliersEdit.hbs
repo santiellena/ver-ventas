@@ -28,7 +28,6 @@
                       <div class="row">
                         <div class="history-table" style="width: 100%;">
                           <div class="col-sm-12">
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Razón Social</label>
 			                        <div class="col-md-6 col-sm-6 ">
@@ -111,10 +110,10 @@
 										<div class="col-md-6 col-sm-9 offset-md-3">
 											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
 											<button class="btn btn-warning" type="reset">Reiniciar</button>
-											<button type="submit" class="btn btn-success">Modificar</button>
+											<button type="submit" class="btn btn-success" onclick="editSupplierInfo({{supplier.id}})">Modificar</button>
+											<button class="btn btn-danger" type="button" onclick="deleteSupplier({{supplier.id}})">ELIMINAR</button>
 										</div>
 								</div>
-                            </form>
                           </div>
                         </div>
                       </div>
@@ -122,7 +121,6 @@
                 </div>
 </div>
 <script>
-    const ipcRenderer = window.app;
-	const supplier = {{supplier}};
+	window.supplier = {{supplier}};
 </script>
 <script src="../../js/suppliersEdit.js"></script>

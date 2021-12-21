@@ -69,7 +69,86 @@ function getSupplier(id) {
     return suppliers[id];
 };
 
+function deleteSupplier(id){
+    if(id != null & id!= undefined){
+        delete suppliers[id];
+    };
+};
+
+function addSupplier({
+    supplierName,
+    docType,
+    numDoc,
+    dirDepto,
+    dirProv,
+    dirPostCode,
+    dirCity,
+    dirStreet,
+    cuit,
+    phoneNumber,
+    email,
+    cbu,
+}) {
+    const iterableObject = Object.entries(suppliers);
+    const newId = iterableObject.length + 1;
+    return suppliers[newId] = {
+        id: newId,
+        name: supplierName,
+        docType,
+        numDoc,
+        dirDepto,
+        dirProv,
+        dirPostCode,
+        dirCity,
+        dirStreet,
+        cuit,
+        phoneNumber,
+        email,
+        cbu,
+    };
+};
+
+function editSupplier({
+        id,
+        supplierName,
+        docType,
+        numDoc,
+        cuit,
+        dirProv,
+        dirDepto,
+        postCode,
+        dirCity,
+        dirStreet,
+        phoneNumber,
+        email, 
+        cbu,
+}) {
+    if(id, supplierName, docType, numDoc, cuit, dirProv, dirDepto, postCode, dirCity, dirStreet, phoneNumber, email, cbu){
+        const edit = {
+            id,
+            name: supplierName,
+            docType,
+            numDoc,
+            cuit,
+            dirProv,
+            dirDepto,
+            dirPostCode: postCode,
+            dirCity,
+            dirStreet,
+            phoneNumber,
+            email, 
+            cbu,
+        };
+       
+        suppliers[id] = edit;
+        return suppliers[id];
+    }
+};
+
 module.exports = {
     getAllSuppliers,
     getSupplier,
+    deleteSupplier,
+    addSupplier,
+    editSupplier,
 }

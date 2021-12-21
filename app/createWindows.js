@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, session } = require('electron');
+const { app, BrowserWindow, Tray, Menu } = require('electron');
 
 const handleErrors = require('./handleErrors');
 const handlebarsHbs = require('esanti-electron-hbs');
@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -372,6 +372,120 @@ function createPaymentWindow ({
     });
   };
 
+  function createBuysWindow({
+    buys,
+  }) {
+    buysWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1200, height: 700,
+      title: `Mercado 1990- Compras`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    buysWindow.loadFile(historyHandlebars.render('/buys/buys.hbs', {buys}));
+    
+    handleErrors(buysWindow);
+    
+    // Listen for window being closed
+    buysWindow.on('closed',  () => {
+      buysWindow = null;
+    });
+  };
+
+  function createAddBuyWindow() {
+    addBuyWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1300, height: 1000,
+      title: `Mercado 1990- Compras- Agregar Inventario`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    addBuyWindow.loadFile(historyHandlebars.render('/buys/addBuy.hbs'));
+    
+    handleErrors(addBuyWindow);
+    
+    // Listen for window being closed
+    addBuyWindow.on('closed',  () => {
+      addBuyWindow = null;
+    });
+  };
+
+  function createSearchProductsBuysWindow () {
+    searchProductsBuysWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 700,
+      title: `Mercado 1990 - Buscar Productos`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: addBuyWindow,
+      modal: true,
+    });
+
+    const products = storeProducts.getAllProducts();
+  
+    searchProductsBuysWindow.loadFile(historyHandlebars.render('/buys/searchProducts.hbs', { products }));
+    
+    handleErrors(searchProductsBuysWindow);
+    
+    // Listen for window being closed
+    searchProductsBuysWindow.on('closed',  () => {
+      searchProductsBuysWindow = null;
+    });
+    
+  };
+
+  function createStockWindow ({
+    products,
+  }) {
+    const actualDate = new Date();
+    const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
+  
+    stockWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1500, height: 1000,
+      title: `Mercado 1990 - Stock - ${date}`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    stockWindow.loadFile(historyHandlebars.render('/stock/products.hbs', {products}));
+    
+    handleErrors(stockWindow);
+    
+    // Listen for window being closed
+    stockWindow.on('closed',  () => {
+      stockWindow = null;
+    });
+    
+  }
+
 
   function returnMainWindow () {
     return mainWindow;
@@ -409,12 +523,28 @@ function createPaymentWindow ({
     return suppliersWindow;
   };
 
-  function returnSuppliersEditWindow (){
+  function returnSuppliersEditWindow () {
     return suppliersEditWindow;
   };
   
-  function returnSuppliersAddWindow (){
+  function returnSuppliersAddWindow () {
     return suppliersAddWindow;
+  };
+
+  function returnBuysWindow () {
+    return buysWindow;
+  };
+
+  function returnAddBuyWindow () {
+    return addBuyWindow;
+  };
+
+  function returnSearchProductsBuysWindow () {
+    return searchProductsBuysWindow;
+  };
+
+  function returnStockWindow () {
+    return stockWindow
   };
 
 module.exports = {
@@ -429,6 +559,10 @@ module.exports = {
     createSuppliersWindow,
     createSuppliersEditWindow,
     createSuppliersAddWindow,
+    createBuysWindow,
+    createAddBuyWindow,
+    createSearchProductsBuysWindow,
+    createStockWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -440,6 +574,10 @@ module.exports = {
     returnSuppliersWindow,
     returnSuppliersEditWindow,
     returnSuppliersAddWindow,
+    returnBuysWindow,
+    returnAddBuyWindow,
+    returnSearchProductsBuysWindow,
+    returnStockWindow,
     mainHandlebars,
     historyHandlebars,
 };

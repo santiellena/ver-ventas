@@ -16,9 +16,9 @@ document.getElementById('view-history-page').addEventListener('click', () => {
     ipcRenderer.send('open-sells-history');
 });
 
-document.getElementById('buys-page').addEventListener('click', () => console.log('A'));
+document.getElementById('buys-page').addEventListener('click', () => ipcRenderer.send('load-addBuys-window'));
 
-document.getElementById('buys-history-page').addEventListener('click', () => loadPageInMain('/buys/history.hbs'));
+document.getElementById('buys-history-page').addEventListener('click', () => ipcRenderer.send('load-buys-window'));
 
 document.getElementById('suppliers-page').addEventListener('click', () => {
     ipcRenderer.send('load-suppliers-window');
@@ -52,7 +52,7 @@ document.getElementById('query-buys-supplier-detail-page').addEventListener('cli
 
 document.getElementById('kardex-page').addEventListener('click', () => loadPageInMain('/stock/kardex.hbs'));
 
-document.getElementById('stock-page').addEventListener('click', () => loadPageInMain('/stock/stock.hbs'));
+document.getElementById('stock-page').addEventListener('click', () => ipcRenderer.send('load-stock-window'));
 
 document.getElementById('maintenance-page').addEventListener('click', () => loadPageInMain('/maintenance/maintenance.hbs'));
 

@@ -28,7 +28,7 @@
                       <div class="row">
                         <div class="history-table" style="width: 100%;">
                           <div class="col-sm-12">
-                            <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+							  <form action="">
                                 <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Razón Social</label>
 			                        <div class="col-md-6 col-sm-6 ">
@@ -38,7 +38,7 @@
                                 <div class="form-group row">
 											<label class="control-label col-md-3 col-sm-3 ">Tipo de Documento</label>
 											<div class="col-md-6 col-sm-6 ">
-												<select class="form-control" required="required">
+												<select class="form-control" required="required" id="docType">
 													<option>Elija...</option>
 													<option>DNI</option>
 													<option>Pasaporte</option>
@@ -59,15 +59,15 @@
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Provincia</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="name" required="required" class="form-control ">
+			                        <input type="text" id="dirProv" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Departamento</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="name" required="required" class="form-control ">
+			                        <input type="text" id="dirDepto" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
@@ -111,17 +111,15 @@
 										<div class="col-md-6 col-sm-9 offset-md-3">
 											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
 											<button class="btn btn-warning" type="reset">Reiniciar</button>
-											<button type="submit" class="btn btn-success">Agregar</button>
+											<button type="submit" class="btn btn-success" onclick="addSupplier()">Agregar</button>
 										</div>
 								</div>
-                            </form>
+								</form>
                           </div>
                         </div>
                       </div>
                   </div>
                 </div>
 </div>
-<script>
-    const ipcRenderer = window.app;
-    const suppliers = {{suppliers}}; 
-</script>
+<script src="../../js/suppliersAdd.js"></script>
+sc

@@ -58,19 +58,19 @@
                       </thead>
                       <tbody id="tbody-suppliers">
                         {{#each suppliers}}
-                        <tr>
-                          <th>{{this.id}}</th>
-                          <th>{{this.name}}</th>
-                          <th>{{this.phoneNumber}}</th>
-                          <th>{{this.cuit}}</th>
-                          <th>{{this.cbu}}</th>
-                          <th>{{this.email}}</th>
-                          <th>{{this.numDoc}}</th>
-                          <th>{{this.dirProv}}</th>
-                          <th>{{this.dirDepto}}</th>
-                          <th>{{this.dirPostCode}}</th>
-                          <th>{{this.dirCity}}</th>
-                          <th>{{this.dirStreet}}</th>
+                        <tr id="supplier{{this.id}}">
+                          <th id="id{{this.id}}">{{this.id}}</th>
+                          <th id="name{{this.id}}">{{this.name}}</th>
+                          <th id="phoneNumber{{this.id}}">{{this.phoneNumber}}</th>
+                          <th id="cuit{{this.id}}">{{this.cuit}}</th>
+                          <th id="cbu{{this.id}}">{{this.cbu}}</th>
+                          <th id="email{{this.id}}">{{this.email}}</th>
+                          <th id="numDoc{{this.id}}">{{this.numDoc}}</th>
+                          <th id="dirProv{{this.id}}">{{this.dirProv}}</th>
+                          <th id="dirDepto{{this.id}}">{{this.dirDepto}}</th>
+                          <th id="dirPostCode{{this.id}}">{{this.dirPostCode}}</th>
+                          <th id="dirCity{{this.id}}">{{this.dirCity}}</th>
+                          <th id="dirStreet{{this.id}}">{{this.dirStreet}}</th>
                           <th>
                             <button class="btn btn-warning" onclick="loadEditWindow({{this.id}});">Editar</button>
                           </th>
@@ -85,14 +85,4 @@
             </div>
           </div>
       </div>
-      <script>
-         const ipcRenderer = window.app;
-
-         function loadEditWindow(id) {
-           ipcRenderer.send('load-editsupplier-window', id);
-         };
-
-         function loadAddWindow() {
-           ipcRenderer.send('load-addsupplier-window');
-         };
-      </script>
+      <script src="../../js/suppliers.js"></script>
