@@ -27,6 +27,10 @@ const {
   createAddBuyWindow,
   createSearchProductsBuysWindow,
   createStockWindow,
+  createAddProductWindow,
+  createEditProductWindow,
+  createDeleteProductWindow,
+  createDepartmentsWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -81,4 +85,8 @@ ipcMainEvents.buys({
 
 ipcMainEvents.stock({
   createStockWindow,
+  createAddProductWindow,
+  createEditProductWindow,
+  createDeleteProductWindow,
+  createDepartmentsWindow,
 });

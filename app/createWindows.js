@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -99,7 +99,6 @@ function createMainWindow  () {
   
 }
 
-
 function createPaymentWindow ({
   totalAmount,
   articlesQuantity
@@ -128,7 +127,6 @@ function createPaymentWindow ({
     });
     
   }
-
 
   function createSettingsWindow () {
     settingsWindow = new BrowserWindow({
@@ -486,6 +484,116 @@ function createPaymentWindow ({
     
   }
 
+  function createAddProductWindow () {
+    addProductWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 1000,
+      title: `Mercado 1990 - Agregar Producto`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: stockWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    addProductWindow.loadFile(historyHandlebars.render('/stock/addProduct.hbs'));
+    
+    handleErrors(addProductWindow);
+    
+    // Listen for window being closed
+    addProductWindow.on('closed',  () => {
+      addProductWindow = null;
+    });
+    
+  };
+
+  function createEditProductWindow () {
+    editProductWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 1000,
+      title: `Mercado 1990 - Editar Producto`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: stockWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    editProductWindow.loadFile(historyHandlebars.render('/stock/editProduct.hbs'));
+    
+    handleErrors(editProductWindow);
+    
+    // Listen for window being closed
+    editProductWindow.on('closed',  () => {
+      editProductWindow = null;
+    });
+    
+  };
+
+  function createDeleteProductWindow () {
+    deleteProductWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1000, height: 600,
+      title: `Mercado 1990 - Eliminar Producto`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: stockWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    deleteProductWindow.loadFile(historyHandlebars.render('/stock/deleteProduct.hbs'));
+    
+    handleErrors(deleteProductWindow);
+    
+    // Listen for window being closed
+    deleteProductWindow.on('closed',  () => {
+      deleteProductWindow = null;
+    });
+    
+  };
+
+  function createDepartmentsWindow ({
+    departments,
+  }) {
+    departmentsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1000, height: 600,
+      title: `Mercado 1990 - Departamentos`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: stockWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    departmentsWindow.loadFile(historyHandlebars.render('/stock/departments.hbs', {departments}));
+    
+    handleErrors(departmentsWindow);
+    
+    // Listen for window being closed
+    departmentsWindow.on('closed',  () => {
+      departmentsWindow = null;
+    });
+    
+  };
+
 
   function returnMainWindow () {
     return mainWindow;
@@ -547,6 +655,22 @@ function createPaymentWindow ({
     return stockWindow
   };
 
+  function returnAddProductWindow () {
+      return addProductWindow;
+  };
+
+  function returnEditProductWindow () {
+    return editProductWindow;
+};
+
+function returnDeleteProductWindow () {
+  return deleteProductWindow;
+};
+
+function returnDepartmentsWindow () {
+    return departmentsWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -563,6 +687,10 @@ module.exports = {
     createAddBuyWindow,
     createSearchProductsBuysWindow,
     createStockWindow,
+    createAddProductWindow,
+    createEditProductWindow,
+    createDeleteProductWindow,
+    createDepartmentsWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -578,6 +706,10 @@ module.exports = {
     returnAddBuyWindow,
     returnSearchProductsBuysWindow,
     returnStockWindow,
+    returnAddProductWindow,
+    returnEditProductWindow,
+    returnDeleteProductWindow,
+    returnDepartmentsWindow,
     mainHandlebars,
     historyHandlebars,
 };

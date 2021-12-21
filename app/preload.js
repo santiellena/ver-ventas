@@ -37,6 +37,10 @@ contextBridge.exposeInMainWorld(
                 'added-productbuy',
                 'buy-end',
                 'load-stock-window',
+                'load-addproduct-window',
+                'load-editproduct-window',
+                'load-deleteproduct-window',
+                'load-departments-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -81,6 +85,9 @@ contextBridge.exposeInMainWorld(
                 'get-buys-detail',
                 'get-added-tobuy',
                 'get-suppliers',
+                'get-buys-profitandinvestment',
+                'get-departments',
+
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

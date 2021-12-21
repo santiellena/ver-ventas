@@ -108,3 +108,18 @@
     }
   }
   
+  .division-buttons {
+    padding: 1.5rem 1.5rem 0 1.5rem;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .division-data {
+    padding: .5rem 1.5rem 1.5rem 1.5rem;
+    display: flex;
+  }
+
+  .label-shower {
+    color: #111;
+    font-size: 1rem;
+  };
