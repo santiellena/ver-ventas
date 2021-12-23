@@ -6,7 +6,7 @@ const products = {
         unitPrice: 120,
         wholesalerPrice: 100,
         buyPrice: 75,
-        location: 'Estante 1',
+        location: ['Estante 1', 'Pasillo 1'],
         department: 'Varios',
         unitMeasure: 'Unidad',
     },
@@ -17,7 +17,7 @@ const products = {
         unitPrice: 320,
         wholesalerPrice: 270,
         buyPrice: 180,
-        location: 'Estante 1',
+        location: ['Estante 1', 'Pasillo 2'],
         department: 'Varios',
         unitMeasure: 'Unidad',
     },
@@ -37,6 +37,15 @@ function getAllProducts () {
 
 };
 
+function checkExistance (id) {
+    if( products[id] == undefined || products[id] == null ){
+
+        return false;
+    } else {
+        return true;
+    }
+};
+
 function updateStockAndPrices (details) {
     if(details){
         for (const detail of details) {
@@ -53,8 +62,46 @@ function updateStockAndPrices (details) {
     }
 };
 
+function addProduct ({
+    id,
+    description,
+    stock,
+    unitPrice,
+    wholesalerPrice,
+    buyPrice,
+    location,
+    department,
+    unitMeasure,
+}) {
+    if(id,
+        description,
+        stock,
+        unitPrice,
+        wholesalerPrice,
+        buyPrice,
+        location,
+        department,
+        unitMeasure){
+            if(products[id] == undefined){
+                return products[id] = {
+                    id,
+                    description,
+                    unitPrice,
+                    wholesalerPrice,
+                    location,
+                    department,
+                    unitMeasure,
+                    stock,
+                    buyPrice,
+                };
+            }
+        }
+};
+
 module.exports = {
     getProduct,
     getAllProducts,
     updateStockAndPrices,
+    addProduct,
+    checkExistance,
 };

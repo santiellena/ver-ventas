@@ -40,6 +40,7 @@ async function loadDepartments() {
 
     for (const department of iterable) {
         const option = document.createElement('option');
+        option.setAttribute('id', `option${department[1].id}`);
         option.value = department[1].id;
         option.innerText = department[1].description;
 
@@ -47,3 +48,63 @@ async function loadDepartments() {
     };
 };
 loadDepartments();
+
+ipcRenderer.on('update-departments-list', async () => {
+    const newDepartment = await ipcRenderer.invoke('get-department-update');
+
+    const select = document.getElementById('department');
+    const option = document.createElement('option');
+    option.setAttribute('id', `option${newDepartment.id}`);
+    option.value = newDepartment.id;
+    option.innerText = newDepartment.description;
+
+    select.appendChild(option);
+});
+
+ipcRenderer.on('update-departments-list-delete', async () => {
+    const idDeleted = await ipcRenderer.invoke('deleted-department');
+    if(idDeleted){
+        const option = document.getElementById(`option${idDeleted}`);
+        option.remove();
+    };
+   
+});
+
+ipcRenderer.on('update-newproduct-list', async () => {
+    const newProduct = await ipcRenderer.invoke('get-newproduct-tolist');
+
+    const tbody = document.getElementById('tbody-products');
+
+    const tr = document.createElement('tr');
+    tr.setAttribute('id', `tr${newProduct.id}`);
+    const thId = document.createElement('th');
+    thId.innerText = newProduct.id;
+    const thDesc = document.createElement('th');
+    thDesc.innerText = newProduct.description;
+    const thStock = document.createElement('th');
+    thStock.innerText = newProduct.stock;
+    const thBuyPrice = document.createElement('th');
+    thBuyPrice.innerText = `$ ${newProduct.buyPrice}`;;
+    const thWholesalerPrice = document.createElement('th');
+    thWholesalerPrice.innerText = `$ ${newProduct.wholesalerPrice}`;
+    const thUnitPrice = document.createElement('th');
+    thUnitPrice.innerText = `$ ${newProduct.unitPrice}`;
+    const thDepartment = document.createElement('th');
+    thDepartment.innerText = newProduct.department;
+    const thLocation = document.createElement('th');
+    thLocation.innerText = `${newProduct.location[0]},${newProduct.location[1]}`
+    const thUnitMeasure = document.createElement('th');
+    thUnitMeasure.innerText = newProduct.unitMeasure;
+
+    tr.appendChild(thId);
+    tr.appendChild(thDesc);
+    tr.appendChild(thStock);
+    tr.appendChild(thBuyPrice);
+    tr.appendChild(thWholesalerPrice);
+    tr.appendChild(thUnitPrice);
+    tr.appendChild(thDepartment);
+    tr.appendChild(thLocation);
+    tr.appendChild(thUnitMeasure);
+
+    tbody.insertAdjacentElement('beforeend', tr);
+});

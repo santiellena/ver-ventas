@@ -21,9 +21,18 @@ function getDepartment(id){
 function addDepartment (description) {
     if(description){
         const iterable = Object.entries(departments);
-        const newId = iterable.length + 1;
-
-        departments[newId] = {
+        let newId = 0;
+        for (let i = 1; i < iterable.length + 1; i++) {
+            if(departments[i] == undefined){
+                newId = i;
+                break;
+            } else if(departments[i+1] == undefined){
+                newId = i+1;
+                break;
+            };
+        };
+        console.log(newId);
+        return departments[newId] = {
             id: newId,
             description,
         };

@@ -154,7 +154,9 @@ function createPaymentWindow ({
     
   }
 
-  function createSellsHistoryWindow () {
+  function createSellsHistoryWindow ({
+    sells,
+  }) {
     const actualDate = new Date();
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
@@ -171,25 +173,6 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
     });
-  
-    const sells = [
-      {
-        id: 33,
-        date: Date.now().toString(),
-        amount: '$2200',
-        branch: 'Principal',
-        customer: 'Consumidor final',
-        howPaid: 'Contado',
-      },
-      {
-        id: 22,
-        date: Date.now().toString(),
-        amount: '$1200',
-        branch: 'Principal',
-        customer: 'Baez Pedro',
-        howPaid: 'Cuenta corriente',
-      },
-    ];
    
     // Load index.hbs into the new BrowserWindow
     sellsHistoryWindow.loadFile(historyHandlebars.render('/sells/history.hbs', {sells}));
@@ -484,10 +467,15 @@ function createPaymentWindow ({
     
   }
 
-  function createAddProductWindow () {
+  function createAddProductWindow ({
+    departments,
+    locationsShow, 
+    locationsStore, 
+    measures,
+  }) {
     addProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 800, height: 1000,
+      width: 650, height: 705,
       title: `Mercado 1990 - Agregar Producto`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -500,7 +488,7 @@ function createPaymentWindow ({
     });
    
     // Load index.hbs into the new BrowserWindow
-    addProductWindow.loadFile(historyHandlebars.render('/stock/addProduct.hbs'));
+    addProductWindow.loadFile(historyHandlebars.render('/stock/addProduct.hbs', {departments, locationsShow, locationsStore, measures}));
     
     handleErrors(addProductWindow);
     
