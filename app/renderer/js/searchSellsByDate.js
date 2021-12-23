@@ -16,13 +16,13 @@ async function searchByDate () {
 
     arrSellsByDate.map(sell => {
         allSells = allSells + `<tr>
-        <th>${sell[1][0]}</th> 
-        <th>${sell[1][1]}</th>
-        <th>${sell[1][2]}</th>
-        <th>${sell[1][3]}</th>
-        <th>${sell[1][4]}</th>
-        <th>${sell[1][5]}</th>
-        <th><button class="btn btn-info" onclick="seeDetail(${sell[1][0]})">Ver</button></th>
+        <th>${sell[1].id}</th> 
+        <th>${sell[1].date}</th>
+        <th>${sell[1].amount}</th>
+        <th>${sell[1].customer}</th>
+        <th>${sell[1].branch}</th>
+        <th>${sell[1].howPaid}</th>
+        <th><button class="btn btn-info" onclick="seeDetail(${sell[1].id})">Ver</button></th>
       </tr>`
     });
 

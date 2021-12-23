@@ -9,7 +9,7 @@ async function seeDetail (id){
 
     let allItems = '';
     arrDetails.map(detail => {
-        allItems = allItems + `<tr><th>${detail[1][0]}</th><th>${detail[1][1]}</th><th>${detail[1][2]}</th></tr>`
+        allItems = allItems + `<tr><th>${detail[1].quantity}</th><th>${detail[1].product}</th><th>$ ${detail[1].price}</th></tr>`
     });
 
     tbodyDetails.innerHTML = allItems;

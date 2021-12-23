@@ -3,6 +3,7 @@ const { ipcMain, dialog } = require('electron');
 const storeProducts = require('../components/products/store');
 const storeCustomers = require('../components/customers/store');
 const storeOrders = require('../components/orders/store');
+const storeSells = require('../components/sells/store');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -23,40 +24,20 @@ module.exports = ({
     createOrdersWindow,
 }) => {
     ipcMain.on('open-sells-history', () => {
-        createSellsHistoryWindow();
+        const sells = storeSells.getAllSells();
+        createSellsHistoryWindow({sells});
     });
 
-    ipcMain.handle('get-sell-detail', (e, args) => {
-        const details = {
-            detail1: [
-                4, 
-                'Mayonesa',
-                '$1200'
-            ],
-
-            detail2: [
-                4, 
-                'Ketchup',
-                '$1000'
-            ],
+    ipcMain.handle('get-sell-detail', (e, id) => {
+        const sellDetail = storeSells.getSellDetail(id);
+        if(sellDetail){
+            return sellDetail;
         };
-
-        return details;
     });
 
-    ipcMain.handle('search-sells-by-date', (e, args) => {
-        const sells = {
-            sell1: [
-                2, 
-                args.fromDate,
-                '$2000',
-                'Consumidor final',
-                'Principal',
-                'Cuenta corriente'
-            ],
-        };
-
-        return sells;
+    ipcMain.handle('search-sells-by-date', (e, {fromDate, toDate}) => {
+        const sellsByDate = storeSells.getSellsByDate(fromDate, toDate);
+        return sellsByDate;
     });
 
     ipcMain.on('load-payment-window', (e, dataSell) => {
