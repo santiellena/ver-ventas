@@ -1,3 +1,5 @@
+const { ipcRenderer } = require("electron");
+
 async function loadTaxPercentage() {
     const taxPercentage = await ipcRenderer.invoke('get-tax-percentage', '');
 
@@ -98,6 +100,7 @@ async function addProduct(){
     const showProduct = document.getElementById('product-shower');
 
     const product = await ipcRenderer.invoke('search-product-byid', idProduct);
+    ipcRenderer.removeListener('search-product-byid');
 
     if(product.id == null || product.id == undefined){
         showProduct.value = 'Producto no encontrado.'
@@ -229,7 +232,6 @@ function deleteProductList(id) {
         tdAlert.innerText = 'Ningún Producto Agregado';
         trAlert.appendChild(tdAlert);
         
-        console.log('aa');
         tbody.appendChild(trAlert);
     };
 
@@ -306,4 +308,10 @@ ipcRenderer.on('add-product-tosell-list', async () => {
         };
     }
     
+});
+
+ipcRenderer.on('get-sells-details', () => {
+    const sessionStorage = getAllItemSession();
+    const priceList = document.getElementById('price-list-select').value;
+    ipcRenderer.send('get-sells-details', {sessionStorage, priceList});
 });

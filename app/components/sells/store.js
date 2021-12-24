@@ -1,7 +1,9 @@
+const storeProducts = require('../products/store');
+
 const sells = {
     33: {
       id: 33,
-      date: '2021/12/15',
+      date: '2021/12/15-20:34',
       amount: 270,
       branch: 'Principal',
       customer: 'Consumidor final',
@@ -16,7 +18,7 @@ const sells = {
     },
     22: {
       id: 22,
-      date: '2021/12/13',
+      date: '2021/12/13-0:00',
       amount: 480,
       branch: 'Principal',
       customer: 'Baez Pedro',
@@ -82,28 +84,66 @@ function getSellsByDate (from, to) {
 };
 
 function addSell ({
-    id,
     amount,
     branch,
     customer,
     howPaid,
     details,
+    priceList,
 }) {
-
-    if(id, amount, branch, customer, howPaid, details) {
+    if(amount, branch, customer, howPaid, details, priceList) {
         const actualDate = new Date();
-        const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
-
-        if(sells[id] == undefined){
-            sells[id] = {
-                id,
-                date,
-                amount,
-                branch,
-                customer,
-                howPaid,
-                details,
+        let minutesString = actualDate.getMinutes().toString();
+        let minutes = '';
+        if(minutesString.length == 1){
+            minutes = '0'+minutesString;
+        } else {
+            minutes = minutesString;
+        }
+        const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}-${actualDate.getHours()}:${minutes}`; 
+        const iterable = Object.entries(sells);
+        let id = 0;
+        for (let i = 1; i < iterable.length + 1; i++) {
+            if(sells[i] == undefined){
+                id = i;
+                break;
+            } else if(sells[i+1] == undefined){
+                id = i+1;
+                break;
             };
+        }; 
+        
+        const detailsForSell = [];
+
+        details.map(detail => {
+            const id = parseInt(detail[0]);
+            const minusStock = parseInt(detail[1]);
+            storeProducts.updateStockFormSell(id, minusStock);
+            const product = storeProducts.getProduct(id);
+            let price = 0;
+
+
+            if(priceList == 'public') {
+                price = product.unitPrice;
+            } else {
+                price = product.wholesalerPrice
+            };
+            const newDetail = {
+                product: product.description,
+                quantity: minusStock,
+                price,
+            };
+            detailsForSell.push(newDetail);
+        });
+
+        return sells[id] = {
+            id,
+            date,
+            amount,
+            branch,
+            customer,
+            howPaid,
+            details: detailsForSell,
         };
     };
 };

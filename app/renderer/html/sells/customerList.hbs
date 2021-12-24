@@ -66,9 +66,12 @@
               </div>
             </div>
           </div>
+        <input type="hidden" value="{{howPaid}}" id="howPaid">
       </div>
       <script>
          const ipcRenderer = window.app;
          window.totalAmount = {{totalAmount}};
+         window.totalAmountPlusDebt = {{totalAmountPlusDebt}};
+         window.howPaid = document.getElementById('howPaid').value;
       </script>
     <script src="../../js/customerWhoPays.js"></script>

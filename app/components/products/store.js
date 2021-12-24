@@ -82,6 +82,7 @@ function addProduct ({
         location,
         department,
         unitMeasure){
+            const quantity = parseInt(stock);
             if(products[id] == undefined){
                 return products[id] = {
                     id,
@@ -91,17 +92,33 @@ function addProduct ({
                     location,
                     department,
                     unitMeasure,
-                    stock,
+                    stock: quantity,
                     buyPrice,
                 };
             }
         }
 };
 
+function deleteProduct (id) {
+    if(products[id] == undefined){
+        return;
+    } else {
+        delete products[id];
+    };
+};
+
+function updateStockFormSell (id, minusStock) {
+    if(products[id] != undefined) {
+        products[id].stock = products[id].stock - minusStock;
+    };
+};
+
 module.exports = {
     getProduct,
     getAllProducts,
     updateStockAndPrices,
+    updateStockFormSell,
     addProduct,
     checkExistance,
+    deleteProduct,
 };

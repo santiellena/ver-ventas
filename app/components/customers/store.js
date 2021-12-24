@@ -48,7 +48,18 @@ function getCustomer (id) {
     return customers[id];
 };
 
+function addToDebt (id, debt) {
+    if(id && debt){
+        if(customers[id] != undefined){
+            const resultNewDebts = customers[id].debts + debt;
+            const toParseNumber = resultNewDebts.toFixed(2);
+            customers[id].debts = parseFloat(toParseNumber);
+        };
+    };
+};
+
 module.exports = {
     getAllCustomers,
     getCustomer,
+    addToDebt,
 };

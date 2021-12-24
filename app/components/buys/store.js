@@ -1,5 +1,5 @@
 const actualDate = new Date();
-const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}`;
+const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
 const storeProducts = require('../products/store');
 
 const buys = {

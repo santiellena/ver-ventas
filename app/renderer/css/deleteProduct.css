@@ -1,0 +1,27 @@
+.barcode {
+    display: block;
+    font-size: 4rem;
+}
+
+.sub-title-code {
+    display: block;
+    font-size: .8rem;
+    margin-top: 1rem;
+}
+
+.container-code{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.container-input{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}

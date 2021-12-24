@@ -31,7 +31,7 @@ function addDepartment (description) {
                 break;
             };
         };
-        console.log(newId);
+        
         return departments[newId] = {
             id: newId,
             description,

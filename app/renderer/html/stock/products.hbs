@@ -58,6 +58,7 @@
                         </tr>
                       </thead>
                       <tbody id="tbody-products">
+                        {{#if products}}
                         {{#each products}}
                         <tr id="tr{{this.id}}">
                           <th>{{this.id}}</th>
@@ -71,6 +72,11 @@
                           <th>{{this.unitMeasure}}</th>
                         </tr>
                         {{/each}}
+                        {{else}}
+                            <tr class="odd" id="tr-alert">
+                                <td valign="top" colspan="9" class="dataTables_empty">Ningún Producto Existente</td>
+                            </tr>
+                        {{/if}}
                       </tbody>
                     </table>
                   </div>

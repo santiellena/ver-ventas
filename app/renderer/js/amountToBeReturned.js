@@ -23,7 +23,7 @@ function getMoney () {
         if(amountToBeReturned < 0){
             const debt = amountToBeReturned * (-1);
             const debtFixed = debt.toFixed(2);
-            ipcRenderer.send('sell-cash-incompleted', debtFixed);
+            ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed});
         } else {
             ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});
         };
@@ -33,19 +33,42 @@ function getMoney () {
     }
 };
 
+document.getElementById('cash').addEventListener('keydown',  e => { 
+    if(e.key == 'Enter'){
+        if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
+            const howMuchCash = document.getElementById('cash').value;
+            const amountToBeReturned = howMuchCash - totalAmount;
+    
+            if(amountToBeReturned < 0){
+                const debt = amountToBeReturned * (-1);
+                const debtFixed = debt.toFixed(2);
+                ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed, totalAmount});
+                ipcRenderer.removeListener('sell-cash-incompleted');
+            } else {
+                ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});
+                ipcRenderer.removeListener('sell-cash-confirmation');
+            };
+    
+        } else {
+            alert('EL MONTO DEBE SER MAYOR A $0');
+        }
+    }
+});
+
 function payWithCard () {
     if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
         ipcRenderer.send('sell-card-confirmation', totalAmount);
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }
+    ipcRenderer.removeListener('sell-card-confirmation');
 };
 
 function payWithCredit () {
     if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
-        ipcRenderer.send('load-customer-list', totalAmount);
+        ipcRenderer.send('load-customer-list', {totalAmount});
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }
+    ipcRenderer.removeListener('load-customer-list');
 };
-

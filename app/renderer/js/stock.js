@@ -72,8 +72,12 @@ ipcRenderer.on('update-departments-list-delete', async () => {
 
 ipcRenderer.on('update-newproduct-list', async () => {
     const newProduct = await ipcRenderer.invoke('get-newproduct-tolist');
-
+    const trAlert = document.getElementById('tr-alert');
     const tbody = document.getElementById('tbody-products');
+    
+    if(trAlert){
+        trAlert.remove();
+    };
 
     const tr = document.createElement('tr');
     tr.setAttribute('id', `tr${newProduct.id}`);
@@ -107,4 +111,29 @@ ipcRenderer.on('update-newproduct-list', async () => {
     tr.appendChild(thUnitMeasure);
 
     tbody.insertAdjacentElement('beforeend', tr);
+});
+
+ipcRenderer.on('update-products-list-bydelete', async () => {
+    const idDeleted = await ipcRenderer.invoke('get-deleted-id');
+
+    if(idDeleted){
+        const tr = document.getElementById(`tr${idDeleted}`);
+        tr.remove();
+
+        const tbody = document.getElementById('tbody-products');
+        console.log(tbody);
+        if(tbody.children.length == 0){
+            const trAlert = document.createElement('tr');
+            trAlert.setAttribute('class', 'odd');
+            trAlert.setAttribute('id', 'tr-alert');
+            const tdAlert = document.createElement('td');
+            tdAlert.setAttribute('valign', 'top');
+            tdAlert.setAttribute('colspan', '9');
+            tdAlert.setAttribute('class', 'dataTables_empty');
+            tdAlert.innerText = 'Ningún Producto Existente';
+            trAlert.appendChild(tdAlert);
+    
+            tbody.appendChild(trAlert);
+        };
+    };
 });

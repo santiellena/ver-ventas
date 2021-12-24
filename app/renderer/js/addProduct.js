@@ -52,7 +52,6 @@ async function checkCodeValue () {
 
         feedback.setAttribute('class', 'fa fa-times-circle-o form-control-feedback right');
         verifier = true;
-        console.log(verifier);
     } else {
 
         feedback.setAttribute('class', 'fa fa-check-circle-o form-control-feedback right');

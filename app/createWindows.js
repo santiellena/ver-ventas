@@ -101,7 +101,7 @@ function createMainWindow  () {
 
 function createPaymentWindow ({
   totalAmount,
-  articlesQuantity
+  articlesQuantity,
 }) {
     paymentWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -123,6 +123,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     paymentWindow.on('closed',  () => {
+    paymentWindow.removeAllListeners();
     paymentWindow = null;
     });
     
@@ -186,7 +187,9 @@ function createPaymentWindow ({
     
   }
 
-  function createSearchProductsWindow () {
+  function createSearchProductsWindow ({
+    products
+  }) {
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
@@ -200,8 +203,6 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
     });
-
-    const products = storeProducts.getAllProducts();
   
     searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
     
@@ -216,6 +217,9 @@ function createPaymentWindow ({
 
   function createCustomerListWindow ({
     totalAmount,
+    customers,
+    totalAmountPlusDebt,
+    howPaid,
   }) {
     customerListWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -230,10 +234,8 @@ function createPaymentWindow ({
       parent: paymentWindow,
       modal: true,
     });
-
-    const customers = storeCustomers.getAllCustomers();
   
-    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount }));
+    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount, totalAmountPlusDebt, howPaid }));
     
     handleErrors(customerListWindow);
     
@@ -529,7 +531,7 @@ function createPaymentWindow ({
   function createDeleteProductWindow () {
     deleteProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1000, height: 600,
+      width: 400, height: 340,
       title: `Mercado 1990 - Eliminar Producto`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -581,7 +583,6 @@ function createPaymentWindow ({
     });
     
   };
-
 
   function returnMainWindow () {
     return mainWindow;

@@ -1,6 +1,6 @@
 'use strict'
 // Modules
-const { app } = require('electron');
+const { app, ipcMain } = require('electron');
 const devTools = require('./devtools');
 
 const ipcMainEvents = {
@@ -42,6 +42,7 @@ app.on('ready', createMainWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
+  ipcMain.removeAllListeners();
   if (process.platform !== 'darwin') app.quit();
 });
 

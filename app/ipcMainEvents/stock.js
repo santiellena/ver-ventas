@@ -13,6 +13,7 @@ const { mainHandlebars,
         createDeleteProductWindow,
         createDepartmentsWindow,
         returnStockWindow,
+        returnDeleteProductWindow,
         
 } = require('../createWindows');
 
@@ -165,5 +166,26 @@ module.exports = ({
         const check = storeProducts.checkExistance(id);
 
         return check;
+    });
+
+    let idDeleted = 0;
+    ipcMain.on('delete-product', (e, id) => {
+        if(id){
+            storeProducts.deleteProduct(id);
+
+            const stockWindow = returnStockWindow();
+            const deleteProductWindow = returnDeleteProductWindow();
+
+            deleteProductWindow.webContents.send('confirm-product-delete');
+            stockWindow.webContents.send('update-products-list-bydelete');
+
+            idDeleted = id;
+        };
+    });
+
+    ipcMain.handle('get-deleted-id', () => {
+        const id = idDeleted;
+        delete idDeleted;
+        return id;
     });
 };

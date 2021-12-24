@@ -43,6 +43,8 @@ contextBridge.exposeInMainWorld(
                 'load-departments-window',
                 'delete-department',
                 'new-product',
+                'delete-product',
+                'get-sells-details',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -64,6 +66,9 @@ contextBridge.exposeInMainWorld(
                 'update-departments-list',
                 'update-departments-list-delete',
                 'update-newproduct-list',
+                'confirm-product-delete',
+                'update-products-list-bydelete',
+                'get-sells-details',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -97,6 +102,7 @@ contextBridge.exposeInMainWorld(
                 'deleted-department',
                 'get-newproduct-tolist',
                 'check-product-existance',
+                'get-deleted-id',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

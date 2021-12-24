@@ -44,12 +44,13 @@ module.exports = ({
         const { totalAmount, articlesQuantity } = dataSell;
         createPaymentWindow({
             totalAmount,
-            articlesQuantity
+            articlesQuantity, 
         });
     });
 
     ipcMain.on('load-search-products-window', () => {
-        createSearchProductsWindow();
+        const products = storeProducts.getAllProducts();
+        createSearchProductsWindow({products});
     });
 
     ipcMain.on('sell-cash-confirmation', (e, args) => {
@@ -68,9 +69,10 @@ module.exports = ({
         mainWindow.webContents.send('clear-product-list');
     });
 
-    ipcMain.on('sell-cash-incompleted', (e, debt) => {
-        createCustomerListWindow({ totalAmount: debt });
-        const customerList = returnCustomerListWindow();
+    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount}) => {
+        const customers = storeCustomers.getAllCustomers();
+        createCustomerListWindow({ totalAmount: debt, totalAmountPlusDebt: totalAmount, customers, howPaid: 'Contado/Cuenta Corriente' });
+        const customerList = returnCustomerListWindow(); 
 
         const response = dialog.showMessageBoxSync(customerList, {
             title: 'Confirmación',
@@ -132,9 +134,13 @@ module.exports = ({
         return id;
     });
 
-    ipcMain.on('load-customer-list', (e, totalAmount) => {
+    ipcMain.on('load-customer-list', (e, {totalAmount}) => {
+        const customers = storeCustomers.getAllCustomers();
         createCustomerListWindow({
             totalAmount,
+            customers,
+            totalAmountPlusDebt: totalAmount,
+            howPaid: 'Cuenta Corriente',
         });
     });
 
@@ -163,13 +169,26 @@ module.exports = ({
                 type: 'info',
                 buttons: ['Cancelar','Confirmar'],
             });
-
             if(sellConfirmation == 1){
                 const mainWindow = returnMainWindow();
                 //confirmar venta function, update deuda, update stock, update todo
-                mainWindow.webContents.send('clear-product-list');
                 paymentWindow.close();
-            }
+                storeCustomers.addToDebt(customer.id, args.totalAmount);
+                mainWindow.webContents.send('get-sells-details');
+                ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
+                    storeSells.addSell({
+                        amount: args.totalAmountPlusDebt,
+                        branch: 'Principal', //Modificar cuando se hagan las sesiones.
+                        customer: customer.name,
+                        howPaid: args.howPaid,
+                        details: sessionStorage,
+                        priceList,
+                    });
+                    mainWindow.webContents.send('clear-product-list');
+                    
+                });
+                
+            };
         }
 
     });
