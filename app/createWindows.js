@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu } = require('electron');
+const { app, BrowserWindow, Tray, Menu, ipcMain } = require('electron');
 
 const handleErrors = require('./handleErrors');
 const handlebarsHbs = require('esanti-electron-hbs');
@@ -70,6 +70,8 @@ function createLoginWindow () {
   handleErrors(loginWindow);
 
   loginWindow.on('closed',  () => {
+    loginWindow.removeAllListeners();
+    ipcMain.removeHandler('login');
     loginWindow = null;
   });
 }
@@ -94,6 +96,7 @@ function createMainWindow  () {
   
    // Listen for window being closed
   mainWindow.on('closed',  () => {
+    mainWindow.removeAllListeners();
     mainWindow = null;
   });
   
@@ -150,7 +153,8 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     settingsWindow.on('closed',  () => {
-    settingsWindow = null;
+      settingsWindow.removeAllListeners();
+      settingsWindow = null;
     });
     
   }
@@ -182,6 +186,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     sellsHistoryWindow.on('closed',  () => {
+      sellsHistoryWindow.removeAllListeners();
       sellsHistoryWindow = null;
     });
     
@@ -210,6 +215,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     searchProductsWindow.on('closed',  () => {
+      searchProductsWindow.removeAllListeners();
       searchProductsWindow = null;
     });
     
@@ -220,6 +226,7 @@ function createPaymentWindow ({
     customers,
     totalAmountPlusDebt,
     howPaid,
+    operation,
   }) {
     customerListWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -235,12 +242,13 @@ function createPaymentWindow ({
       modal: true,
     });
   
-    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount, totalAmountPlusDebt, howPaid }));
+    customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount, totalAmountPlusDebt, howPaid, operation }));
     
     handleErrors(customerListWindow);
     
     // Listen for window being closed
     customerListWindow.on('closed',  () => {
+      customerListWindow.removeAllListeners();
       customerListWindow = null;
     });
     
@@ -271,6 +279,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     ordersWindow.on('closed',  () => {
+      ordersWindow.removeAllListeners();
       ordersWindow = null;
     });
   };
@@ -299,6 +308,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     suppliersWindow.on('closed',  () => {
+      suppliersWindow.removeAllListeners();
       suppliersWindow = null;
     });
   };
@@ -325,6 +335,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     suppliersEditWindow.on('closed',  () => {
+      suppliersEditWindow.removeAllListeners();
       suppliersEditWindow = null;
     });
   };
@@ -351,6 +362,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     suppliersAddWindow.on('closed',  () => {
+      suppliersAddWindow.removeAllListeners();
       suppliersAddWindow = null;
     });
   };
@@ -379,6 +391,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     buysWindow.on('closed',  () => {
+      buysWindow.removeAllListeners();
       buysWindow = null;
     });
   };
@@ -405,6 +418,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     addBuyWindow.on('closed',  () => {
+      addBuyWindow.removeAllListeners();
       addBuyWindow = null;
     });
   };
@@ -432,6 +446,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     searchProductsBuysWindow.on('closed',  () => {
+      searchProductsBuysWindow.removeAllListeners();
       searchProductsBuysWindow = null;
     });
     
@@ -464,6 +479,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     stockWindow.on('closed',  () => {
+      stockWindow.removeAllListeners();
       stockWindow = null;
     });
     
@@ -496,6 +512,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     addProductWindow.on('closed',  () => {
+      addProductWindow.removeAllListeners();
       addProductWindow = null;
     });
     
@@ -523,6 +540,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     editProductWindow.on('closed',  () => {
+      editProductWindow.removeAllListeners();
       editProductWindow = null;
     });
     
@@ -550,6 +568,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     deleteProductWindow.on('closed',  () => {
+      deleteProductWindow.removeAllListeners();
       deleteProductWindow = null;
     });
     
@@ -579,6 +598,7 @@ function createPaymentWindow ({
     
     // Listen for window being closed
     departmentsWindow.on('closed',  () => {
+      departmentsWindow.removeAllListeners();
       departmentsWindow = null;
     });
     

@@ -43,10 +43,8 @@ document.getElementById('cash').addEventListener('keydown',  e => {
                 const debt = amountToBeReturned * (-1);
                 const debtFixed = debt.toFixed(2);
                 ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed, totalAmount});
-                ipcRenderer.removeListener('sell-cash-incompleted');
             } else {
-                ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});
-                ipcRenderer.removeListener('sell-cash-confirmation');
+                ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});  
             };
     
         } else {
@@ -61,14 +59,22 @@ function payWithCard () {
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }
-    ipcRenderer.removeListener('sell-card-confirmation');
 };
 
 function payWithCredit () {
     if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
-        ipcRenderer.send('load-customer-list', {totalAmount});
+        const operation = 'pay';
+        ipcRenderer.send('load-customer-list', {totalAmount, operation});
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }
-    ipcRenderer.removeListener('load-customer-list');
 };
+
+function newOrder () {
+    if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
+        const operation = 'order';
+        ipcRenderer.send('load-customer-list', {totalAmount, operation});
+    } else {
+        alert('EL MONTO DEBE SER MAYOR A $0');
+    }
+}; 

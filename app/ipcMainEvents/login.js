@@ -16,11 +16,10 @@ module.exports = ({
         const { username, password } = args;
         if(username == 'admin' &&  password == 'admin'){ 
         
-          
           createMainWindow();
           return true;
         } else {
-          
+
           return false;
         }
       });

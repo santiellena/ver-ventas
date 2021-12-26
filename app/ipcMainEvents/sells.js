@@ -23,6 +23,7 @@ module.exports = ({
     createCustomerListWindow,
     createOrdersWindow,
 }) => {
+
     ipcMain.on('open-sells-history', () => {
         const sells = storeSells.getAllSells();
         createSellsHistoryWindow({sells});
@@ -46,6 +47,7 @@ module.exports = ({
             totalAmount,
             articlesQuantity, 
         });
+        
     });
 
     ipcMain.on('load-search-products-window', () => {
@@ -105,6 +107,7 @@ module.exports = ({
         } else if(response == 1){
             return
         }
+       
     });
 
     ipcMain.handle('search-product-byid', (e, id) => {
@@ -134,17 +137,20 @@ module.exports = ({
         return id;
     });
 
-    ipcMain.on('load-customer-list', (e, {totalAmount}) => {
+    ipcMain.on('load-customer-list', (e, {totalAmount, operation}) => {
         const customers = storeCustomers.getAllCustomers();
         createCustomerListWindow({
             totalAmount,
             customers,
             totalAmountPlusDebt: totalAmount,
             howPaid: 'Cuenta Corriente',
+            operation,
         });
+       
     });
 
     ipcMain.on('select-customer-whopays', (e, args) => {
+       
         let customer;
         if(args.id != null && args.id != undefined){
            customer = storeCustomers.getCustomer(args.id);
@@ -190,7 +196,7 @@ module.exports = ({
                 
             };
         }
-
+        
     });
 
     ipcMain.on('load-orders-window', (e, args) => {
@@ -198,10 +204,10 @@ module.exports = ({
         createOrdersWindow({orders});
     });
 
-    ipcMain.handle('get-order-details', (e, id) => {
-        const details = storeOrders.getOrderDetails(id);
-        if(details != undefined && details != null){
-            return details;
+    ipcMain.handle('get-order', (e, id) => {
+        const order = storeOrders.getOrder(id);
+        if(order != undefined && order != null){
+            return order;
         }
         else {
             return null;
@@ -222,4 +228,51 @@ module.exports = ({
 
         return storeOrders.getAllOrders();
     });
-}
+
+    ipcMain.on('select-customer-for-order', (e, {id, totalAmount}) => {
+        let customer;
+        if(id != null && id != undefined){
+           customer = storeCustomers.getCustomer(id);
+        };
+
+        const customerList = returnCustomerListWindow();
+        const customerConfirmation = dialog.showMessageBoxSync(customerList, {
+            title: `Cliente Seleccionado: ${customer.id} ${customer.name}`,
+            message: 'Confirmar Cliente',
+            type: 'info',
+            buttons: ['Cancelar', 'Confirmar'],
+        });
+
+        if(customerConfirmation == 1){
+            customerList.close();
+            const paymentWindow = returnPaymentWindow();
+
+            const sellConfirmation = dialog.showMessageBoxSync(paymentWindow, {
+                title: `Cliente: ${customer.id} ${customer.name}`,
+                message: `Monto: $ ${totalAmount}. 
+                Agregar Pedido.`,
+                type: 'info',
+                buttons: ['Cancelar','Confirmar'],
+            });
+            if(sellConfirmation == 1){
+                const mainWindow = returnMainWindow();
+                //confirmar venta function, update deuda, update stock, update todo
+                paymentWindow.close();
+                mainWindow.webContents.send('get-sells-details');
+                ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
+                    storeOrders.addOrder({
+                        amount: totalAmount,
+                        branch: 'Principal', //Modificar cuando se hagan las sesiones.
+                        customer: customer.id,
+                        details: sessionStorage,
+                        priceList,
+                    });
+                    mainWindow.webContents.send('clear-product-list');
+                    
+                });
+                
+            };
+        }
+        
+    });
+};

@@ -11,6 +11,10 @@
 <!-- Custom CSS -->   
 
     <link rel="stylesheet" href="../../css/sells-history.css">
+    <script>
+      let id = 0;
+      let list = '';
+    </script>
 
 <!-- page content -->
 <div class="col-md-12 col-sm-12 ">
@@ -53,6 +57,7 @@
                           <th>Total</th>
                           <th>Cliente</th>
                           <th>Sucursal</th>
+                          <th>Lista de Precios</th>
                           <th>Detalles</th>
                         </tr>
                       </thead>
@@ -64,8 +69,20 @@
                           <th>$ {{this.amount}}</th>
                           <th>{{this.customer}}</th>
                           <th>{{this.branch}}</th>
+                          <th id="priceList{{this.id}}"></th>
                           <th><button class="btn btn-info" onclick="seeOrderDetails({{id}})">Ver</button></th>
                         </tr>
+                        <input type="hidden" id="list{{this.id}}" value="{{this.priceList}}">
+                        <script>
+                          id = {{this.id}};
+                          list = document.getElementById(`list${id}`).value;
+                          if(list == 'public'){
+                            document.getElementById(`priceList${id}`).innerText = 'Minorista';
+                          } else {
+                            document.getElementById(`priceList${id}`).innerText = 'Mayorista';
+                          }
+                          
+                        </script>
                         {{/each}}
                       </tbody>
                     </table>

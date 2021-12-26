@@ -45,6 +45,7 @@ contextBridge.exposeInMainWorld(
                 'new-product',
                 'delete-product',
                 'get-sells-details',
+                'select-customer-for-order',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -87,7 +88,7 @@ contextBridge.exposeInMainWorld(
                 'get-tax-percentage',
                 'get-id-forsell-list',
                 'get-orders',
-                'get-order-details',
+                'get-order',
                 'get-orders-bydate',
                 'get-supplier-added',
                 'get-supplier-edited',

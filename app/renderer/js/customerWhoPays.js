@@ -2,9 +2,12 @@ function selectCustomer (id) {
         const totalAmount = window.totalAmount;
         const totalAmountPlusDebt = window.totalAmountPlusDebt;
         const howPaid = window.howPaid;
+        const operation = window.operation;
         if(id != null && id != undefined && totalAmount != null && totalAmount != undefined && totalAmountPlusDebt != null && totalAmountPlusDebt != undefined && howPaid != undefined && howPaid != null){
-            ipcRenderer.send('select-customer-whopays', {id, totalAmount, totalAmountPlusDebt, howPaid});  
+            if(operation == 'pay'){
+                ipcRenderer.send('select-customer-whopays', {id, totalAmount, totalAmountPlusDebt, howPaid});  
+            } else if (operation == 'order'){
+                ipcRenderer.send('select-customer-for-order', {id, totalAmount});
+            };
         };
-
-        ipcRenderer.removeAllListeners('select-customer-whopays');
 };

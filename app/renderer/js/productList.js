@@ -1,10 +1,9 @@
-const { ipcRenderer } = require("electron");
-
 async function loadTaxPercentage() {
     const taxPercentage = await ipcRenderer.invoke('get-tax-percentage', '');
-
+    window.taxPercentage = taxPercentage;
     const taxShower = document.getElementById('tax-percentage');
-    taxShower.innerText = `Impuesto (%${taxPercentage})`;
+    taxShower.innerText = `Impuesto (%${window.taxPercentage})`;
+    ipcRenderer.removeListener('get-tax-percentage');
 };
 loadTaxPercentage();
 
@@ -100,7 +99,6 @@ async function addProduct(){
     const showProduct = document.getElementById('product-shower');
 
     const product = await ipcRenderer.invoke('search-product-byid', idProduct);
-    ipcRenderer.removeListener('search-product-byid');
 
     if(product.id == null || product.id == undefined){
         showProduct.value = 'Producto no encontrado.'
