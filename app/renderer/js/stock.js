@@ -82,22 +82,31 @@ ipcRenderer.on('update-newproduct-list', async () => {
     const tr = document.createElement('tr');
     tr.setAttribute('id', `tr${newProduct.id}`);
     const thId = document.createElement('th');
+    thId.setAttribute('id', `id${newProduct.id}`);
     thId.innerText = newProduct.id;
     const thDesc = document.createElement('th');
+    thDesc.setAttribute('id', `desc${newProduct.id}`);
     thDesc.innerText = newProduct.description;
     const thStock = document.createElement('th');
+    thStock.setAttribute('id', `stock${newProduct.id}`);
     thStock.innerText = newProduct.stock;
     const thBuyPrice = document.createElement('th');
-    thBuyPrice.innerText = `$ ${newProduct.buyPrice}`;;
+    thBuyPrice.setAttribute('id', `buyPrice${newProduct.id}`);
+    thBuyPrice.innerText = `$ ${newProduct.buyPrice}`;
     const thWholesalerPrice = document.createElement('th');
+    thWholesalerPrice.setAttribute('id', `wholesalerPrice${newProduct.id}`);
     thWholesalerPrice.innerText = `$ ${newProduct.wholesalerPrice}`;
     const thUnitPrice = document.createElement('th');
+    thUnitPrice.setAttribute('id', `unitPrice${newProduct.id}`);
     thUnitPrice.innerText = `$ ${newProduct.unitPrice}`;
     const thDepartment = document.createElement('th');
+    thDepartment.setAttribute('id', `department${newProduct.id}`);
     thDepartment.innerText = newProduct.department;
     const thLocation = document.createElement('th');
+    thLocation.setAttribute('id', `location${newProduct.id}`);
     thLocation.innerText = `${newProduct.location[0]},${newProduct.location[1]}`
     const thUnitMeasure = document.createElement('th');
+    thUnitMeasure.setAttribute('id', `unitMeasure${newProduct.id}`);
     thUnitMeasure.innerText = newProduct.unitMeasure;
 
     tr.appendChild(thId);
@@ -136,4 +145,17 @@ ipcRenderer.on('update-products-list-bydelete', async () => {
             tbody.appendChild(trAlert);
         };
     };
+});
+
+ipcRenderer.on('update-products-list-byedit', async () => {
+    const product = await ipcRenderer.invoke('get-modified-id');
+    
+    document.getElementById(`desc${product.id}`).innerText = product.description;
+    document.getElementById(`stock${product.id}`).innerText = product.stock;
+    document.getElementById(`buyPrice${product.id}`).innerText = `$ ${product.buyPrice}`;
+    document.getElementById(`wholesalerPrice${product.id}`).innerText = `$ ${product.wholesalerPrice}`;
+    document.getElementById(`unitPrice${product.id}`).innerText = `$ ${product.unitPrice}`;
+    document.getElementById(`department${product.id}`).innerText = product.department;
+    document.getElementById(`location${product.id}`).innerText = `${product.location[0]}, ${product.location[1]}`;
+    document.getElementById(`unitMeasure${product.id}`).innerText = product.unitMeasure;
 });

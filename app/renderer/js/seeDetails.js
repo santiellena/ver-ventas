@@ -14,3 +14,18 @@ async function seeDetail (id){
 
     tbodyDetails.innerHTML = allItems;
 }
+
+async function deleteSell (id) {
+    if(id){
+        const answer = await ipcRenderer.invoke('delete-sell', id);
+
+        if(answer == true){
+            const tr = document.getElementById(`tr${id}`);
+            tr.remove();
+            const childElements = document.getElementsByClassName('child');
+            for (const element of childElements) {
+                element.remove();
+            };
+        };
+    };
+};

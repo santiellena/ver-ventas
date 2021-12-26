@@ -56,21 +56,26 @@
                           <th>Fecha</th>
                           <th>Total</th>
                           <th>Cliente</th>
+                          <th>Empleado</th>
                           <th>Sucursal</th>
                           <th>Lista de Precios</th>
-                          <th>Detalles</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody id="tbody-orders">
                         {{#each orders}}
-                        <tr>
+                        <tr id="tr{{this.id}}">
                           <th>{{this.id}}</th>
                           <th>{{this.date}}</th>
                           <th>$ {{this.amount}}</th>
                           <th>{{this.customer}}</th>
+                          <th>{{this.emplooy}}</th>
                           <th>{{this.branch}}</th>
                           <th id="priceList{{this.id}}"></th>
-                          <th><button class="btn btn-info" onclick="seeOrderDetails({{id}})">Ver</button></th>
+                          <th>
+                            <button class="btn btn-info" onclick="seeOrderDetails({{this.id}})">Detalles</button>
+                            <button class="btn btn-danger" onclick="deleteOrder({{this.id}})"><i class="fa fa-trash"></i></button>
+                          </th>
                         </tr>
                         <input type="hidden" id="list{{this.id}}" value="{{this.priceList}}">
                         <script>

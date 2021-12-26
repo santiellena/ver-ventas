@@ -53,21 +53,26 @@
                           <th>Fecha</th>
                           <th>Total</th>
                           <th>Cliente</th>
+                          <th>Empleado</th>
                           <th>Sucursal</th>
                           <th>Forma de pago</th>
-                          <th>Detalles</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody id="tbody-sells">
                         {{#each sells}}
-                        <tr>
+                        <tr id="tr{{this.id}}">
                           <th>{{this.id}}</th>
                           <th>{{this.date}}</th>
                           <th>$ {{this.amount}}</th>
                           <th>{{this.customer}}</th>
+                          <th>{{this.emplooy}}</th>
                           <th>{{this.branch}}</th>
                           <th>{{this.howPaid}}</th>
-                          <th><button class="btn btn-info" onclick="seeDetail({{this.id}})">Ver</button></th>
+                          <th>
+                            <button class="btn btn-info" onclick="seeDetail({{this.id}})">Detalles</button>
+                            <button class="btn btn-danger" onclick="deleteSell({{this.id}})"><i class="fa fa-trash"></i></button>
+                            </th>
                         </tr>
                         {{/each}}
                       </tbody>

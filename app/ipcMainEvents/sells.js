@@ -185,6 +185,7 @@ module.exports = ({
                     storeSells.addSell({
                         amount: args.totalAmountPlusDebt,
                         branch: 'Principal', //Modificar cuando se hagan las sesiones.
+                        emplooy: 'Administador', //Modificar cuando se hagan las sesiones.
                         customer: customer.name,
                         howPaid: args.howPaid,
                         details: sessionStorage,
@@ -263,6 +264,7 @@ module.exports = ({
                     storeOrders.addOrder({
                         amount: totalAmount,
                         branch: 'Principal', //Modificar cuando se hagan las sesiones.
+                        emplooy: 'Administrador', //Modificar cuando se hagan las sesiones.
                         customer: customer.id,
                         details: sessionStorage,
                         priceList,
@@ -274,5 +276,45 @@ module.exports = ({
             };
         }
         
+    });
+
+    ipcMain.handle('delete-sell', (e, id) => {
+        if(id){
+            const sellsWindow = returnSellsHistoryWindow();
+            const sell = storeSells.getSell(id);
+            const answer = dialog.showMessageBoxSync(sellsWindow, {
+                title: `Eliminar venta N ${sell.id}`,
+                message: `Realmente desea eliminar de forma permanente? Cliente: ${sell.customer}`,
+                type: 'question',
+                buttons: ['Cancelar', 'Confirmar'],
+            });
+
+            if(answer == 1){
+                storeSells.deleteSell(id);
+                return true;
+            } else {
+                return false;
+            }
+        }
+    });
+
+    ipcMain.handle('delete-order', (e, id) => {
+        if(id){
+            const ordersWindow = returnOrdersWindow();
+            const order = storeOrders.getOrder(id);
+            const answer = dialog.showMessageBoxSync(ordersWindow, {
+                title: `Eliminar pedido N ${order.id}`,
+                message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer}`,
+                type: 'question',
+                buttons: ['Cancelar', 'Confirmar'],
+            });
+
+            if(answer == 1){
+                storeOrders.deleteOrder(id);
+                return true;
+            } else {
+                return false;
+            }
+        }
     });
 };

@@ -279,4 +279,26 @@ module.exports = ({
             }
         }
     });
+
+    ipcMain.handle('delete-buy', (e, id) => {
+        if(id){
+            const buysWindow = returnBuysWindow();
+            const buy = storeBuys.getBuy(id);
+            const response = dialog.showMessageBoxSync(buysWindow, {
+                title: `Eliminar compra / ingreso N ${buy.id}`,
+                message: `Una vez eliminado, no se podrá recuperar!`,
+                type: 'question',
+                buttons: ['Cancelar', 'Confirmar'],
+            });
+
+            if(response == 1) {
+
+                storeBuys.deleteBuy(id);
+                return true;
+            } else{
+                return false;
+            }
+            
+        };
+    });
 };

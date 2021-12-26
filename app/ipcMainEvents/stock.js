@@ -14,7 +14,7 @@ const { mainHandlebars,
         createDepartmentsWindow,
         returnStockWindow,
         returnDeleteProductWindow,
-        
+        returnEditProductWindow,
 } = require('../createWindows');
 
 module.exports = ({
@@ -57,7 +57,14 @@ module.exports = ({
     });
 
     ipcMain.on('load-editproduct-window', () => {
-        createEditProductWindow();
+        const departments = storeDepartments.getAllDepartments();
+        const locationsShow = storeLocations.getAllLocationsShow();
+        const locationsStore = storeLocations.getAllLocationsStore();
+        const measures = storeMeasures.getAllMeasures();
+
+        if(departments, locationsShow, locationsStore, measures){
+            createEditProductWindow({departments, locationsShow, locationsStore, measures});
+        }
     });
 
     ipcMain.on('load-deleteproduct-window', () => {
@@ -144,7 +151,7 @@ module.exports = ({
             stock: initialStock,
             location,
             department: department.description,
-            unitMeasure: `${unitMeasure.shortDescription} - ${unitMeasure.longDescription}`,
+            unitMeasure: `${unitMeasure.longDescription}`,
         });
 
         if(newProduct != undefined && newProduct != null){
@@ -168,7 +175,7 @@ module.exports = ({
         return check;
     });
 
-    let idDeleted = 0;
+    let idDeleted;
     ipcMain.on('delete-product', (e, id) => {
         if(id){
             storeProducts.deleteProduct(id);
@@ -187,5 +194,49 @@ module.exports = ({
         const id = idDeleted;
         delete idDeleted;
         return id;
+    });
+
+    let modified;
+    ipcMain.on('edit-product', (e, {
+        id,
+        description,
+        buyPrice,
+        wholesalerPrice,
+        unitPrice,
+        stock,
+        departmentId,
+        locationShowId,
+        locationStoreId,
+        unitMeasureId,
+    }) => {
+
+        if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && departmentId && locationShowId && locationStoreId && unitMeasureId) {
+            const editedProduct = storeProducts.editProduct({
+                id,
+                description,
+                buyPrice,
+                wholesalerPrice,
+                unitPrice,
+                stock,
+                departmentId,
+                locationShowId,
+                locationStoreId,
+                unitMeasureId,
+            });
+            
+            const stockWindow = returnStockWindow();
+            const editProductWindow = returnEditProductWindow();
+
+            editProductWindow.webContents.send('confirm-product-edit');
+            stockWindow.webContents.send('update-products-list-byedit');
+
+            modified = editedProduct;
+        }
+
+        ipcMain.handle('get-modified-id', () => {
+            const editedProduct = modified;
+            delete modified;
+            return editedProduct; 
+        });
     });
 };

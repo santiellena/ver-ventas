@@ -13,4 +13,16 @@ async function seeBuyDetail (id){
     });
 
     tbodyDetails.innerHTML = allItems;
-}
+};
+
+async function deleteBuy (id) {
+    const answer = await ipcRenderer.invoke('delete-buy', id);
+    if(answer == true) {
+        const tr = document.getElementById(`tr${id}`);
+        tr.remove();
+        const childElements = document.getElementsByClassName('child');
+        for (const element of childElements) {
+            element.remove();
+        };
+    };
+};

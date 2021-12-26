@@ -36,3 +36,18 @@ async function seeOrderDetails (id) {
 
     tbody.innerHTML = textHtml;
 };
+
+async function deleteOrder(id){
+    if(id){
+        const answer = await ipcRenderer.invoke('delete-order', id);
+
+        if(answer == true){
+            const tr = document.getElementById(`tr${id}`);
+            tr.remove();
+            const childElements = document.getElementsByClassName('child');
+            for (const element of childElements) {
+                element.remove();
+            };
+        };
+    };
+};

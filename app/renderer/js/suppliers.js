@@ -21,7 +21,6 @@ function loadAddWindow() {
 
 ipcRenderer.on('load-new-supplier', async () => {
     const newSupplier = await ipcRenderer.invoke('get-supplier-added');
-    console.log(newSupplier);
     const tbody = document.getElementById('tbody-suppliers');
 
     const tr = document.createElement('tr');

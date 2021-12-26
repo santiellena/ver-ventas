@@ -28,6 +28,7 @@ async function searchByDate() {
                     <th>${e.date}</th>
                     <th>$ ${e.amount}</th>
                     <th>${e.customer}</th>
+                    <th>${e.emplooy}</th>
                     <th>${e.branch}</th>
                     <th><button class="btn btn-info" onclick="seeOrderDetails(${e.id})">Ver</button></th>
                 </tr>`
@@ -52,6 +53,7 @@ async function resetList() {
             <th>${order.date}</th>
             <th>$ ${order.amount}</th>
             <th>${order.customer}</th>
+            <th>${order.emplooy}</th>
             <th>${order.branch}</th>
             <th><button class="btn btn-info" onclick="seeOrderDetails(${order.id})">Ver</button></th>
         </tr>

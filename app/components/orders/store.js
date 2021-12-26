@@ -9,6 +9,7 @@ const orders = {
       date: date,
       amount: 2200,
       branch: 'Principal',
+      emplooy: 'Administador',
       customer: 2,
       priceList: 'public',
       details: [
@@ -27,6 +28,7 @@ const orders = {
       date: date,
       amount: 15000,
       branch: 'Principal',
+      emplooy: 'Administrador',
       customer: 4,
       priceList: 'wholesaler',
       details: [
@@ -112,6 +114,7 @@ function addOrder ({
     customer,
     priceList,
     details,
+    emplooy,
 }) {
     if(amount && branch && customer && priceList && details){
         const actualDate = new Date();
@@ -156,10 +159,17 @@ function addOrder ({
             branch,
             customer,
             priceList,
+            emplooy,
             details: detailsForOrder,
         };
     };
 };
+
+function deleteOrder (id) {
+    if(id){
+        delete orders[id];
+    }
+}
 
 module.exports = {
     getAllOrders,
@@ -167,4 +177,5 @@ module.exports = {
     getOrderDetails,
     getOrdersByDate,
     addOrder,
+    deleteOrder,
 };

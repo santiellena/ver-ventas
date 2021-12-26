@@ -1,0 +1,130 @@
+ <!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->   
+
+    <link rel="stylesheet" href="../../css/sells-history.css">
+    <link rel="stylesheet" href="../../css/addProduct.css">
+
+<!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Modificar Producto</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row" style="display: flex; justify-content: center;">
+                          
+                                <form action="" id="form" class="form">
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="id-product">Código de Barras</label>
+			                            <div class="col-md-14 col-sm-14 has-feedback form-group">
+										    <input type="number" class="form-control has-feedback-right" style="width: 18rem" id="id-product" required="required" autofocus onkeyup="checkCodeValue();"  onchange="checkCodeValue()">
+											<span class="fa fa-circle-thin form-control-feedback right" id="codeFeedback" style="display: inline-block; right: 17%" aria-hidden="true"></span>
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="description-product">Descripción</label>
+			                            <div class="col-md-14 col-sm-14 ">
+										    <input type="text" class="form-control has-feedback-left" style="width: 18rem" id="description-product" required="required" >
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="buyPrice-product">Precio de Compra</label>
+			                            <div class="col-md-14 col-sm-14 ">
+										    <input type="number" class="form-control has-feedback-left" style="width: 18rem" id="buyPrice-product" required="required" >
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="wholesalerPrice-product">Precio Venta Mayorista</label>
+			                            <div class="col-md-14 col-sm-14">
+										    <input type="number" class="form-control has-feedback-left" style="width: 18rem" id="wholesalerPrice-product" required="required" >
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="unitPrice-product">Precio Venta Minorista</label>
+			                            <div class="col-md-14 col-sm-14 ">
+										    <input type="number" class="form-control has-feedback-left" style="width: 18rem" id="unitPrice-product" required="required" >
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+									    <label class="col-form-label col-md-5 col-sm-5 label-align" for="initialStock-product">Stock</label>
+			                            <div class="col-md-14 col-sm-14 ">
+										    <input type="number" class="form-control has-feedback-left" style="width: 18rem" id="stock-product" required="required" >
+		                                </div>
+	                                </div>
+                                    <div class="item form-group div-input">
+											<label class="col-form-label col-md-5 col-sm-5 label-align" for="department-product">Departamento</label>
+											<div class="col-md-14 col-sm-14 ">
+												<select class="form-control"  id="department-product" style="width: 18rem" required="required">
+													{{#each departments}}
+                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                    {{/each}}
+												</select>
+											</div>
+									</div>
+                                    <div class="item form-group div-input">
+											<label class="col-form-label col-md-5 col-sm-5 label-align" for="locationShow-product">Ubicación Exposición</label>
+											<div class="col-md-14 col-sm-14">
+												<select class="form-control" style="width: 18rem"  id="locationShow-product" required="required">
+													{{#each locationsShow}}
+                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                    {{/each}}
+												</select>
+											</div>
+									</div>
+									<div class="item form-group div-input">
+											<label class="col-form-label col-md-5 col-sm-5 label-align" for="locationStore-product">Ubicación Almacen</label>
+											<div class="col-md-14 col-sm-14">
+												<select class="form-control" style="width: 18rem"  id="locationStore-product" required="required">
+													{{#each locationsStore}}
+                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                    {{/each}}
+												</select>
+											</div>
+									</div>
+									<div class="item form-group div-input">
+											<label class="col-form-label col-md-5 col-sm-5 label-align" for="unitMeasure-product">Unidad de Medida</label>
+											<div class="col-md-14 col-sm-14">
+												<select class="form-control" style="width: 18rem"  id="unitMeasure-product" required="required">
+													{{#each measures}}
+                                                        <option value="{{this.id}}" id="{{this.longDescription}}">{{this.shortDescription}} - {{this.longDescription}}</option>
+                                                    {{/each}}
+												</select>
+											</div>
+									</div>
+                                    <button type="submit" style="display: none;"></button>
+                                </form>
+                                <div class="ln_solid"></div>
+                                <div style="display: flex; justify-content: center; margin-top: 1rem">
+                                            <button class="btn btn-success" type="submit" onclick="editProduct();"><i class="fa fa-edit"></i> Modificar Producto</button>
+                                            <button class="btn btn-danger" onclick="window.close();"><i class="fa fa-trash-o"></i> Cancelar</button>
+                                </div>
+                    </div>
+                  </div>
+                </div>
+</div>
+<script src="../../js/editProduct.js"></script>
+<script>
+	const form = document.getElementById('form');
+
+	const func = e => {
+		e.preventDefault();
+	};
+
+	form.addEventListener('submit', func, true);
+</script>

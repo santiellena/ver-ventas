@@ -56,12 +56,13 @@
                           <th>Sucursal</th>
                           <th>Proveedor</th>
                           <th>Forma de pago</th>
-                          <th>Detalles</th>
+                          <th>Opciones</th>
                         </tr>
                       </thead>
                       <tbody id="tbody-buys">
+                        {{#if buys}}
                         {{#each buys}}
-                        <tr>
+                        <tr id="tr{{this.id}}">
                           <th>{{this.id}}</th>
                           <th>{{this.date}}</th>
                           <th>$ {{this.amount}}</th>
@@ -69,9 +70,17 @@
                           <th>{{this.branch}}</th>
                           <th>{{this.supplier}}</th>
                           <th>{{this.howPaid}}</th>
-                          <th><button class="btn btn-info" onclick="seeBuyDetail({{id}})">Ver</button></th>
+                          <th>
+                            <button class="btn btn-info" onclick="seeBuyDetail({{this.id}})">Detalles</button>
+                            <button class="btn btn-danger" onclick="deleteBuy({{this.id}})"><i class="fa fa-trash"></i></button>
+                            </th>
                         </tr>
                         {{/each}}
+                        {{else}}
+                        <tr class="odd" id="tr-alert">
+                                <td valign="top" colspan="7" class="dataTables_empty">Ningún Producto Agregado</td>
+                              </tr>
+                        {{/if}}
                       </tbody>
                     </table>
                   </div>

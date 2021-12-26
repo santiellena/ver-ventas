@@ -20,6 +20,7 @@ async function searchByDate () {
         <th>${sell[1].date}</th>
         <th>${sell[1].amount}</th>
         <th>${sell[1].customer}</th>
+        <th>${sell[1].emplooy}</th>
         <th>${sell[1].branch}</th>
         <th>${sell[1].howPaid}</th>
         <th><button class="btn btn-info" onclick="seeDetail(${sell[1].id})">Ver</button></th>

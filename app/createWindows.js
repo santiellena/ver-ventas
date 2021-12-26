@@ -494,6 +494,7 @@ function createPaymentWindow ({
     addProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 705,
+      resizable: false,
       title: `Mercado 1990 - Agregar Producto`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -518,12 +519,18 @@ function createPaymentWindow ({
     
   };
 
-  function createEditProductWindow () {
+  function createEditProductWindow ({
+    departments,
+    locationsShow, 
+    locationsStore, 
+    measures,
+  }) {
     editProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 800, height: 1000,
+      width: 650, height: 705,
       title: `Mercado 1990 - Editar Producto`,
       backgroundColor: 'F7F7F7',
+      resizable: false,
       webPreferences: { 
         nodeIntegration: false,
         preload: `${__dirname}/preload.js`,
@@ -534,7 +541,7 @@ function createPaymentWindow ({
     });
    
     // Load index.hbs into the new BrowserWindow
-    editProductWindow.loadFile(historyHandlebars.render('/stock/editProduct.hbs'));
+    editProductWindow.loadFile(historyHandlebars.render('/stock/editProduct.hbs', {departments, locationsShow, locationsStore, measures}));
     
     handleErrors(editProductWindow);
     

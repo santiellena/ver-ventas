@@ -6,6 +6,7 @@ const sells = {
       date: '2021/12/15-20:34',
       amount: 270,
       branch: 'Principal',
+      emplooy: 'Administrador',
       customer: 'Consumidor final',
       howPaid: 'Contado',
       details: [
@@ -21,6 +22,7 @@ const sells = {
       date: '2021/12/13-0:00',
       amount: 480,
       branch: 'Principal',
+      emplooy: 'Pablo',
       customer: 'Baez Pedro',
       howPaid: 'Cuenta corriente',
       details: [
@@ -87,11 +89,12 @@ function addSell ({
     amount,
     branch,
     customer,
+    emplooy,
     howPaid,
     details,
     priceList,
 }) {
-    if(amount, branch, customer, howPaid, details, priceList) {
+    if(amount, branch, customer, howPaid, details, priceList, emplooy) {
         const actualDate = new Date();
         let minutesString = actualDate.getMinutes().toString();
         let minutes = '';
@@ -144,7 +147,16 @@ function addSell ({
             customer,
             howPaid,
             details: detailsForSell,
+            emplooy,
         };
+    };
+};
+
+function deleteSell (id) {
+    if(id != undefined && id != null){
+        
+
+        delete sells[id];
     };
 };
 
@@ -154,4 +166,5 @@ module.exports = {
     getSellDetail,
     getSellsByDate,
     addSell,
+    deleteSell,
 };

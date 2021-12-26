@@ -1,3 +1,7 @@
+const storeDepartments = require('../departments/store');
+const storeLocations = require('../locations/store');
+const StoreUnitMeasure = require('../unitMeasures/store');
+
 const products = {
     1: {
         id: 1,
@@ -7,7 +11,7 @@ const products = {
         wholesalerPrice: 100,
         buyPrice: 75,
         location: ['Estante 1', 'Pasillo 1'],
-        department: 'Varios',
+        department: 'Carniceria',
         unitMeasure: 'Unidad',
     },
     2: {
@@ -82,7 +86,7 @@ function addProduct ({
         location,
         department,
         unitMeasure){
-            const quantity = parseInt(stock);
+            const quantity = parseFloat(stock);
             if(products[id] == undefined){
                 return products[id] = {
                     id,
@@ -113,6 +117,41 @@ function updateStockFormSell (id, minusStock) {
     };
 };
 
+function editProduct ({
+    id,
+    description,
+    buyPrice,
+    wholesalerPrice,
+    unitPrice,
+    stock,
+    departmentId,
+    locationShowId,
+    locationStoreId,
+    unitMeasureId,
+}) {
+    if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && departmentId && locationShowId && locationStoreId && unitMeasureId) {
+        const department = storeDepartments.getDepartment(departmentId).description;
+        const locationShow = storeLocations.getLocationShow(locationShowId).description;
+        const locationStore = storeLocations.getLocationStore(locationStoreId).description;
+        const location = [locationStore, locationShow];
+        const unitMeasure = StoreUnitMeasure.getMeasure(unitMeasureId).longDescription;
+        
+        if(products[id] != undefined){
+            return products[id] = {
+                id: parseInt(id),
+                description,
+                buyPrice: parseFloat(buyPrice),
+                wholesalerPrice: parseFloat(wholesalerPrice),
+                unitPrice: parseFloat(unitPrice),
+                stock: parseFloat(stock),
+                department,
+                location,
+                unitMeasure,
+            };
+        };
+    };
+};
+
 module.exports = {
     getProduct,
     getAllProducts,
@@ -121,4 +160,5 @@ module.exports = {
     addProduct,
     checkExistance,
     deleteProduct,
+    editProduct,
 };

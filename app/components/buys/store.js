@@ -111,6 +111,7 @@ function addBuy({
 
 function deleteBuy(id){
     if(id != undefined && id != null){
+        
         delete buys[id];
     };
 };
