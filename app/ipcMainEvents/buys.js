@@ -3,6 +3,8 @@ const { ipcMain, dialog } = require('electron');
 const storeSuppliers = require('../components/suppliers/store');
 const storeBuys = require('../components/buys/store');
 const storeProducts = require('../components/products/store');
+const storeDocTypes = require('../components/docTypes/store');
+const storeDirections = require('../components/directions/store');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -32,19 +34,29 @@ module.exports = ({
 
     ipcMain.on('load-editsupplier-window', (e, id) => {
         const supplier = storeSuppliers.getSupplier(id);
+        const docTypes = storeDocTypes.getAllDocTypes();
+        const provinces = storeDirections.getAllProvinces();
+        const object = JSON.parse(provinces);
         if(supplier != undefined && supplier != null){
-            createSuppliersEditWindow({supplier});
+            createSuppliersEditWindow({supplier, docTypes, provinces: object.provincias});
         };
     });
 
     ipcMain.on('load-addsupplier-window', () => {
-        createSuppliersAddWindow();
+        const docTypes = storeDocTypes.getAllDocTypes();
+        const provinces = storeDirections.getAllProvinces();
+        const object = JSON.parse(provinces);
+        createSuppliersAddWindow({docTypes, provinces: object.provincias});
     });
 
     ipcMain.on('delete-supplier', (e, id) => {
         storeSuppliers.deleteSupplier(id);
         const suppliersWindow = returnSuppliersWindow();
         suppliersWindow.webContents.send('delete-supplier-selected');
+    });
+
+    ipcMain.handle('get-supplier', (e, id) => {
+        return storeSuppliers.getSupplier(id);
     });
 
     let supplierAdded;

@@ -36,13 +36,13 @@
 		                            </div>
 	                            </div>
                                 <div class="form-group row">
-											<label class="control-label col-md-3 col-sm-3 ">Tipo de Documento</label>
+											<label class="col-form-label col-md-3 col-sm-3 label-align">Tipo de Documento</label>
 											<div class="col-md-6 col-sm-6 ">
 												<select class="form-control" required="required" id="docType">
 													<option>Elija...</option>
-													<option>DNI</option>
-													<option>Pasaporte</option>
-													<option>RUC</option>
+													{{#each docTypes}}
+													<option value="{{this.id}}">{{this.description}}</option>
+													{{/each}}
 												</select>
 											</div>
 									</div>
@@ -53,21 +53,26 @@
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cuit">CUIT</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cuit">CUIT/CUIL</label>
 			                        <div class="col-md-6 col-sm-6 ">
 			                        <input type="number" id="cuit" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
-			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirProv" required="required" class="form-control ">
-		                            </div>
-	                            </div>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
+											<div class="col-md-6 col-sm-6 ">
+												<select class="form-control"  id="dirProv"  required="required" onchange="loadDepartments();">
+													{{#each provinces}}
+                                                        <option value="{{this.id}}">{{this.nombre}}</option>
+                                                    {{/each}}
+												</select>
+											</div>
+									</div>
                                   <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirDepto" required="required" class="form-control ">
+			                        	<select class="form-control"  id="dirDepto"  required="required" onchange="loadCities();">
+										</select>
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
@@ -79,7 +84,8 @@
                                   <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">Localidad</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="city" required="required" class="form-control ">
+			                        	<select class="form-control"  id="city"  required="required" >
+										</select>
 		                            </div>
 	                            </div>
                                   <div class="item form-group">

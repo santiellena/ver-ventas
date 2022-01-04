@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -313,7 +313,12 @@ function createPaymentWindow ({
     });
   };
 
-  function createSuppliersEditWindow({ supplier}) {
+  function createSuppliersEditWindow({
+    supplier,
+    docTypes,
+    provinces,
+    
+  }) {
     suppliersEditWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -329,7 +334,7 @@ function createPaymentWindow ({
     });
     
     // Load index.hbs into the new BrowserWindow
-    suppliersEditWindow.loadFile(historyHandlebars.render('/buys/suppliersEdit.hbs', {supplier}));
+    suppliersEditWindow.loadFile(historyHandlebars.render('/buys/suppliersEdit.hbs', {supplier, docTypes, provinces}));
     
     handleErrors(suppliersEditWindow);
     
@@ -340,7 +345,10 @@ function createPaymentWindow ({
     });
   };
 
-  function createSuppliersAddWindow() {
+  function createSuppliersAddWindow({
+    docTypes,
+    provinces,
+  }) {
     suppliersAddWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -356,7 +364,7 @@ function createPaymentWindow ({
     });
     
     // Load index.hbs into the new BrowserWindow
-    suppliersAddWindow.loadFile(historyHandlebars.render('/buys/suppliersAdd.hbs'));
+    suppliersAddWindow.loadFile(historyHandlebars.render('/buys/suppliersAdd.hbs', {docTypes, provinces}));
     
     handleErrors(suppliersAddWindow);
     
@@ -559,6 +567,7 @@ function createPaymentWindow ({
       width: 400, height: 340,
       title: `Mercado 1990 - Eliminar Producto`,
       backgroundColor: 'F7F7F7',
+      resizable: false,
       webPreferences: { 
         nodeIntegration: false,
         preload: `${__dirname}/preload.js`,
@@ -609,6 +618,127 @@ function createPaymentWindow ({
       departmentsWindow = null;
     });
     
+  };
+
+  function createCustomersWindow ({
+    customers,
+  }) {
+    const actualDate = new Date();
+    const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
+  
+    customersWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1500, height: 1000,
+      title: `Mercado 1990 - Clientes / Cuentas Corrientes - ${date}`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    customersWindow.loadFile(historyHandlebars.render('/customers/customers.hbs', {customers}));
+    
+    handleErrors(customersWindow);
+    
+    // Listen for window being closed
+    customersWindow.on('closed',  () => {
+      customersWindow.removeAllListeners();
+      customersWindow = null;
+    });
+  };
+
+  function  createAddCustomerWindow ({
+    provinces,
+    docTypes,
+    freeCode,
+  }) {
+    addCustomerWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 650, height: 705,
+      title: `Mercado 1990 - Clientes - Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: customersWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    addCustomerWindow.loadFile(historyHandlebars.render('/customers/addCustomer.hbs', {docTypes, provinces, freeCode}));
+    
+    handleErrors(addCustomerWindow);
+    
+    // Listen for window being closed
+    addCustomerWindow.on('closed',  () => {
+      addCustomerWindow.removeAllListeners();
+      addCustomerWindow = null;
+    });
+  };
+
+  function createEditCustomerWindow ({
+    provinces,
+    docTypes,
+  }) {
+    editCustomerWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 650, height: 705,
+      title: `Mercado 1990 - Clientes - Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: customersWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    editCustomerWindow.loadFile(historyHandlebars.render('/customers/editCustomer.hbs', {provinces, docTypes}));
+    
+    handleErrors(editCustomerWindow);
+    
+    // Listen for window being closed
+    editCustomerWindow.on('closed',  () => {
+      editCustomerWindow.removeAllListeners();
+      editCustomerWindow = null;
+    });
+  };
+
+  function createDeleteCustomerWindow () {
+    deleteCustomerWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 400, height: 340,
+      title: `Mercado 1990 - Clientes - Agregar`,
+      backgroundColor: 'F7F7F7',
+      resizable: false,
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: customersWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    deleteCustomerWindow.loadFile(historyHandlebars.render('/customers/deleteCustomer.hbs'));
+    
+    handleErrors(deleteCustomerWindow);
+    
+    // Listen for window being closed
+    deleteCustomerWindow.on('closed',  () => {
+      deleteCustomerWindow.removeAllListeners();
+      deleteCustomerWindow = null;
+    });
   };
 
   function returnMainWindow () {
@@ -687,6 +817,22 @@ function returnDepartmentsWindow () {
     return departmentsWindow;
 };
 
+function returnCustomersWindow () {
+  return customersWindow
+};
+
+function returnAddCustomerWindow () {
+    return addCustomerWindow;
+};
+
+function returnEditCustomerWindow () {
+  return editCustomerWindow;
+};
+
+function returnDeleteCustomerWindow () {
+  return deleteCustomerWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -707,6 +853,10 @@ module.exports = {
     createEditProductWindow,
     createDeleteProductWindow,
     createDepartmentsWindow,
+    createCustomersWindow,
+    createAddCustomerWindow,
+    createEditCustomerWindow,
+    createDeleteCustomerWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -726,6 +876,10 @@ module.exports = {
     returnEditProductWindow,
     returnDeleteProductWindow,
     returnDepartmentsWindow,
+    returnCustomersWindow,
+    returnAddCustomerWindow,
+    returnEditCustomerWindow,
+    returnDeleteCustomerWindow,
     mainHandlebars,
     historyHandlebars,
 };

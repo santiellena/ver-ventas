@@ -26,33 +26,11 @@ document.getElementById('suppliers-page').addEventListener('click', () => {
 
 document.getElementById('stats-page').addEventListener('click', () => loadPageInMain('stats/stats.hbs'));
 
-document.getElementById('query-sells-page').addEventListener('click', () => loadPageInMain('/query/sells.hbs'));
-
-document.getElementById('query-sells-detail-page').addEventListener('click', () => loadPageInMain('query-sells-detail.hbs'));
-
-document.getElementById('query-sells-pending-page').addEventListener('click', () => loadPageInMain('query-sells-pending.hbs'));
-
-document.getElementById('query-sells-cash-page').addEventListener('click', () => loadPageInMain('/query/sells-cash.hbs'));
-
-document.getElementById('query-sells-credit-page').addEventListener('click', () => loadPageInMain('/query/sells-credit.hbs'));
-
-document.getElementById('query-sells-customer-page').addEventListener('click', () => loadPageInMain('/query/sells-credit.hbs'));
-
-document.getElementById('query-sells-employee-page').addEventListener('click', () => loadPageInMain('/query/sells-employee.hbs'));
-
-document.getElementById('query-sells-employee-detail-page').addEventListener('click', () => loadPageInMain('/query/sells-employee-detail.hbs'));
-
-document.getElementById('query-buys-page').addEventListener('click', () => loadPageInMain('/query/buys.hbs'));
-
-document.getElementById('query-buys-detail-page').addEventListener('click', () => loadPageInMain('/query/buys-detail.hbs'));
-
-document.getElementById('query-buys-supplier-page').addEventListener('click', () => loadPageInMain('/query/buys-supplier.hbs'));
-
-document.getElementById('query-buys-supplier-detail-page').addEventListener('click', () => loadPageInMain('/query/buys-supplier-detail.hbs'));
-
 document.getElementById('kardex-page').addEventListener('click', () => loadPageInMain('/stock/kardex.hbs'));
 
 document.getElementById('stock-page').addEventListener('click', () => ipcRenderer.send('load-stock-window'));
+
+document.getElementById('customers-page').addEventListener('click', () => ipcRenderer.send('load-customers-window'));
 
 document.getElementById('maintenance-page').addEventListener('click', () => loadPageInMain('/maintenance/maintenance.hbs'));
 

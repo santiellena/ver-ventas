@@ -1,0 +1,36 @@
+<title>Mercado 1990 - Eliminar Cliente</title>
+ <!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+
+    <link rel="stylesheet" href="../../css/deleteProduct.css">
+
+<!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_content">
+                      <div class="row">
+                            <div class="container-code">
+                                <span class="glyphicon glyphicon-barcode barcode" aria-hidden="true"></span>
+                                <span class="glyphicon-class sub-title-code">Código del Cliente a Eliminar:</span> 
+                            </div>
+                            <div class="item form-group container-input">
+			                            <div class="col-md-10 col-sm-10 has-feedback form-group container-input">
+										    <input type="number" class="form-control has-feedback-right" style="width: 18rem" id="id-product" required="required" autofocus onkeyup="checkCodeValue()" onchange="checkCodeValue()">
+											<span class="fa fa-circle-thin form-control-feedback right" id="codeFeedback" style="display: inline-block; right: 10%" aria-hidden="true"></span>
+		                                </div>
+                                        <button class="btn btn-danger" onclick="deleteCustomer();"><i class="fa fa-trash"></i> Eliminar</button>
+	                                </div>
+                      </div>
+                  </div>
+                </div>
+</div>
+<script src="../../js/deleteCustomer.js"></script>

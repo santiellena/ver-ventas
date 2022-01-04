@@ -2,7 +2,7 @@ const suppliers = {
     1: {
         id: 1,
         name: 'La Campesina S.A.S',
-        docType: 'DNI',
+        docType: 'RUC',
         numDoc: 32664333,
         dirDepto: 'San Justo',
         dirProv: 'Córdoba',

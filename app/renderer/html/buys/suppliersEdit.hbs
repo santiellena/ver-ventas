@@ -35,13 +35,12 @@
 		                            </div>
 	                            </div>
                                 <div class="form-group row">
-											<label class="control-label col-md-3 col-sm-3 ">Tipo de Documento</label>
+											<label class="col-form-label col-md-3 col-sm-3 label-align">Tipo de Documento</label>
 											<div class="col-md-6 col-sm-6 ">
 												<select class="form-control" required="required" id="docType">
-													<option selected>{{supplier.docType}}</option>
-													<option value="DNI">DNI</option>
-													<option value="PASAPORTE">Pasaporte</option>
-													<option value="RUC">RUC</option>
+													{{#each docTypes}}
+													<option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+													{{/each}}
 												</select>
 											</div>
 									</div>
@@ -60,13 +59,18 @@
                                   <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirProv" required="required" class="form-control" value="{{supplier.dirProv}}">
+										<select class="form-control"  id="dirProv"  required="required" onchange="loadDepartmets();">
+											{{#each provinces}}
+											<option value="{{this.id}}" id="{{this.nombre}}">{{this.nombre}}</option>
+											{{/each}}
+										</select>
 		                            </div>
 	                            </div>
-                                  <div class="item form-group">
+                                   <div class="item form-group">
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirDepto" required="required" class="form-control" value="{{supplier.dirDepto}}">
+			                        	<select class="form-control"  id="dirDepto"  required="required" onchange="loadCities();">
+										</select>
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
@@ -75,10 +79,11 @@
 			                        <input type="number" id="postCode" required="required" class="form-control" value="{{supplier.dirPostCode}}">
 		                            </div>
 	                            </div>
-                                  <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirCity">Localidad</label>
+                                   <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">Localidad</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="text" id="dirCity" required="required" class="form-control" value="{{supplier.dirCity}}">
+			                        	<select class="form-control"  id="city"  required="required" >
+										</select>
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
@@ -121,6 +126,6 @@
                 </div>
 </div>
 <script>
-	window.supplier = {{supplier}};
+	window.supplier = {{supplier.id}};
 </script>
 <script src="../../js/suppliersEdit.js"></script>

@@ -130,7 +130,6 @@ ipcRenderer.on('update-products-list-bydelete', async () => {
         tr.remove();
 
         const tbody = document.getElementById('tbody-products');
-        console.log(tbody);
         if(tbody.children.length == 0){
             const trAlert = document.createElement('tr');
             trAlert.setAttribute('class', 'odd');

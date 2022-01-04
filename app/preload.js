@@ -47,7 +47,13 @@ contextBridge.exposeInMainWorld(
                 'get-sells-details',
                 'select-customer-for-order',
                 'edit-product',
-                
+                'load-customers-window',
+                'load-addcustomer-window',
+                'load-editcustomer-window',
+                'load-deletecustomer-window',
+                'add-customer',
+                'edit-customer',
+                'delete-customer',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -74,6 +80,12 @@ contextBridge.exposeInMainWorld(
                 'get-sells-details',
                 'confirm-product-edit',
                 'update-products-list-byedit',
+                'update-customer-list-fromadd',
+                'confirm-added-customer',
+                'update-customer-list-fromedit',
+                'confirm-edited-customer',
+                'confirm-customer-delete',
+                'update-customers-list-bydelete',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -96,6 +108,7 @@ contextBridge.exposeInMainWorld(
                 'get-orders-bydate',
                 'get-supplier-added',
                 'get-supplier-edited',
+                'get-supplier',
                 'search-buys-by-date',
                 'get-buys-detail',
                 'get-added-tobuy',
@@ -112,6 +125,14 @@ contextBridge.exposeInMainWorld(
                 'delete-buy',
                 'delete-sell',
                 'delete-order',
+                'get-departments-byprovince',
+                'get-cities-bydepartment',
+                'check-customer-existance',
+                'get-added-customer-update',
+                'get-edited-customer',
+                'get-customer',
+                'get-idcustomer-deleted',
+
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

@@ -29,3 +29,39 @@ function addSupplier() {
     });
     window.close();
 };
+
+async function loadCities() {
+    const idDepartment = document.getElementById('dirDepto').value;
+    if(idDepartment){
+        const cities = await ipcRenderer.invoke('get-cities-bydepartment', idDepartment);
+
+        const selectCities = document.getElementById('city');
+        selectCities.innerHTML = '';
+        cities.map(e => {
+            const option = document.createElement('option');
+
+            option.value = e.id;
+            option.innerText = e.nombre;
+
+            selectCities.appendChild(option);
+        });
+    };
+};
+
+async function loadDepartments () {
+    const idProvince = document.getElementById('dirProv').value;
+    const departments = await ipcRenderer.invoke('get-departments-byprovince', idProvince);
+
+    const selectDepartments = document.getElementById('dirDepto');
+    selectDepartments.innerHTML = '';
+    departments.map(e => {
+        const option = document.createElement('option');
+
+        option.value = e.id;
+        option.innerText = e.nombre;
+
+        selectDepartments.appendChild(option);
+    });
+    loadCities();
+};
+loadDepartments();
