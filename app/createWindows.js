@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -564,7 +564,7 @@ function createPaymentWindow ({
   function createDeleteProductWindow () {
     deleteProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 400, height: 340,
+      width: 400, height: 358,
       title: `Mercado 1990 - Eliminar Producto`,
       backgroundColor: 'F7F7F7',
       resizable: false,
@@ -716,7 +716,7 @@ function createPaymentWindow ({
   function createDeleteCustomerWindow () {
     deleteCustomerWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 400, height: 340,
+      width: 400, height: 358,
       title: `Mercado 1990 - Clientes - Agregar`,
       backgroundColor: 'F7F7F7',
       resizable: false,
@@ -738,6 +738,62 @@ function createPaymentWindow ({
     deleteCustomerWindow.on('closed',  () => {
       deleteCustomerWindow.removeAllListeners();
       deleteCustomerWindow = null;
+    });
+  };
+
+  function createPayDebtsWindow ({
+    idCustomer
+  }) {
+    payDebtsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 600,
+      title: 'Mercado 1990 ',
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: listDebtsWindow,
+      modal: true,
+    });
+    // Load index.hbs into the new BrowserWindow
+    payDebtsWindow.loadFile(historyHandlebars.render(`customers/payDebt.hbs`, {idCustomer}));
+    
+    handleErrors(payDebtsWindow);
+    
+    // Listen for window being closed
+    payDebtsWindow.on('closed',  () => {
+    payDebtsWindow.removeAllListeners();
+    payDebtsWindow = null;
+    });
+    
+  };
+
+  function createListDebtsWindow () {
+    listDebtsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1300, height: 1000,
+      title: `Mercado 1990 - Lista de Deudas`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: customersWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    listDebtsWindow.loadFile(historyHandlebars.render('/customers/listDebts.hbs'));
+    
+    handleErrors(listDebtsWindow);
+    
+    // Listen for window being closed
+    listDebtsWindow.on('closed',  () => {
+      listDebtsWindow.removeAllListeners();
+      listDebtsWindow = null;
     });
   };
 
@@ -833,6 +889,14 @@ function returnDeleteCustomerWindow () {
   return deleteCustomerWindow;
 };
 
+function returnPayDebtsWindow () {
+  return payDebtsWindow;
+};
+
+function returnListDebtsWindow () {
+  return listDebtsWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -857,6 +921,8 @@ module.exports = {
     createAddCustomerWindow,
     createEditCustomerWindow,
     createDeleteCustomerWindow,
+    createPayDebtsWindow,
+    createListDebtsWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -880,6 +946,8 @@ module.exports = {
     returnAddCustomerWindow,
     returnEditCustomerWindow,
     returnDeleteCustomerWindow,
+    returnPayDebtsWindow,
+    returnListDebtsWindow,
     mainHandlebars,
     historyHandlebars,
 };

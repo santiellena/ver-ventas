@@ -12,6 +12,10 @@ document.getElementById('delete-customer-window').addEventListener('click', () =
     ipcRenderer.send('load-deletecustomer-window');
 });
 
+document.getElementById('pay-customer-debt').addEventListener('click', () => {
+    ipcRenderer.send('load-listdebts-window');
+});
+
 ipcRenderer.on('update-customer-list-fromadd', async () => {
     const added = await ipcRenderer.invoke('get-added-customer-update');
     if(added){

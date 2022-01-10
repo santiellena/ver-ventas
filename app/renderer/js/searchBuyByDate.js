@@ -19,9 +19,9 @@ async function searchBuyByDate () {
         <th>${buy[1].id}</th> 
         <th>${buy[1].date}</th>
         <th>$ ${buy[1].amount}</th>
-        <th>${buy[1].emplooy}</th>
+        <th>${buy[1].emplooy.name}</th>
         <th>${buy[1].branch}</th>
-        <th>${buy[1].supplier}</th>
+        <th>${buy[1].supplier.name}</th>
         <th>${buy[1].howPaid}</th>
         <th><button class="btn btn-info" onclick="seeBuyDetail(${buy[1].id})">Ver</button></th>
       </tr>`

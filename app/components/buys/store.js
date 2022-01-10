@@ -7,9 +7,9 @@ const buys = {
         id: 1,
         date,
         amount: 3500,
-        emplooy: 'Administrador',
+        emplooy: {id: 1, name:'Administrador'},
         branch: 'Principal',
-        supplier: 'LA CAMPESINA S.A.S',
+        supplier: {id: 1, name:'LA CAMPESINA S.A.S'},
         howPaid: 'Transferencia Bancaria',
         details: [
             {
@@ -98,7 +98,7 @@ function addBuy({
 
         return buys[newId] = {
             id: newId,
-            supplier: supplier.name,
+            supplier: {id: supplier.id, name: supplier.name},
             emplooy,
             branch,
             howPaid,

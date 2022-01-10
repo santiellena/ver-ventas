@@ -36,6 +36,8 @@ const {
   createAddCustomerWindow,
   createEditCustomerWindow,
   createDeleteCustomerWindow,
+  createPayDebtsWindow,
+  createListDebtsWindow,
 } = require('./createWindows');
 
 if(process.env.NODE_ENV == 'development'){
@@ -102,4 +104,6 @@ ipcMainEvents.customers({
   createAddCustomerWindow,
   createEditCustomerWindow,
   createDeleteCustomerWindow,
-})
+  createPayDebtsWindow,
+  createListDebtsWindow,
+});

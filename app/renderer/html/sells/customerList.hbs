@@ -25,7 +25,7 @@
                             <a class="dropdown-item" href="#">Clientes activos</a>
                           </div>
                       </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
                     <div class="clearfix"></div>
@@ -53,7 +53,7 @@
                         <tr>
                           <th>{{this.id}}</th>
                           <th>{{this.name}}</th>
-                          <th>{{this.document}}</th>
+                          <th>{{this.numDoc}}</th>
                           <th>$ {{this.debts}}</th>
                           <th><button class="btn btn-success" onclick="selectCustomer({{this.id}});">+</button></th>
                         </tr>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/paymentWindow.css">
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container body">
+        <div class="main_container" style="display: flex;">
+            <div class="x_content">
+                <div class="bs-example" data-example-id="simple-jumbotron">
+                  <div class="jumbotron col-md-5" style="height: 98vh; margin-bottom: 0;">
+                    <div class="methods-container">
+                        <h3 class="lead" id="showCustomer"></h3>
+                        <h4 class="lead">Formas de pago:</h4>
+                        <button class="btn btn-warning button-method" onclick="payWithCash();">Efectivo</button>
+                        <button class="btn btn-primary button-method" onclick="payWithCard();">Tarjeta</button>
+                        <button class="btn btn-danger button-method" onclick="payWithTransference();">Transferencia Bancaria</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="second-content">
+                    <div class="col-md-8 col-sm-8  form-group has-feedback">
+                        <h2 id="showDebt" class="lead" style="text-align:center; margin-top: 5.5rem"></h2>
+                        <input type="number" class="form-control has-feedback-left" id="money" placeholder="Dinero" autofocus style="margin-bottom: .5rem;">
+                        <input type="text" class="form-control has-feedback-left" id="observation" placeholder="Observación">
+                    </div>
+                    <br>
+                    <button class="btn btn-danger" style="width: 70%;" onclick="window.close();"><span class="fa fa-close icn-method"></span>Cancelar</button>
+                </div>
+              </div>
+        </div>
+    </div>
+    <input type="hidden" name="" id="idCustomer" value="{{idCustomer}}">
+    <script src="../../js/payDebt.js"></script>
+    <!-- JS -->
+         <!-- jQuery -->
+         <script src="../../js/jquery/dist/jquery.min.js"></script>
+         <!-- Bootstrap -->
+        <script src="../../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+         <!-- FastClick -->
+         <script src="../../js/fastclick/lib/fastclick.js"></script>
+         <!-- NProgress -->
+         <script src="../../js/nprogress/nprogress.js"></script>
+         <!-- jQuery Sparklines -->
+         <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+         <!-- Custom Theme Scripts -->
+         <script src="../../js/custom.min.js"></script>
+
+</body>
+</html>

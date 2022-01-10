@@ -9,8 +9,8 @@ const orders = {
       date: date,
       amount: 2200,
       branch: 'Principal',
-      emplooy: 'Administador',
-      customer: 2,
+      emplooy: {id: 1, name:'Administrador'},
+      customer: {id: 2, name:'Nombre Desconocido'},
       priceList: 'public',
       details: [
         {
@@ -28,8 +28,8 @@ const orders = {
       date: date,
       amount: 15000,
       branch: 'Principal',
-      emplooy: 'Administrador',
-      customer: 4,
+      emplooy: {id: 1, name:'Administrador'},
+      customer: {id: 1, name:'Jorge Paoloski'},
       priceList: 'wholesaler',
       details: [
           {
@@ -45,31 +45,13 @@ const orders = {
 };
 
 function getAllOrders() {
-    let allOrders = orders;
-    
-    const ordersIterable = Object.values(allOrders);
-    ordersIterable.map(e => {
-        if(typeof e.customer == 'string'){
-            return orders;
-        }
-        const customer = storeCustomers.getCustomer(e.customer);
-        const order = allOrders[e.id];
-        order.customer = customer.name;
-        allOrders[e.id] = order;
-    });
-    return allOrders;
+    return orders;
 };
 
 function getOrder(id){
-    if(id != null && id != undefined) {
-        const order = orders[id];
-        if(typeof order.customer == 'string'){
-            return order;
-        }
-        const customer = storeCustomers.getCustomer(order.customer);
-        order.customer = customer.name;
-        return order;
-    }
+    if(id != null && id != undefined) { 
+        return orders[id];
+    };
 };
 
 function getOrderDetails(idOrder) {
@@ -151,6 +133,7 @@ function addOrder ({
 
             detailsForOrder.push(newDetail);
         });
+
 
         return orders[newId] = {
             id: newId,

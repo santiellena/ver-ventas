@@ -24,7 +24,7 @@
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
-                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
                     </ul>
                     <div class="clearfix"></div>
@@ -68,8 +68,8 @@
                           <th>{{this.id}}</th>
                           <th>{{this.date}}</th>
                           <th>$ {{this.amount}}</th>
-                          <th>{{this.customer}}</th>
-                          <th>{{this.emplooy}}</th>
+                          <th>{{this.customer.name}}</th>
+                          <th>{{this.emplooy.name}}</th>
                           <th>{{this.branch}}</th>
                           <th id="priceList{{this.id}}"></th>
                           <th>

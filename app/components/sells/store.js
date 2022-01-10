@@ -1,14 +1,32 @@
 const storeProducts = require('../products/store');
 
 const sells = {
+    1: {
+        id: 1,
+        date: '2021/12/15-20:34',
+        amount: 270,
+        howMuchPaid: 50,
+        branch: 'Principal',
+        emplooy: {id: 1, name: 'Administrador'},
+        customer: {id: 2, name: 'Julian Paoloski'},
+        howPaid: 'Contado/Cuenta Corriente',
+        details: [
+            {
+                product: 'Ketchup 250ml',
+                quantity: 3,
+                price: 90,
+            },
+        ],
+    },
     33: {
       id: 33,
       date: '2021/12/15-20:34',
       amount: 270,
+      howMuchPaid: 50,
       branch: 'Principal',
-      emplooy: 'Administrador',
-      customer: 'Consumidor final',
-      howPaid: 'Contado',
+      emplooy: {id: 1, name: 'Administrador'},
+      customer: {id: 1, name: 'Jorge Lintos'},
+      howPaid: 'Contado/Cuenta Corriente',
       details: [
         {
             product: 'Ketchup 250ml',
@@ -21,10 +39,11 @@ const sells = {
       id: 22,
       date: '2021/12/13-0:00',
       amount: 480,
+      howMuchPaid: 0,
       branch: 'Principal',
-      emplooy: 'Pablo',
-      customer: 'Baez Pedro',
-      howPaid: 'Cuenta corriente',
+      emplooy: {id: 2, name: 'Pablo'},
+      customer:  {id: 4, name: 'Pedro Juliano'},
+      howPaid: 'Cuenta Corriente',
       details: [
           {
               product: 'Mayonesa 200ml',
@@ -160,11 +179,30 @@ function deleteSell (id) {
     };
 };
 
+function getSellsByCustomer (idCustomer) {
+    if(idCustomer){
+
+        const sellsList = [];
+        const iterator = Object.entries(sells);
+
+        iterator.map(e => {
+            if(e[1].customer.id == idCustomer){
+                if(e[1].howPaid == 'Cuenta Corriente' || e[1].howPaid == 'Contado/Cuenta Corriente'){
+                    sellsList.push(sells[e[0]]);
+                }
+            };
+        });
+
+        return sellsList;
+    };
+};
+
 module.exports = {
     getAllSells,
     getSell,
     getSellDetail,
     getSellsByDate,
+    getSellsByCustomer,
     addSell,
     deleteSell,
 };

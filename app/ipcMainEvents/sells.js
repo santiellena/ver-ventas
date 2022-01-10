@@ -182,11 +182,12 @@ module.exports = ({
                 storeCustomers.addToDebt(customer.id, args.totalAmount);
                 mainWindow.webContents.send('get-sells-details');
                 ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
+                    const emplooy = {id: 1, name: 'Administrador'};
                     storeSells.addSell({
                         amount: args.totalAmountPlusDebt,
                         branch: 'Principal', //Modificar cuando se hagan las sesiones.
-                        emplooy: 'Administador', //Modificar cuando se hagan las sesiones.
-                        customer: customer.name,
+                        emplooy, //Modificar cuando se hagan las sesiones.
+                        customer: {name: customer.name, id: customer.id},
                         howPaid: args.howPaid,
                         details: sessionStorage,
                         priceList,
@@ -264,8 +265,8 @@ module.exports = ({
                     storeOrders.addOrder({
                         amount: totalAmount,
                         branch: 'Principal', //Modificar cuando se hagan las sesiones.
-                        emplooy: 'Administrador', //Modificar cuando se hagan las sesiones.
-                        customer: customer.id,
+                        emplooy: {id: 1, name: 'Administrador'}, //Modificar cuando se hagan las sesiones.
+                        customer: {id: customer.id, name: customer.name},
                         details: sessionStorage,
                         priceList,
                     });

@@ -3,6 +3,8 @@ const { ipcMain, dialog } = require('electron');
 const storeCustomers = require('../components/customers/store');
 const storeDirections = require('../components/directions/store');
 const storeDocTypes = require('../components/docTypes/store');
+const storeSells = require('../components/sells/store');
+const storeDebtPayments = require('../components/debtPayments/store');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -10,6 +12,8 @@ const { mainHandlebars,
         returnAddCustomerWindow,
         returnEditCustomerWindow,
         returnDeleteCustomerWindow,
+        returnPayDebtsWindow,
+        returnListDebtsWindow,
 } = require('../createWindows');
 
 module.exports = ({
@@ -17,6 +21,8 @@ module.exports = ({
     createAddCustomerWindow,
     createEditCustomerWindow,
     createDeleteCustomerWindow,
+    createPayDebtsWindow,
+    createListDebtsWindow,
 }) => {
 
     ipcMain.on('load-customers-window', () => {
@@ -231,6 +237,138 @@ module.exports = ({
         return id;
     });
 
-    
+    ipcMain.on('load-listdebts-window', () => {
+        createListDebtsWindow();
+    });
+
+    ipcMain.on('load-paydebts-window', (e, idCustomer) => {
+        if(idCustomer){
+            createPayDebtsWindow({idCustomer});
+        };
+    });
+
+    ipcMain.handle('get-sells-by-customer', (e, idCustomer) => {
+        if(idCustomer){
+            const sellsByCustomer = storeSells.getSellsByCustomer(idCustomer);
+
+            if(sellsByCustomer){
+                return sellsByCustomer;
+            };
+        };
+    });
+
+    ipcMain.handle('get-payments-by-customer', (e, idCustomer) => {
+        if(idCustomer){
+            const debtPaymentsByCustomer = storeDebtPayments.getPaymentsByCustomer(idCustomer);
+
+            if(debtPaymentsByCustomer){
+
+                return debtPaymentsByCustomer;
+            };
+        };
+    });
+
+    ipcMain.on('payDebt-cash', (e, {amount, idCustomer, observation}) => {
+        if(amount && idCustomer && observation){
+            const payDebtsWindow = returnPayDebtsWindow();
+            const customer = storeCustomers.getCustomer(idCustomer);
+
+            const answer = dialog.showMessageBoxSync(payDebtsWindow, {
+                title: `Pago Deuda en EFECTIVO`,
+                message: `Monto: $${amount}, Cliente: N${customer.id} ${customer.name}`,
+                buttons: ['Cancelar', 'Confirmar'],
+            });
+
+            if(answer == 1){
+                const emplooy = {id: 1, name:'Administrador'};
+                const infoCustomer = {id: customer.id, name: customer.name};
+
+                const payment = storeDebtPayments.addPay({
+                    amount,
+                    observation,
+                    customer: infoCustomer,
+                    emplooy,
+                    howPaid: 'Contado',
+                });
+
+                if(payment) {
+                    const listDebtsWindow = returnListDebtsWindow();
+                    listDebtsWindow.webContents.send('load-new-payment');
+                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    payDebtsWindow.close();
+                };
+            };
+        };
+    });
+
+    ipcMain.on('payDebt-card', (e, {amount, idCustomer, observation}) => {
+        if(amount && idCustomer && observation){
+            const payDebtsWindow = returnPayDebtsWindow();
+            const customer = storeCustomers.getCustomer(idCustomer);
+
+            const answer = dialog.showMessageBoxSync(payDebtsWindow, {
+                title: `Pago Deuda con TARJETA`,
+                message: `Monto: $${amount}, Cliente: N${customer.id} ${customer.name}.
+                Oprima "Confirmar" si la tarjeta fue aceptada.`,
+                buttons: ['Cancelar', 'Confirmar'],
+                type: 'question',
+            });
+
+            if(answer == 1){
+                const emplooy = {id: 1, name:'Administrador'};
+                const infoCustomer = {id: customer.id, name: customer.name};
+
+                const payment = storeDebtPayments.addPay({
+                    amount,
+                    observation,
+                    customer: infoCustomer,
+                    emplooy,
+                    howPaid: 'Tarjeta',
+                });
+
+                if(payment) {
+                    const listDebtsWindow = returnListDebtsWindow();
+                    listDebtsWindow.webContents.send('load-new-payment');
+                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    payDebtsWindow.close();
+                };
+            };
+        };
+    });
+
+    ipcMain.on('payDebt-transference', (e, {amount, idCustomer, observation}) => {
+        if(amount && idCustomer && observation){
+            const payDebtsWindow = returnPayDebtsWindow();
+            const customer = storeCustomers.getCustomer(idCustomer);
+
+            const answer = dialog.showMessageBoxSync(payDebtsWindow, {
+                title: `Pago Deuda con TARJETA`,
+                message: `Monto: $${amount}, Cliente: N${customer.id} ${customer.name}.
+                Oprima "Confirmar" si el comprobante de la transferencia es válido.`,
+                buttons: ['Cancelar', 'Confirmar'],
+                type: 'question',
+            });
+
+            if(answer == 1){
+                const emplooy = {id: 1, name:'Administrador'};
+                const infoCustomer = {id: customer.id, name: customer.name};
+
+                const payment = storeDebtPayments.addPay({
+                    amount,
+                    observation,
+                    customer: infoCustomer,
+                    emplooy,
+                    howPaid: 'Transferencia Bancaria',
+                });
+
+                if(payment) {
+                    const listDebtsWindow = returnListDebtsWindow();
+                    listDebtsWindow.webContents.send('load-new-payment');
+                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    payDebtsWindow.close();
+                };
+            };
+        };
+    });
 
 };

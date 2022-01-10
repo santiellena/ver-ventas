@@ -54,6 +54,11 @@ contextBridge.exposeInMainWorld(
                 'add-customer',
                 'edit-customer',
                 'delete-customer',
+                'load-paydebts-window',
+                'load-listdebts-window',
+                'payDebt-cash',
+                'payDebt-card',
+                'payDebt-transference',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -86,6 +91,7 @@ contextBridge.exposeInMainWorld(
                 'confirm-edited-customer',
                 'confirm-customer-delete',
                 'update-customers-list-bydelete',
+                'load-new-payment',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -132,7 +138,8 @@ contextBridge.exposeInMainWorld(
                 'get-edited-customer',
                 'get-customer',
                 'get-idcustomer-deleted',
-
+                'get-sells-by-customer',
+                'get-payments-by-customer',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

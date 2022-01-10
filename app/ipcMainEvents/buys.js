@@ -236,7 +236,7 @@ module.exports = ({
     });
 
     ipcMain.on('buy-end', (e, { items, supplierId, howPaid }) => {
-        const emplooy = 'Administrador';
+        const emplooy = {id: 1, name:'Administrador'};
         const branch = 'Principal';
         const supplier = storeSuppliers.getSupplier(supplierId);
 

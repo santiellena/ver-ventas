@@ -175,6 +175,13 @@ function deleteCustomer (id) {
     };
 };
 
+function removeFromDebts (idCustomer, amount) {
+    const amountToFloat = parseFloat(amount);
+    if(customers[idCustomer] != undefined){
+        customers[idCustomer].debts = customers[idCustomer].debts - amountToFloat;
+    };
+}; 
+
 module.exports = {
     getAllCustomers,
     getCustomer,
@@ -184,4 +191,5 @@ module.exports = {
     addCustomer,
     editCustomer,
     deleteCustomer,
+    removeFromDebts,
 };
