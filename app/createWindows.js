@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -34,7 +34,7 @@ const historyHandlebars = new handlebarsHbs(
 );
 
 function createTray () {
-    tray = new Tray('./renderer/images/logo-tray.png');
+    tray = new Tray('./renderer/images/favicon.png');
   
     const contextMenu = Menu.buildFromTemplate([
       { role: 'quit' },
@@ -797,6 +797,31 @@ function createPaymentWindow ({
     });
   };
 
+  function createFirstTimeWindow () {
+    firstTimeWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 400,
+      title: `Mercado 1990 - Configuración Inicial`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+    });
+  
+    firstTimeWindow.loadFile(`${__dirname}/renderer/html/firstTime.html`);
+    
+    handleErrors(firstTimeWindow);
+    
+    // Listen for window being closed
+    firstTimeWindow.on('closed',  () => {
+      firstTimeWindow.removeAllListeners();
+      firstTimeWindow = null;
+    });
+    
+  };
+
   function returnMainWindow () {
     return mainWindow;
   };
@@ -897,6 +922,10 @@ function returnListDebtsWindow () {
   return listDebtsWindow;
 };
 
+function returnFirstTimeWindow () {
+  return firstTimeWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -923,6 +952,7 @@ module.exports = {
     createDeleteCustomerWindow,
     createPayDebtsWindow,
     createListDebtsWindow,
+    createFirstTimeWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -948,6 +978,7 @@ module.exports = {
     returnDeleteCustomerWindow,
     returnPayDebtsWindow,
     returnListDebtsWindow,
+    returnFirstTimeWindow,
     mainHandlebars,
     historyHandlebars,
 };

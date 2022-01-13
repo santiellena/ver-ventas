@@ -40,12 +40,14 @@ const {
   createListDebtsWindow,
 } = require('./createWindows');
 
+const { checkInitialConfig } = require('./config/config');
+
 if(process.env.NODE_ENV == 'development'){
   devTools();
 }
 
 // Login window
-app.on('ready', createMainWindow);
+app.on('ready', checkInitialConfig);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {

@@ -5,8 +5,13 @@ const {
     historyHandlebars,
     returnMainWindow,
     returnLoginWindow,
-        
+    returnFirstTimeWindow,
 } = require('../createWindows');
+
+const {
+  checkInitialConfig,
+  checkUrl,
+} = require('../config/config');
 
 module.exports = ({
     createMainWindow,
@@ -23,4 +28,17 @@ module.exports = ({
           return false;
         }
       });
-}
+
+      ipcMain.handle('check-url', (e, url) => {
+        if(url){
+          const infoData = checkUrl(url);
+          const firstTimeWindow = returnFirstTimeWindow();
+
+          if(infoData){
+            return infoData;
+          } else {
+            return null;
+          };
+        };
+      });
+};

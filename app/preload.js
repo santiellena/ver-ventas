@@ -140,6 +140,7 @@ contextBridge.exposeInMainWorld(
                 'get-idcustomer-deleted',
                 'get-sells-by-customer',
                 'get-payments-by-customer',
+                'check-url',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);
