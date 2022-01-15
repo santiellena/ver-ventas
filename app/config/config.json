@@ -1,4 +1,1 @@
-{
-    "firstTime": true,
-    "cashRegister": null
-}
+{"firstTime":true,"cashRegister":1,"branch":{"id":1,"name":"Principal"}}

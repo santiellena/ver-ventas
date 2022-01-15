@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow
 let tray;
 
 // initialization Custom handlebars
@@ -822,6 +822,85 @@ function createPaymentWindow ({
     
   };
 
+  function createCashFlowHistoryWindow ({cashFlow}) {
+    cashFlowHistoryWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 700,
+      title: `Mercado 1990 - Flujo de Efectivo / Historial`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+  
+    cashFlowHistoryWindow.loadFile(historyHandlebars.render(`cashRegister/history.hbs`, {cashFlow}));
+    
+    handleErrors(cashFlowHistoryWindow);
+    
+    // Listen for window being closed
+    cashFlowHistoryWindow.on('closed',  () => {
+      cashFlowHistoryWindow.removeAllListeners();
+      cashFlowHistoryWindow = null;
+    });
+    
+  };
+
+  function createCashFlowInWindow () {
+    cashFlowInWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 400,
+      title: `Mercado 1990 - Flujo de Efectivo / Ingreso`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+  
+    cashFlowInWindow.loadFile(`${__dirname}/renderer/html/cashRegister/in.html`);
+    
+    handleErrors(cashFlowInWindow);
+    
+    // Listen for window being closed
+    cashFlowInWindow.on('closed',  () => {
+      cashFlowInWindow.removeAllListeners();
+      cashFlowInWindow = null;
+    });
+  };
+
+  function createCashFlowOutWindow () {
+    cashFlowOutWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 800, height: 400,
+      title: `Mercado 1990 - Flujo de Efectivo / Egreso`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+  
+    cashFlowOutWindow.loadFile(`${__dirname}/renderer/html/cashRegister/out.html`);
+    
+    handleErrors(cashFlowOutWindow);
+    
+    // Listen for window being closed
+    cashFlowOutWindow.on('closed',  () => {
+      cashFlowOutWindow.removeAllListeners();
+      cashFlowOutWindow = null;
+    });
+  };
+
   function returnMainWindow () {
     return mainWindow;
   };
@@ -926,6 +1005,18 @@ function returnFirstTimeWindow () {
   return firstTimeWindow;
 };
 
+function returnCashFlowHistoryWindow () {
+  return cashFlowHistoryWindow;
+};
+
+function returnCashFlowInWindow () {
+  return cashFlowInWindow;
+};
+
+function returnCashFlowOutWindow () {
+  return CashFlowOutWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -953,6 +1044,9 @@ module.exports = {
     createPayDebtsWindow,
     createListDebtsWindow,
     createFirstTimeWindow,
+    createCashFlowHistoryWindow,
+    createCashFlowInWindow,
+    createCashFlowOutWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -979,6 +1073,9 @@ module.exports = {
     returnPayDebtsWindow,
     returnListDebtsWindow,
     returnFirstTimeWindow,
+    returnCashFlowHistoryWindow,
+    returnCashFlowInWindow,
+    returnCashFlowOutWindow,
     mainHandlebars,
     historyHandlebars,
 };

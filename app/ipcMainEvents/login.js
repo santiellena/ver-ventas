@@ -11,6 +11,7 @@ const {
 const {
   checkInitialConfig,
   checkUrl,
+  checkToken,
 } = require('../config/config');
 
 module.exports = ({
@@ -32,10 +33,24 @@ module.exports = ({
       ipcMain.handle('check-url', (e, url) => {
         if(url){
           const infoData = checkUrl(url);
-          const firstTimeWindow = returnFirstTimeWindow();
-
           if(infoData){
             return infoData;
+          } else {
+            return null;
+          };
+        };
+      });
+
+      ipcMain.handle('join-branch', (e, {token, idBranch}) => {
+        if(idBranch && token){
+          const response = checkToken(token, idBranch);
+
+          if(response) {
+            const firstTimeWindow = returnFirstTimeWindow();
+            createLoginWindow();
+            firstTimeWindow.close();
+
+            return 1;
           } else {
             return null;
           };

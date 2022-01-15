@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+    
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/inOutCashFlow.css">
+  </head>
+  <body class="nav-sm">
+    <div class="container body">
+      <div class="main_container">
+        <!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+    <div class="x_panel">
+      <div class="x_title">
+        <h2>Ingreso de Efectivo</h2>
+        <ul class="nav navbar-right panel_toolbox">                      
+          <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+          <div class="row cashContainer">
+            <div class="subContainer1">
+                <div class="form-group row">
+                    <label class="col-form-label col-md-3 col-sm-3 ">Cantidad</label>
+                    <div class="col-md-7 col-sm-7 ">
+                        <input type="number" class="form-control" id="amount">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label col-md-3 col-sm-3 ">Observación</label>
+                    <div class="col-md-7 col-sm-7 ">
+                        <input type="text" class="form-control" id="observation">
+                    </div>
+                </div>
+            </div>
+            <div class="separatory"></div>
+            <div class="subContainer2">
+                <button class="btn btn-success buttoner"style="margin-bottom: 1.2rem;" onclick="addRegister();"><i class="fa fa-plus"></i> Agregar</button>
+                <button class="btn btn-danger buttoner"><i class="fa fa-close" onclick="window.close();"></i> Cancelar</button>
+                <button class="btn btn-secondary buttoner" style="margin-top: 1.2rem;" id="history"><i class="fa fa-file-text-o"></i> Historial</button>
+            </div>
+          </div>
+      </div>
+    </div>
+</div>
+        
+         <!-- jQuery -->
+    <script src="../../js/jquery/dist/jquery.min.js"></script>
+    <!-- Bootstrap -->
+   <script src="../../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FastClick -->
+    <script src="../../js/fastclick/lib/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="../../js/nprogress/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="../../js/Chart.js/dist/Chart.min.js"></script>
+    <!-- jQuery Sparklines -->
+    <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <!-- Flot -->
+    <script src="../../js/Flot/jquery.flot.js"></script>
+    <script src="../../js/Flot/jquery.flot.pie.js"></script>
+    <script src="../../js/Flot/jquery.flot.time.js"></script>
+    <script src="../../js/Flot/jquery.flot.stack.js"></script>
+    <script src="../../js/Flot/jquery.flot.resize.js"></script>
+    <!-- Flot plugins -->
+    <script src="../../js/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+    <script src="../../js/flot-spline/js/jquery.flot.spline.min.js"></script>
+    <script src="../../js/flot.curvedlines/curvedLines.js"></script>
+    <!-- DateJS -->
+    <script src="../../js/DateJS/build/date.js"></script>
+    <!-- bootstrap-daterangepicker -->
+    <script src="../../js/moment/min/moment.min.js"></script>
+    <script src="../../js/bootstrap-daterangepicker/daterangepicker.js"></script>
+
+    
+    <!-- Custom Theme Scripts -->
+    <script src="../../js/custom.min.js"></script>
+    <script src="../../js/cashFlowIn.js"></script>
+
+  </body>
+</html>

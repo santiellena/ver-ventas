@@ -10,6 +10,7 @@ const ipcMainEvents = {
   buys: require('./ipcMainEvents/buys'),
   stock:  require('./ipcMainEvents/stock'),
   customers: require('./ipcMainEvents/customers'),
+  cashRegister: require('./ipcMainEvents/cashRegister'),
 }
 
 const {
@@ -38,16 +39,20 @@ const {
   createDeleteCustomerWindow,
   createPayDebtsWindow,
   createListDebtsWindow,
+  createCashFlowHistoryWindow,
+  createCashFlowInWindow,
+  createCashFlowOutWindow,
 } = require('./createWindows');
 
 const { checkInitialConfig } = require('./config/config');
 
 if(process.env.NODE_ENV == 'development'){
   devTools();
-}
+};
 
 // Login window
-app.on('ready', checkInitialConfig);
+//app.on('ready', checkInitialConfig); //Production
+app.on('ready', createMainWindow);
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -108,4 +113,10 @@ ipcMainEvents.customers({
   createDeleteCustomerWindow,
   createPayDebtsWindow,
   createListDebtsWindow,
+});
+
+ipcMainEvents.cashRegister({
+  createCashFlowHistoryWindow,
+  createCashFlowInWindow,
+  createCashFlowOutWindow,
 });

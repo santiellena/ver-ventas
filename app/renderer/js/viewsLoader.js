@@ -24,6 +24,18 @@ document.getElementById('suppliers-page').addEventListener('click', () => {
     ipcRenderer.send('load-suppliers-window');
 });
 
+document.getElementById('cashregister-in-page').addEventListener('click', () => {
+    ipcRenderer.send('load-cashflowin-window'); 
+});
+
+document.getElementById('cashregister-out-page').addEventListener('click', () => {
+    ipcRenderer.send('load-cashflowout-window'); 
+});
+
+document.getElementById('history-in-out-page').addEventListener('click', () => {
+    ipcRenderer.send('load-cashflowhistory-window'); 
+});
+
 document.getElementById('stats-page').addEventListener('click', () => loadPageInMain('stats/stats.hbs'));
 
 document.getElementById('kardex-page').addEventListener('click', () => loadPageInMain('/stock/kardex.hbs'));

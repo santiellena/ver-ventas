@@ -32,7 +32,7 @@
                             <div class="x_title">
                                 <h2>Configuración Inicial<small>Se ha detectado dispositivo sin configurar...</small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
-                                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                                    <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
                                     </li>
                                 </ul>
                                 <div class="clearfix"></div>
@@ -57,4 +57,13 @@
         </div>
     </body>
     <script src="../js/firstTime.js"></script>
+    <script>
+        const form = document.getElementById('form');
+    
+        const func = e => {
+            e.preventDefault();
+        };
+    
+        form.addEventListener('submit', func, true);
+    </script>
 </html>
