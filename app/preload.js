@@ -63,6 +63,22 @@ contextBridge.exposeInMainWorld(
                 'load-cashflowin-window',
                 'load-cashflowout-window',
                 'add-cashflow-in',
+                'add-cashflow-out',
+                'load-general-window',
+                'load-branches-window',
+                'load-employees-window',
+                'load-addemplooy-window',
+                'load-editemplooy-window',
+                'add-emplooy',
+                'delete-emplooy',
+                'load-users-window',
+                'load-edituser-window',
+                'load-adduser-window',
+                'delete-user',
+                'add-user',
+                'dump-database',
+                'load-docs-window',
+                'load-units-window',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -98,6 +114,11 @@ contextBridge.exposeInMainWorld(
                 'load-new-payment',
                 'confirm-cashflow-in',
                 'confirm-cashflow-out',
+                'load-new-emplooy',
+                'delete-emplooy-selected',
+                'load-edited-emplooy',
+                'update-userslist-bydelete',
+                'update-userslist-bynew'
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -148,6 +169,17 @@ contextBridge.exposeInMainWorld(
                 'get-payments-by-customer',
                 'check-url',
                 'join-branch',
+                'get-limit-cashout-amount',
+                'update-general-info',
+                'update-branch-info',
+                'get-added-emplooy',
+                'edit-emplooy',
+                'get-edited-emplooy',
+                'get-branches-selected-byuser',
+                'get-user-permissions',
+                'get-user-deleted',
+                'get-all-branches',
+                'get-added-user',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

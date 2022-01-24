@@ -85,7 +85,6 @@ function addRegister ({
         const nowActualDate = new Date();
         const nowDate = `${nowActualDate.getFullYear()}/${nowActualDate.getMonth()+1}/${nowActualDate.getDate()}-${nowActualDate.getHours()}:${nowActualDate.getMinutes()}`;
 
-        console.log('');
         if(cashFlow[id] == undefined) {
             return cashFlow[id] = {
                 id,

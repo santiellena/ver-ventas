@@ -4,6 +4,7 @@ const storeProducts = require('../components/products/store');
 const storeCustomers = require('../components/customers/store');
 const storeOrders = require('../components/orders/store');
 const storeSells = require('../components/sells/store');
+const storeMaintenance = require('../components/maintenance/store');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -119,7 +120,7 @@ module.exports = ({
     });
 
     ipcMain.handle('get-tax-percentage', (e, args) => {
-        return 21;
+        return storeMaintenance.getTaxPercentage();
     });
 
     let idSellList;

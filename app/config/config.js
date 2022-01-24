@@ -110,11 +110,26 @@ function getCashRegisterId () {
     return config.cashRegister;
 };
 
+function updateBranchName (newName) {
+    if(newName){
+        const config = getConfig();
+
+        
+        config.branch.name = newName;
+        const json = JSON.stringify(config);
+        
+        fs.writeFileSync(`${__dirname}/config.json`, json, (err) => {
+               if(err) throw new Error(err, 'Sobreescritura del archivo de configuración.');
+        });
+    };
+}
+
 module.exports = {
     checkInitialConfig,
     checkUrl,
     checkToken,
     getBranchDataFromConfig,
     getCashRegisterId,
+    updateBranchName,
 };
 

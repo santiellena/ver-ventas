@@ -1,0 +1,97 @@
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2><i class="fa fa-bars"></i> Sucursales <small>Información</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li onclick="window.close()"><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+
+                    <ul class="nav nav-tabs bar_tabs" id="myTab" role="tablist">
+                        {{#each branches}}
+                            <li class="nav-item" onclick="changeSelected({{this.id}}, '{{this.name}}');">
+                                <a class="nav-link" id="{{this.id}}" data-toggle="tab" href="#{{this.name}}" role="tab" aria-controls="{{this.name}}" aria-selected="true">{{this.name}}</a>
+                            </li>
+                        {{/each}}
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                        {{#each branches}}
+                            <div class="tab-pane fade" id="{{this.name}}" role="tabpanel" aria-labelledby="{{this.name}}-tab">
+                                 <div class="history-table" style="width: 100%;">
+                          <form class="col-sm-12" style="margin-top: 1rem;" id="form">
+                                <div class="item form-group" style="margin-bottom: 1rem;">
+			                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="branchName{{this.id}}">Nombre Sucursal</label>
+			                        <div class="col-md-8 col-sm-8 ">
+			                        <input type="text" id="branchName{{this.id}}" required="required" class="form-control" value="{{this.name}}" required="required">
+		                            </div>
+	                            </div>
+                                <div class="form-group item" style="margin-bottom: 1rem;">
+											<label class="col-form-label col-md-4 col-sm-4 label-align" for="cuit{{this.id}}">CUIT</label>
+											<div class="col-md-8 col-sm-8 ">
+			                                    <input type="number" id="cuit{{this.id}}" required="required" class="form-control" value="{{this.cuit}}" required="required">
+		                                    </div>
+									</div>
+                                  <div class="item form-group" style="margin-bottom: 1rem;">
+			                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="dirStreet{{this.id}}">Dirección</label>
+			                        <div class="col-md-8 col-sm-8 ">
+			                            <input type="text" id="dirStreet{{this.id}}" required="required" class="form-control" value="{{this.dirStreet}}" required="required">
+		                            </div>
+	                            </div>
+                                   <div class="item form-group" style="margin-bottom: 1rem;">
+			                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="phoneNumber{{this.id}}">Numero de Teléfono</label>
+			                        <div class="col-md-8 col-sm-8 ">
+			                            <input type="number" id="phoneNumber{{this.id}}" required="required" class="form-control" value="{{this.phoneNumber}}" required="required">
+		                            </div>
+	                            </div>
+                                <div class="item form-group" style="margin-bottom: 1rem;">
+			                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="email{{this.id}}">Email</label>
+			                        <div class="col-md-8 col-sm-8 ">
+			                            <input type="text" id="email{{this.id}}" required="required" class="form-control" value="{{this.email}}" required="required">
+		                            </div>
+	                            </div>
+                                <div class="item form-group" style="margin-bottom: 1rem;">
+			                        <label class="col-form-label col-md-4 col-sm-4 label-align" for="representative{{this.id}}">Representante</label>
+			                        <div class="col-md-8 col-sm-8 ">
+			                            <input type="text" id="representative{{this.id}}" required="required" class="form-control" value="{{this.representative}}" required="required">
+		                            </div>
+	                            </div>
+                                <div id="alert" style="display: flex; justify-content: center;">
+
+                                </div>
+                                <div class="ln_solid"></div>
+								<div class="item form-group" style="display: flex; justify-content: center;">
+										<div class="col-md-8 col-sm-9 offset-md-3"  style="display: flex; justify-content: center;">
+											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
+											<button type="submit" class="btn btn-success" onclick="editBranchInfo({{this.id}});">Modificar</button>
+										</div>
+								</div>
+                          </form>
+                        </div>
+                      </div>
+                        {{/each}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="" id="branchName" value="{{branchName}}">
+              <input type="hidden" name="" id="branchId" value="{{branchId}}">
+<script>
+	const form = document.getElementById('form');
+
+	const func = e => {
+		e.preventDefault();
+	};
+
+	form.addEventListener('submit', func, true);
+</script>
+<script>
+    let idBranch = document.getElementById('branchId').value;
+    let nameBranch = document.getElementById('branchName').value;
+    document.getElementById(nameBranch).setAttribute('class', 'tab-pane fade show active');
+    document.getElementById(idBranch).setAttribute('class', 'nav-link active');
+</script>
+
+<script src="../../js/branch.js"></script>

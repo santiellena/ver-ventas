@@ -3,7 +3,6 @@ async function loadTaxPercentage() {
     window.taxPercentage = taxPercentage;
     const taxShower = document.getElementById('tax-percentage');
     taxShower.innerText = `Impuesto (%${window.taxPercentage})`;
-    ipcRenderer.removeListener('get-tax-percentage');
 };
 loadTaxPercentage();
 

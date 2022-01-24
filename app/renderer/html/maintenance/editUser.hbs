@@ -1,0 +1,110 @@
+<!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->   
+
+<!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Empleados - MODIFICAR / ELIMINAR</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      </li>
+                      <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                        <div class="history-table" style="width: 100%;">
+                          <div class="col-sm-12">
+							  <form id="form">
+                                <div class="item form-group" style="margin: 1rem 0 1rem 0">
+			                         <label class="col-form-label col-md-3 col-sm-3 label-align" for="emplooy">Empleado</label>
+                                     <div class="col-md-6 col-sm-6">
+											<input type="text" class="form-control" readonly="readonly" placeholder="{{emplooy.name}}, {{emplooy.name}}" id="emplooy">
+                                     </div>
+	                            </div>
+                                 <div class="item form-group" style="display: flex; flex-direction:column;">
+                                    <h4 class="lead" style="font-weight: bold; text-align: center; width: 100%; margin-bottom:1rem;">Sucursales</h4>
+                                        <ul class="to_do">
+                                        {{#each branches}}
+                                        <li>
+                                        <p>
+                                        <input value="{{this.id}}" type="checkbox" class="flat" id="{{this.name}}"> {{this.name}}, {{this.dirStreet}} </p>
+                                    </li>
+                                        
+                                        {{/each}}
+                                        </ul>
+	                            </div>
+                                <div class="item form-group">
+			                        <div style="width: 100%;">
+                                        <h4 class="lead" style="font-weight: bold; text-align: center; width: 100%;margin-bottom:1rem;">Permisos</h4>
+                                        <ul class="to_do">
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="stock"> Menu Stock </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="sells"> Menu Ventas </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="buys"> Menu Compras </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="stats"> Menu Estadisticas </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="maintenance"> Menu Mantenimiento </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                        <input type="checkbox" value="1" class="flat" id="invoicing"> Menu Facturación</p>
+                                    </li>
+                                    <li>
+                                        <p >
+                                        <input type="checkbox" value="1" class="flat" id="admin"> Administrador </p>
+                                    </li>
+                                    </ul>
+                                                </div>
+	                            </div>
+                                <div class="ln_solid"></div>
+								<div class="item form-group" style="display: flex; justify-content: center;">
+										<div class="col-md-6 col-sm-9 offset-md-3">
+											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
+											<button class="btn btn-warning" type="reset">Reiniciar</button>
+                                            <button class="btn btn-danger" type="button" onclick="deleteUser();">Eliminar</button>
+											<button type="submit" class="btn btn-success" onclick="editUser();">Modificar</button>
+										</div>
+								</div>
+								</form>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+</div>
+<input type="hidden" name="" id="userId" value="{{user.id}}">
+
+<script src="../../js/editUser.js"></script>
+<script>
+	const form = document.getElementById('form');
+
+	const func = e => {
+		e.preventDefault();
+	};
+
+	form.addEventListener('submit', func, true);
+</script>

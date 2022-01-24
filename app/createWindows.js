@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -901,6 +901,227 @@ function createPaymentWindow ({
     });
   };
 
+  function createGeneralMaintenanceWindow ({general}) {
+    generalMaintenanceWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 600, height: 550,
+      title: `Mercado 1990 - Configuración General`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+  
+    generalMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/maintenance.hbs`, {general}));
+    
+    handleErrors(generalMaintenanceWindow);
+    
+    // Listen for window being closed
+    generalMaintenanceWindow.on('closed',  () => {
+      generalMaintenanceWindow.removeAllListeners();
+      generalMaintenanceWindow = null;
+    });
+  };
+
+  function createBranchesMaintenanceWindow ({branches, branch}) {
+    branchesMaintenanceWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 650, height: 750,
+      title: `Mercado 1990 - Configuración General`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+  
+    branchesMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/branch.hbs`, {branches, branchName: branch.name, branchId: branch.id}));
+    
+    handleErrors(branchesMaintenanceWindow);
+    // Listen for window being closed
+    branchesMaintenanceWindow.on('closed',  () => {
+      branchesMaintenanceWindow.removeAllListeners();
+      branchesMaintenanceWindow = null;
+    });
+  };
+
+  function createEmployeesWindow ({employees}) {
+    employeesWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1100, height: 900,
+      title: `Mercado 1990 - Empleados`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    employeesWindow.loadFile(historyHandlebars.render('/maintenance/employees.hbs', {employees}));
+    
+    handleErrors(employeesWindow);
+    
+    // Listen for window being closed
+    employeesWindow.on('closed',  () => {
+      employeesWindow.removeAllListeners();
+      employeesWindow = null;
+    });
+  };
+
+  function createAddEmplooyWindow ({docTypes}) {
+    addEmployeesWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 700, height: 1000,
+      title: `Mercado 1990- Empleados- Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: employeesWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    addEmployeesWindow.loadFile(historyHandlebars.render('/maintenance/addEmployees.hbs', {docTypes}));
+    
+    handleErrors(addEmployeesWindow);
+    
+    // Listen for window being closed
+    addEmployeesWindow.on('closed',  () => {
+      addEmployeesWindow.removeAllListeners();
+      addEmployeesWindow = null;
+    });
+  };
+
+  function  createEditEmplooyWindow ({emplooy, docTypes}) {
+    editEmployeesWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 700, height: 1000,
+      title: `Mercado 1990- Empleados- Editar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: employeesWindow,
+      modal: true,
+    });
+    
+    // Load index.hbs into the new BrowserWindow
+    editEmployeesWindow.loadFile(historyHandlebars.render('/maintenance/editEmployees.hbs', {docTypes, emplooy}));
+    
+    handleErrors(editEmployeesWindow);
+    
+    // Listen for window being closed
+    editEmployeesWindow.on('closed',  () => {
+      editEmployeesWindow.removeAllListeners();
+      editEmployeesWindow = null;
+    });
+  };
+
+  function createUsersWindow ({users}) {
+    usersWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1100, height: 900,
+      title: `Mercado 1990 - Usuarios`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    usersWindow.loadFile(historyHandlebars.render('/maintenance/users.hbs', {users}));
+    
+    handleErrors(usersWindow);
+    
+    // Listen for window being closed
+    usersWindow.on('closed',  () => {
+      usersWindow.removeAllListeners();
+      usersWindow = null;
+    });
+  };
+
+  function createAddUserWindow ({employees, branches}) {
+    addUserWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 750, height: 900,
+      title: `Mercado 1990 - Usuarios - Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: usersWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    addUserWindow.loadFile(historyHandlebars.render('/maintenance/addUser.hbs', {employees, branches}));
+    
+    handleErrors(addUserWindow);
+    
+    // Listen for window being closed
+    addUserWindow.on('closed',  () => {
+      addUserWindow.removeAllListeners();
+      addUserWindow = null;
+    });
+  };
+
+  function createEditUserWindow ({user, emplooy, branches}) {
+    editUserWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 750, height: 900,
+      title: `Mercado 1990 - Usuarios - Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: usersWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    editUserWindow.loadFile(historyHandlebars.render('/maintenance/editUser.hbs', {user, emplooy, branches}));
+    
+    handleErrors(editUserWindow);
+    
+    // Listen for window being closed
+    editUserWindow.on('closed',  () => {
+      editUserWindow.removeAllListeners();
+      editUserWindow = null;
+    });
+  };
+
+  function createDocsWindow () {
+    
+  };
+
+  function createUnitsWindow () {
+
+  };
+
   function returnMainWindow () {
     return mainWindow;
   };
@@ -1014,7 +1235,47 @@ function returnCashFlowInWindow () {
 };
 
 function returnCashFlowOutWindow () {
-  return CashFlowOutWindow;
+  return cashFlowOutWindow;
+};
+
+function returnGeneralMaintenanceWindow () {
+  return generalMaintenanceWindow;
+};
+
+function returnBrancesMaintenanceWindow () {
+  return branchesMaintenanceWindow;
+};
+
+function returnEmployeesWindow () {
+  return employeesWindow;
+};
+
+function returnAddEmployeesWindow () {
+  return addEmployeesWindow;
+};
+
+function returnEditEmployeesWindow () {
+  return editEmployeesWindow;
+};
+
+function returnUsersWindow () {
+  return usersWindow;
+};
+
+function returnAddUserWindow () {
+  return addUserWindow;
+};
+
+function returnEditUserWindow () {
+  return editUserWindow;
+};
+
+function returnUnitsWindow () {
+  return unitsWindow;
+};
+
+function returnDocsWindow () {
+  return docsWindow;
 };
 
 module.exports = {
@@ -1047,6 +1308,16 @@ module.exports = {
     createCashFlowHistoryWindow,
     createCashFlowInWindow,
     createCashFlowOutWindow,
+    createGeneralMaintenanceWindow,
+    createBranchesMaintenanceWindow,
+    createEmployeesWindow,
+    createAddEmplooyWindow,
+    createEditEmplooyWindow,
+    createUsersWindow,
+    createAddUserWindow,
+    createEditUserWindow,
+    createDocsWindow,
+    createUnitsWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -1076,6 +1347,16 @@ module.exports = {
     returnCashFlowHistoryWindow,
     returnCashFlowInWindow,
     returnCashFlowOutWindow,
+    returnGeneralMaintenanceWindow,
+    returnBrancesMaintenanceWindow,
+    returnEmployeesWindow,
+    returnAddEmployeesWindow,
+    returnEditEmployeesWindow,
+    returnUsersWindow,
+    returnEditUserWindow,
+    returnAddUserWindow,
+    returnDocsWindow,
+    returnUnitsWindow,
     mainHandlebars,
     historyHandlebars,
 };

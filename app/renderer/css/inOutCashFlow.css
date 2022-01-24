@@ -27,4 +27,8 @@
 
 .buttoner {
     width: 8rem;
-};
+}
+
+.label-limit {
+    font-weight: bold;
+}

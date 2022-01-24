@@ -3,6 +3,7 @@ const items = getAllItemSession();
 const tbody = document.getElementById('tbody-list');
 
 if(items.length != 0){
+    tbody.innerHTML = '';
     items.map(async e => {
         const quantity = e[1];
         const id = e[0];

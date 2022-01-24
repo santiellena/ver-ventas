@@ -1,0 +1,144 @@
+<!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->   
+
+<!-- page content -->
+<div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Empleados - AGREGAR</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      </li>
+                      <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                        <div class="history-table" style="width: 100%;">
+                          <div class="col-sm-12">
+							  <form action="" id="form">
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Nombres</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="name" required="required" class="form-control " value="{{emplooy.name}}">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="lastname">Apellidos</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="lastname" required="required" class="form-control " value="{{emplooy.lastname}}">
+		                            </div>
+	                            </div>
+                                <div class="form-group item">
+											<label class="col-form-label col-md-3 col-sm-3 label-align">Tipo de Documento</label>
+											<div class="col-md-6 col-sm-6 ">
+												<select class="form-control" required="required" id="docType">
+													<option selected value="{{emplooy.docType.id}}">{{emplooy.docType.description}}</option>
+													{{#each docTypes}}
+													<option value="{{this.id}}">{{this.description}}</option>
+													{{/each}}
+												</select>
+											</div>
+									</div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="numDoc">Número de Documento</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="number" id="numDoc" required="required" class="form-control " value="{{emplooy.numDoc}}">
+		                            </div>
+	                            </div>
+                                  <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirStreet">Dirección</label>
+			                        <div class="col-md-6 col-sm-6">
+			                        <input type="text" id="dirStreet" required="required" class="form-control " value="{{emplooy.dirStreet}}">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="phoneNumber">Teléfono</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="number" id="phoneNumber" required="required" class="form-control " value="{{emplooy.phoneNumber}}">
+		                            </div>
+	                            </div>
+                                 <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="email">Email</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="email" id="email" required="required" class="form-control " value="{{emplooy.email}}">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="date">Fecha de Nacimiento</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="date" id="date" required="required" class="form-control date" value="{{emplooy.birthDate}}">
+		                            </div>
+	                            </div>
+                                 <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="username">Usuario</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="username" required="required" class="form-control " value="{{emplooy.login}}">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Contraseña</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input class="form-control" value="{{emplooy.password}}" type="password" id="password" name="password" pattern="....." title="Mínimo 5 caracteres" required />
+		                            <span style="position: absolute;right:15px;top:7px;" onclick="hideshow()" >
+													<i id="slash" class="fa fa-eye-slash"></i>
+													<i id="eye" class="fa fa-eye"></i>
+												</span>
+                                    </div>
+	                            </div>
+                                <div id="alert" style="display: flex; justify-content: center;"></div>
+                                <div class="ln_solid"></div>
+								<div class="item form-group" style="display: flex; justify-content: center;">
+										<div class="col-md-6 col-sm-9 offset-md-3">
+											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
+                                            <button class="btn btn-danger" type="button" onclick="deleteEmplooy({{emplooy.id}})">Eliminar</button>
+											<button class="btn btn-warning" type="reset">Reiniciar</button>
+											<button type="submit" class="btn btn-success" onclick="editEmplooy({{emplooy.id}})">Editar</button>
+										</div>
+								</div>
+								</form>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+</div>
+<script src="../../js/editEmplooy.js"></script>
+<script>
+		function hideshow(){
+			var password = document.getElementById("password");
+			var slash = document.getElementById("slash");
+			var eye = document.getElementById("eye");
+			
+			if(password.type === 'password'){
+				password.type = "text";
+				slash.style.display = "block";
+				eye.style.display = "none";
+			}
+			else{
+				password.type = "password";
+				slash.style.display = "none";
+				eye.style.display = "block";
+			}
+
+		}
+	</script>
+<script>
+const form = document.getElementById('form');
+
+	const func = e => {
+		e.preventDefault();
+	};
+
+	form.addEventListener('submit', func, true);
+</script>

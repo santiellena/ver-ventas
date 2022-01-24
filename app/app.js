@@ -11,6 +11,7 @@ const ipcMainEvents = {
   stock:  require('./ipcMainEvents/stock'),
   customers: require('./ipcMainEvents/customers'),
   cashRegister: require('./ipcMainEvents/cashRegister'),
+  maintenance: require('./ipcMainEvents/maintenance'),
 }
 
 const {
@@ -42,6 +43,18 @@ const {
   createCashFlowHistoryWindow,
   createCashFlowInWindow,
   createCashFlowOutWindow,
+  createGeneralMaintenanceWindow,
+  createBranchesMaintenanceWindow,
+  createEmployeesWindow,
+  createAddEmplooyWindow,
+  createEditEmplooyWindow,
+  createUsersWindow,
+  createAddUserWindow,
+  createEditUserWindow,
+  createDocsWindow,
+  createUnitsWindow,
+  historyHandlebars,
+  mainHandlebars,
 } = require('./createWindows');
 
 const { checkInitialConfig } = require('./config/config');
@@ -67,6 +80,7 @@ app.on('activate', () => {
  
 // removes all rendered files 
 app.on("quit", () => {
+    historyHandlebars.clearTemps();
     mainHandlebars.clearTemps();
 });
 
@@ -119,4 +133,17 @@ ipcMainEvents.cashRegister({
   createCashFlowHistoryWindow,
   createCashFlowInWindow,
   createCashFlowOutWindow,
+});
+
+ipcMainEvents.maintenance({
+  createGeneralMaintenanceWindow,
+  createBranchesMaintenanceWindow,
+  createEmployeesWindow,
+  createAddEmplooyWindow,
+  createEditEmplooyWindow,
+  createUsersWindow,
+  createAddUserWindow,
+  createEditUserWindow,
+  createDocsWindow,
+  createUnitsWindow,
 });

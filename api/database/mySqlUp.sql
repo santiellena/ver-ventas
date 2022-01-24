@@ -3,6 +3,7 @@ CREATE SCHEMA `versystem` ;
 CREATE TABLE `versystem`.`global` (
   `idglobal` INT NOT NULL AUTO_INCREMENT,
   `empresa` VARCHAR(40) NOT NULL,
+  `razon_social` VARCHAR (40) NOT NULL,
   `nombre_impuesto` CHAR(4) NULL,
   `pocentaje_impuesto` SMALLINT NULL,
   PRIMARY KEY (`idglobal`));
@@ -33,20 +34,14 @@ CREATE TABLE `versystem`.`categoria` (
 
 CREATE TABLE `versystem`.`sucursal` (
   `idsucursal` INT NOT NULL AUTO_INCREMENT,
-  `id-tipo-documento` INT NOT NULL,
-  `numero-documento` VARCHAR(15) NOT NULL,
+  `nombre` VARCHAR (30) NOT NULL,
+  `cuit` VARCHAR(15) NOT NULL,
   `direccion` VARCHAR(30) NOT NULL,
   `telefono` INT NULL,
   `email` VARCHAR(45) NULL,
   `representante` VARCHAR(45) NULL,
   `estado` TINYINT NOT NULL,
-  PRIMARY KEY (`idsucursal`),
-  INDEX `tipo-documento_idx` (`id-tipo-documento` ASC) VISIBLE,
-  CONSTRAINT `id-tipo-documento-sucursal`
-    FOREIGN KEY (`id-tipo-documento`)
-    REFERENCES `versystem`.`tipo-documento` (`idtipo-documento`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+  PRIMARY KEY (`idsucursal`));
 
 CREATE TABLE `versystem`.`caja` (
   `idcaja` INT NOT NULL AUTO_INCREMENT,
@@ -96,8 +91,7 @@ CREATE TABLE `versystem`.`usuario` (
   `menu-compras` TINYINT NOT NULL DEFAULT 0,
   `menu-ventas` TINYINT NOT NULL DEFAULT 0,
   `menu-mantenimiento` TINYINT NOT NULL DEFAULT 0,
-  `menu-consulta-compras` TINYINT NOT NULL DEFAULT 0,
-  `menu-consulta-ventas` TINYINT NOT NULL DEFAULT 0,
+  `menu-consultas` TINYINT NOT NULL DEFAULT 0,
   `menu-admin` TINYINT NOT NULL DEFAULT 0,
   `menu-facturacion` TINYINT NOT NULL DEFAULT 0,
   `estado` TINYINT NOT NULL,
@@ -158,17 +152,10 @@ CREATE TABLE `versystem`.`deposito` (
   `nombre-deposito` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`iddeposito`));
 
-CREATE TABLE `versystem`.`ubicacion` (
-  `idubicacion` INT NOT NULL AUTO_INCREMENT,
-  `id-deposito` INT NULL,
-  `nombre-lugar` VARCHAR(30) NULL,
-  PRIMARY KEY (`idubicacion`),
-  INDEX `id-deposito-ubicacion_idx` (`id-deposito` ASC) VISIBLE,
-  CONSTRAINT `id-deposito-ubicacion`
-    FOREIGN KEY (`id-deposito`)
-    REFERENCES `versystem`.`deposito` (`iddeposito`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE);
+CREATE TABLE `versystem`.`exposicion` (
+  `idexposicion` INT NOT NULL AUTO_INCREMENT,
+  `nombre-exposicion` VARCHAR(30) NOT NULL,
+  PRIMARY KEY (`idexposicion`));
 
 CREATE TABLE `versystem`.`persona` (
   `idpersona` INT NOT NULL AUTO_INCREMENT,
@@ -224,7 +211,8 @@ CREATE TABLE `versystem`.`articulo` (
   `id-proveedor` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `descripcion` TINYTEXT NULL,
-  `id-ubicacion` INT NOT NULL,
+  `id-deposito` INT NOT NULL,
+  `id-exposicion` INT NOT NULL,
   `stock-min` DECIMAL(19,2) NOT NULL,
   `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idarticulo`),
@@ -232,7 +220,8 @@ CREATE TABLE `versystem`.`articulo` (
   INDEX `id-unidad-medida-articulo_idx` (`id-unidad-medida` ASC) VISIBLE,
   INDEX `id-marca-articulo_idx` (`id-marca` ASC) VISIBLE,
   INDEX `id-proveedor-articulo_idx` (`id-proveedor` ASC) VISIBLE,
-  INDEX `id-ubicacion-articulo_idx` (`id-ubicacion` ASC) VISIBLE,
+  INDEX `id-deposito-articulo_idx` (`id-deposito` ASC) VISIBLE,
+  INDEX `id-exposicion-articulo_idx` (`id-exposicion` ASC) VISIBLE,
   CONSTRAINT `id-cateogria-articulo`
     FOREIGN KEY (`id-categoria`)
     REFERENCES `versystem`.`categoria` (`idcategoria`)
@@ -253,9 +242,14 @@ CREATE TABLE `versystem`.`articulo` (
     REFERENCES `versystem`.`proveedor` (`idproveedor`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `id-ubicacion-articulo`
-    FOREIGN KEY (`id-ubicacion`)
-    REFERENCES `versystem`.`ubicacion` (`idubicacion`)
+  CONSTRAINT `id-deposito-articulo`
+    FOREIGN KEY (`id-deposito`)
+    REFERENCES `versystem`.`deposito` (`iddeposito`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `id-exposicion-articulo`
+    FOREIGN KEY (`id-exposicion`)
+    REFERENCES `versystem`.`exposicion` (`idexposicion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 

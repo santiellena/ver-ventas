@@ -67,4 +67,46 @@ module.exports = ({
         };
     });
 
+    ipcMain.on('add-cashflow-out', (e, {amount, observation}) => {
+        if(amount && observation) {
+            const cashFlowOutWindow = returnCashFlowOutWindow();
+            const box = config.getCashRegisterId();
+            const emplooy = { id: 1, name: 'Administrador' };
+            const branch = config.getBranchDataFromConfig();
+
+            const response = dialog.showMessageBoxSync(cashFlowOutWindow, {
+                title: 'Confirmación de EGRESO de EFECTIVO',
+                message: `Egreso $ ${amount}, cargado por ${emplooy.name}.`,
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+
+            if(response == 0){
+                let added, update;
+                if(box && emplooy) {
+
+                    added = storeCashFlow.addRegister({
+                        amount,
+                        observation,
+                        box,
+                        operation: 'OUT',
+                        emplooy,
+                    });
+                    update = storeCashRegister.substractToBox(box, branch.id, amount);
+                };
+                if(added && update) {
+                    cashFlowOutWindow.webContents.send('confirm-cashflow-out');
+                };
+            } else {
+                throw new Error('FALLO EN EL SERVIDOR, consultar por mantenimiento.');
+            };
+        };
+    });
+
+    ipcMain.handle('get-limit-cashout-amount', () => {
+        const idBox = config.getCashRegisterId();
+        const boxInfo = storeCashRegister.returnBoxInfo(idBox);
+
+        return boxInfo.moneyAmount;
+    });
+
 };

@@ -1,5 +1,4 @@
-<title>Mercado 1990 - Proveedores</title>
- <!-- Bootstrap -->
+<!-- Bootstrap -->
     <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
 <!-- Datatables -->
     
@@ -15,9 +14,8 @@
 <div class="col-md-12 col-sm-12 ">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Proveedores - AGREGAR</h2> <small>(Todos los campos son obligatorios)</small>
+                    <h2>Empleados - AGREGAR</h2>
                     <ul class="nav navbar-right panel_toolbox">
-                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
                       <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
                       </li>
@@ -28,11 +26,17 @@
                       <div class="row">
                         <div class="history-table" style="width: 100%;">
                           <div class="col-sm-12">
-							  <form action="">
+							  <form id="form">
                                 <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Razón Social</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="name">Nombres</label>
 			                        <div class="col-md-6 col-sm-6 ">
 			                        <input type="text" id="name" required="required" class="form-control ">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="lastname">Apellidos</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="lastname" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                 <div class="form-group item">
@@ -50,42 +54,6 @@
 			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="numDoc">Número de Documento</label>
 			                        <div class="col-md-6 col-sm-6 ">
 			                        <input type="number" id="numDoc" required="required" class="form-control ">
-		                            </div>
-	                            </div>
-                                <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cuit">CUIT/CUIL</label>
-			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="cuit" required="required" class="form-control ">
-		                            </div>
-	                            </div>
-                                  <div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
-											<div class="col-md-6 col-sm-6 ">
-												<select class="form-control"  id="dirProv"  required="required" onchange="loadDepartments();">
-													{{#each provinces}}
-                                                        <option value="{{this.id}}">{{this.nombre}}</option>
-                                                    {{/each}}
-												</select>
-											</div>
-									</div>
-                                  <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
-			                        <div class="col-md-6 col-sm-6 ">
-			                        	<select class="form-control"  id="dirDepto"  required="required" onchange="loadCities();">
-										</select>
-		                            </div>
-	                            </div>
-                                <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="postCode">Código Postal</label>
-			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="postCode" required="required" class="form-control ">
-		                            </div>
-	                            </div>
-                                  <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">Localidad</label>
-			                        <div class="col-md-6 col-sm-6 ">
-			                        	<select class="form-control"  id="city"  required="required" >
-										</select>
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
@@ -107,17 +75,33 @@
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="cbu">CBU</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="date">Fecha de Nacimiento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="cbu" required="required" class="form-control ">
+			                        <input type="date" id="date" required="required" class="form-control date">
 		                            </div>
+	                            </div>
+                                 <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="username">Usuario</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="username" required="required" class="form-control ">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Contraseña</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input class="form-control" type="password" id="password" name="password" minlength="5" title="Mínimo 5 caracteres" required />
+		                            <span style="position: absolute;right:15px;top:7px;" onclick="hideshow()" >
+													<i id="slash" class="fa fa-eye-slash"></i>
+													<i id="eye" class="fa fa-eye"></i>
+												</span>
+                                    </div>
 	                            </div>
                                 <div class="ln_solid"></div>
 								<div class="item form-group" style="display: flex; justify-content: center;">
 										<div class="col-md-6 col-sm-9 offset-md-3">
 											<button class="btn btn-danger" type="button" onclick="window.close()">Cancelar</button>
 											<button class="btn btn-warning" type="reset">Reiniciar</button>
-											<button type="submit" class="btn btn-success" onclick="addSupplier()">Agregar</button>
+											<button type="submit" class="btn btn-success" onclick="addEmplooy()">Agregar</button>
 										</div>
 								</div>
 								</form>
@@ -127,4 +111,32 @@
                   </div>
                 </div>
 </div>
-<script src="../../js/suppliersAdd.js"></script>
+<script src="../../js/addEmplooy.js"></script>
+<script>
+		function hideshow(){
+			var password = document.getElementById("password");
+			var slash = document.getElementById("slash");
+			var eye = document.getElementById("eye");
+			
+			if(password.type === 'password'){
+				password.type = "text";
+				slash.style.display = "block";
+				eye.style.display = "none";
+			}
+			else{
+				password.type = "password";
+				slash.style.display = "none";
+				eye.style.display = "block";
+			}
+
+		}
+	</script>
+<script>
+	const form = document.getElementById('form');
+
+	const func = e => {
+		e.preventDefault();
+	};
+
+	form.addEventListener('submit', func, true);
+</script>

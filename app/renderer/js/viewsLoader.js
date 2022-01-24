@@ -38,24 +38,22 @@ document.getElementById('history-in-out-page').addEventListener('click', () => {
 
 document.getElementById('stats-page').addEventListener('click', () => loadPageInMain('stats/stats.hbs'));
 
-document.getElementById('kardex-page').addEventListener('click', () => loadPageInMain('/stock/kardex.hbs'));
-
 document.getElementById('stock-page').addEventListener('click', () => ipcRenderer.send('load-stock-window'));
 
 document.getElementById('customers-page').addEventListener('click', () => ipcRenderer.send('load-customers-window'));
 
-document.getElementById('maintenance-page').addEventListener('click', () => loadPageInMain('/maintenance/maintenance.hbs'));
+document.getElementById('maintenance-page').addEventListener('click', () => ipcRenderer.send('load-general-window'));
 
-document.getElementById('maintenance-branch-page').addEventListener('click', () => loadPageInMain('/maintenance/branch.hbs'));
+document.getElementById('maintenance-branch-page').addEventListener('click', () => ipcRenderer.send('load-branches-window'));
 
-document.getElementById('maintenance-employees-page').addEventListener('click', () => loadPageInMain('/maintenance/employees.hbs'));
+document.getElementById('maintenance-employees-page').addEventListener('click', () => ipcRenderer.send('load-employees-window'));
 
-document.getElementById('maintenance-users-page').addEventListener('click', () => loadPageInMain('/maintenance/users.hbs'));
+document.getElementById('maintenance-users-page').addEventListener('click', () => ipcRenderer.send('load-users-window'));
 
-document.getElementById('maintenance-docs-page').addEventListener('click', () => loadPageInMain('/maintenance/docs.hbs'));
+document.getElementById('maintenance-docs-page').addEventListener('click', () => ipcRenderer.send('load-docs-window'));
 
-document.getElementById('maintenance-units-page').addEventListener('click', () => loadPageInMain('/maintenance/units.hbs'));
+document.getElementById('maintenance-units-page').addEventListener('click', () => ipcRenderer.send('load-units-window'));
 
-document.getElementById('dump-page').addEventListener('click', () => loadPageInMain('/security/dump.hbs'));
+document.getElementById('dump-page').addEventListener('click', () => ipcRenderer.send('dump-database'));
 
 // document.getElementById('').addEventListener('click', () => loadPageInMain(''));

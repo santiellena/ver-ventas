@@ -18,7 +18,20 @@ const boxes = {
 
 function newBox () {};
 
-function substractToBox () {};
+function substractToBox (idBox, idBranch, amount) {
+    if(boxes[idBox] != undefined) {
+        if(boxes[idBox].idBranch == idBranch){
+            const amountFloat = parseFloat(amount);
+            const substract = boxes[idBox].moneyAmount - amountFloat;
+            const updatedAmount = substract.toFixed(2);
+            return boxes[idBox] = {
+                id: boxes[idBox].id,
+                idBranch: boxes[idBox].idBranch,
+                moneyAmount: parseFloat(updatedAmount),
+            };
+        };
+    } else return null;
+};
 
 function addToBox (idBox, idBranch, amount) {
     if(boxes[idBox] != undefined) {
@@ -35,8 +48,17 @@ function addToBox (idBox, idBranch, amount) {
     } else return null;
 };
 
+function returnBoxInfo (id) {
+    if(id){
+        if(boxes[id] != undefined){
+            return boxes[id];
+        };
+    };
+};
+
 module.exports = {
     newBox,
     addToBox,
     substractToBox,
+    returnBoxInfo,
 };
