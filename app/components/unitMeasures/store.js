@@ -38,11 +38,32 @@ function addMeasure ({
     shortDescription,
     longDescription,
 }) {
-    
+    const iterable = Object.entries(measures);
+    let newId = 0;
+    for (let i = 1; i < iterable.length + 1; i++) {
+        if(measures[i] == undefined){
+            newId = i;
+            break;
+        } else if(measures[i+1] == undefined){
+            newId = i+1;
+            break;
+        };
+    };
+
+    return measures[newId] = {
+        id: newId,
+        shortDescription,
+        longDescription,
+    };
+};
+
+function deleteMeasure (id) {
+    if(measures[id] != undefined) delete measures[id];
 };
 
 module.exports = {
     getMeasure,
     getAllMeasures,
     addMeasure,
+    deleteMeasure,
 };

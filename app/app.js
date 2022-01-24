@@ -12,6 +12,7 @@ const ipcMainEvents = {
   customers: require('./ipcMainEvents/customers'),
   cashRegister: require('./ipcMainEvents/cashRegister'),
   maintenance: require('./ipcMainEvents/maintenance'),
+  security: require('./ipcMainEvents/security'),
 }
 
 const {
@@ -147,3 +148,5 @@ ipcMainEvents.maintenance({
   createDocsWindow,
   createUnitsWindow,
 });
+
+ipcMainEvents.security({});

@@ -1114,12 +1114,58 @@ function createPaymentWindow ({
     });
   };
 
-  function createDocsWindow () {
+  function createDocsWindow ({docTypes}) {
+    docsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1000, height: 600,
+      title: `Mercado 1990 - Tipos de Documentos`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    docsWindow.loadFile(historyHandlebars.render('/maintenance/docs.hbs', {docTypes}));
     
+    handleErrors(docsWindow);
+    
+    // Listen for window being closed
+    docsWindow.on('closed',  () => {
+      docsWindow.removeAllListeners();
+      docsWindow = null;
+    });
   };
 
-  function createUnitsWindow () {
-
+  function createUnitsWindow ({measures}) {
+    unitsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1000, height: 600,
+      title: `Mercado 1990 - Unidades de Medida`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    unitsWindow.loadFile(historyHandlebars.render('/maintenance/units.hbs', {measures}));
+    
+    handleErrors(unitsWindow);
+    
+    // Listen for window being closed
+    unitsWindow.on('closed',  () => {
+      unitsWindow.removeAllListeners();
+      unitsWindow = null;
+    });
   };
 
   function returnMainWindow () {

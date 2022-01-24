@@ -1,19 +1,23 @@
-const { ipcMain, dialog } = require('electron');
+const { ipcMain, dialog, app } = require('electron');
 
 const { mainHandlebars,
         historyHandlebars,
         returnMainWindow,
-        returnLoginWindow,
-        returnSettingsWindow,
-        returnSellsHistoryWindow,
-        returnPaymentWindow,
-        
 } = require('../createWindows');
 
 module.exports = ({
-    createMainWindow,
-    createLoginWindow,
-    createSettingsWindow,
-    createSellsHistoryWindow,
-    createPaymentWindow,
-}) => {}
+}) => {
+
+    ipcMain.on('dump-database', () => {
+        const mainWindow = returnMainWindow();
+
+        dialog.showSaveDialog(mainWindow, {
+            title: 'Guardar Backup Localmente',
+            buttonLabel: 'Backup',
+            defaultPath: app.getPath('documents') + '/dump.sql',
+        }).then((path) => {
+            console.log(path);
+        });
+    });
+
+};

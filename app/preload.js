@@ -79,6 +79,8 @@ contextBridge.exposeInMainWorld(
                 'dump-database',
                 'load-docs-window',
                 'load-units-window',
+                'delete-docType',
+                'delete-unitMeasure',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -180,6 +182,8 @@ contextBridge.exposeInMainWorld(
                 'get-user-deleted',
                 'get-all-branches',
                 'get-added-user',
+                'new-docType',
+                'new-unitMeasure',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

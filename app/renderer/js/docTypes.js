@@ -1,23 +1,23 @@
 const ipcRenderer = window.app
 
-async function addDepartment () {
-    const newName = document.getElementById('new-department').value;
+async function addDocType () {
+    const newName = document.getElementById('new-docType').value;
 
-    const newDepartment = await ipcRenderer.invoke('new-department', newName);
+    const newDocType = await ipcRenderer.invoke('new-docType', newName);
 
-    const tbody = document.getElementById('tbody-departments');
+    const tbody = document.getElementById('tbody-docTypes');
 
-    if(newDepartment){
+    if(newDocType){
         const tr = document.createElement('tr');
-        tr.setAttribute('id', `tr${newDepartment.id}`);
+        tr.setAttribute('id', `tr${newDocType.id}`);
         const tdId = document.createElement('td');
-        tdId.innerText = newDepartment.id;
+        tdId.innerText = newDocType.id;
         const tdName = document.createElement('td');
-        tdName.innerText = newDepartment.description;
+        tdName.innerText = newDocType.description;
         const tdButton = document.createElement('td');
         const button = document.createElement('button');
         button.setAttribute('class', 'btn btn-danger');
-        button.setAttribute('onclick', `deleteDepartment(${newDepartment.id})`);
+        button.setAttribute('onclick', `deleteDocType(${newDocType.id})`);
         button.innerText = 'X';
         tdButton.appendChild(button);
 
@@ -27,12 +27,12 @@ async function addDepartment () {
 
         tbody.insertAdjacentElement('beforeend', tr);
 
-        document.getElementById('new-department').value = null;
+        document.getElementById('new-docType').value = null;
     };
 };
 
-function deleteDepartment (id) {
-    ipcRenderer.send('delete-department', id);
+function deleteDocType (id) {
+    ipcRenderer.send('delete-docType', id);
 
     const tr = document.getElementById(`tr${id}`);
     tr.remove();

@@ -19,6 +19,7 @@ const storeMaintenance = require('../components/maintenance/store');
 const storeDocTypes = require('../components/docTypes/store');
 const storeEmployees = require('../components/employees/store');
 const storeUsers = require('../components/users/store');
+const storeUnitMeasures = require('../components/unitMeasures/store');
 
 const { getBranchDataFromConfig, updateBranchName } = require('../config/config');
 
@@ -388,10 +389,35 @@ module.exports = ({
     });
 
     ipcMain.on('load-docs-window', () => {
-        createDocsWindow();
+        const docTypes = storeDocTypes.getAllDocTypes();
+        createDocsWindow({docTypes});
     });
 
     ipcMain.on('load-units-window', () => {
-        createUnitsWindow();
+        const measures = storeUnitMeasures.getAllMeasures();
+        createUnitsWindow({measures});
+    });
+
+    ipcMain.handle('new-docType', (e, newName) => {
+        return storeDocTypes.addDocType(newName); 
+    });
+
+    ipcMain.on('delete-docType', (e, id) => {
+        if(id){
+            storeDocTypes.deleteDocType(id);
+        };
+    });
+
+    ipcMain.on('delete-unitMeasure', (e, id) => {
+        if(id){
+            storeUnitMeasures.deleteMeasure(id);
+        };
+    });
+
+    ipcMain.handle('new-unitMeasure', (e, {shortDescription, longDescription}) => {
+        if(longDescription && shortDescription){
+            
+            return storeUnitMeasures.addMeasure({shortDescription, longDescription});
+        };
     });
 };
