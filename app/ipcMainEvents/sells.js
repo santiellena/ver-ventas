@@ -5,6 +5,9 @@ const storeCustomers = require('../components/customers/store');
 const storeOrders = require('../components/orders/store');
 const storeSells = require('../components/sells/store');
 const storeMaintenance = require('../components/maintenance/store');
+const storeCashRegister = require('../components/cashRegister/store');
+const storeSales = require('../components/sales/store');
+const configs = require('../config/config');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -14,6 +17,8 @@ const { mainHandlebars,
         returnSearchProductsWindow,
         returnCustomerListWindow,
         returnOrdersWindow,
+        returnSalesWindow,
+        returnAddSaleWindow,
         
 } = require('../createWindows');
 
@@ -23,6 +28,8 @@ module.exports = ({
     createSearchProductsWindow,
     createCustomerListWindow,
     createOrdersWindow,
+    createSalesWindow,
+    createAddSaleWindow,
 }) => {
 
     ipcMain.on('open-sells-history', () => {
@@ -58,14 +65,21 @@ module.exports = ({
 
     ipcMain.on('sell-cash-confirmation', (e, args) => {
         const paymentWindow = returnPaymentWindow();
-        const { totalAmount, amountToBeReturned } = args;
+        const { totalAmount, amountToBeReturned, howMuchCash } = args;
         dialog.showMessageBoxSync(paymentWindow, {
             title: 'Venta Finalizada',
-            message: `Cobrar: $ ${totalAmount}.
-                     Vuelto: $ ${amountToBeReturned}`,
+            message: `Cobrar: $ ${totalAmount}. 
+            Paga con: $ ${howMuchCash}.
+            Vuelto: $ ${amountToBeReturned.toFixed(2)}.`,
             type: 'info',
             buttons: ['Cerrar'],
         });
+
+        const branchConfig = configs.getBranchDataFromConfig();
+        const boxConfig = configs.getCashRegisterId();
+
+        storeCashRegister.addToBox(boxConfig, branchConfig.id, totalAmount);
+
         paymentWindow.close();
         const mainWindow = returnMainWindow();
 
@@ -319,4 +333,65 @@ module.exports = ({
             }
         }
     });
+
+    ipcMain.handle('get-product-discount', (e, idProduct) => {
+        if(idProduct){
+            const discount = storeSales.getSaleByProduct(idProduct).discount;
+            if(discount) return discount
+            else return 0;
+        };
+    });
+
+    ipcMain.on('load-sales-page', () => {
+        const sales = storeSales.getAllSalesWithProducts();
+        createSalesWindow({sales});
+    });
+
+    ipcMain.on('load-addsale-page', () => {
+        createAddSaleWindow();
+    });
+
+    let newSalePivot
+    ipcMain.handle('add-sale', (e, {
+        idProduct,
+        discount,
+        fromDate,
+        toDate,
+    }) => {
+        const newSale = storeSales.addSale({
+            idProduct,
+            discount,
+            fromDate,
+            toDate,
+        });
+
+        if(newSale){
+            const salesWindow = returnSalesWindow();
+            salesWindow.webContents.send('load-new-sale');
+            newSalePivot = newSale;
+
+            if(newSale.productChange == 1){
+                storeProducts.changeSaleStatus(newSale.idProduct);
+            };
+
+            return 1;
+        } else {
+            return null;
+        };
+    });
+
+    ipcMain.handle('get-new-sale', () => {
+        const sale = newSalePivot;
+        delete newSalePivot;
+
+        const product = storeProducts.getProduct(sale.idProduct);
+        sale.product = product;
+        return sale;
+    });
+
+    ipcMain.handle('delete-sale', (e, idSale) => {
+        const answer = storeSales.deleteSale(idSale);
+        return answer;
+    });
+
 };

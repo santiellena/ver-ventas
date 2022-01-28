@@ -1,7 +1,13 @@
 const storeCustomers = require('../customers/store');
 
 const actualDate = new Date();
-const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}`;
+let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
 
 const orders = {
     41242: {
@@ -107,7 +113,13 @@ function addOrder ({
         } else {
             minutes = minutesString;
         }
-        const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}-${actualDate.getHours()}:${minutes}`; 
+        let month = '';
+            if((actualDate.getMonth()+1).toString().length == 1){
+                month = `0${actualDate.getMonth()+1}`;
+        } else {
+                month = actualDate.getMonth()+1;
+        };
+        const date = `${actualDate.getDate()}/${month}/${actualDate.getFullYear()}-${actualDate.getHours()}:${minutes}`; 
         const iterable = Object.entries(orders);
         let newId = 0;
         for (let i = 1; i < iterable.length + 1; i++) {

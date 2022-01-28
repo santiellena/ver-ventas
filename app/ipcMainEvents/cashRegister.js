@@ -109,4 +109,10 @@ module.exports = ({
         return boxInfo.moneyAmount;
     });
 
+    ipcMain.handle('get-cash-cashRegister', () => {
+        const idBox = config.getCashRegisterId();
+        const box = storeCashRegister.returnBoxInfo(idBox);
+        return box.moneyAmount;
+    });
+
 };

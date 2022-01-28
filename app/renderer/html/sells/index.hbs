@@ -41,13 +41,14 @@
                                 <th>Código #</th>
                                 <th>Stock</th>
                                 <th>Precio Unitario</th>
+                                <th>Descuento</th>
                                 <th>Subtotal</th>
                                 <th style="width: 1.6rem;">Eliminar</th>
                               </tr>
                             </thead>
                             <tbody id="tbody-list">
                               <tr class="odd" id="tr-alert">
-                                <td valign="top" colspan="7" class="dataTables_empty">Ningún Producto Agregado</td>
+                                <td valign="top" colspan="8" class="dataTables_empty">Ningún Producto Agregado</td>
                               </tr>
                               {{#if storedProductList}}
                                   {{#each storedProductList}}
@@ -59,6 +60,7 @@
                                 <td>{{this.code}}</td>
                                 <td>{{this.stock}}</td>
                                 <td>${{this.unitPrice}}</td>
+                                <td>$ 0</td>
                                 <td>${{this.subTotal}}</td>
                                 <td><button class="btn btn-danger">X</button></td>
                               </tr>

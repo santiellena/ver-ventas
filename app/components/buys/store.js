@@ -1,5 +1,11 @@
 const actualDate = new Date();
-const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
 const storeProducts = require('../products/store');
 
 const buys = {

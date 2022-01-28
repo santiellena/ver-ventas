@@ -1,9 +1,10 @@
 const storeProducts = require('../products/store');
+const storeDepartments = require('../departments/store');
 
 const sells = {
     1: {
         id: 1,
-        date: '2021/12/15-20:34',
+        date: '2022/01/28-20:34',
         amount: 270,
         howMuchPaid: 50,
         branch: 'Principal',
@@ -11,7 +12,8 @@ const sells = {
         customer: {id: 2, name: 'Julian Paoloski'},
         howPaid: 'Contado/Cuenta Corriente',
         details: [
-            {
+            {   
+                idProduct: 2,
                 product: 'Ketchup 250ml',
                 quantity: 3,
                 price: 90,
@@ -20,24 +22,25 @@ const sells = {
     },
     33: {
       id: 33,
-      date: '2021/12/15-20:34',
-      amount: 270,
+      date: '2022/01/28-20:34',
+      amount: 500,
       howMuchPaid: 50,
       branch: 'Principal',
       emplooy: {id: 1, name: 'Administrador'},
       customer: {id: 1, name: 'Jorge Lintos'},
       howPaid: 'Contado/Cuenta Corriente',
       details: [
-        {
+        {   
+            idProduct: 2,
             product: 'Ketchup 250ml',
             quantity: 3,
-            price: 90,
+            price: 250,
         },
     ],
     },
     22: {
       id: 22,
-      date: '2021/12/13-0:00',
+      date: '2022/01/28-0:00',
       amount: 480,
       howMuchPaid: 0,
       branch: 'Principal',
@@ -45,15 +48,17 @@ const sells = {
       customer:  {id: 4, name: 'Pedro Juliano'},
       howPaid: 'Cuenta Corriente',
       details: [
-          {
+          {   
+              idProduct: 1,
               product: 'Mayonesa 200ml',
               quantity: 3,
-              price: 70,
+              price: 250,
           },
           {
+            idProduct: 2,
             product: 'Ketchup 250ml',
             quantity: 3,
-            price: 90,
+            price: 200,
         },
       ],
     },
@@ -122,7 +127,13 @@ function addSell ({
         } else {
             minutes = minutesString;
         }
-        const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}-${actualDate.getHours()}:${minutes}`; 
+        let month = '';
+        if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+        } else {
+            month = actualDate.getMonth()+1;
+        };
+        const date = `${actualDate.getDate()}/${month}/${actualDate.getFullYear()}-${actualDate.getHours()}:${minutes}`; 
         const iterable = Object.entries(sells);
         let id = 0;
         for (let i = 1; i < iterable.length + 1; i++) {
@@ -151,6 +162,7 @@ function addSell ({
                 price = product.wholesalerPrice
             };
             const newDetail = {
+                idProduct: product.id,
                 product: product.description,
                 quantity: minusStock,
                 price,
@@ -189,12 +201,61 @@ function getSellsByCustomer (idCustomer) {
             if(e[1].customer.id == idCustomer){
                 if(e[1].howPaid == 'Cuenta Corriente' || e[1].howPaid == 'Contado/Cuenta Corriente'){
                     sellsList.push(sells[e[0]]);
-                }
+                };
             };
         });
 
         return sellsList;
     };
+};
+
+function getGainsByDepartment (from, to) {
+    const sells = Object.values(getAllSells());
+    const fromYear = from.slice(0,4);
+    const fromMonth = from.slice(5,7);
+    const fromDay = from.slice(8,10);
+    const toYear = to.slice(0,4);
+    const toMonth = to.slice(5,7);
+    const toDay = to.slice(8,10);
+
+    const sellsToday = [];
+    for (const sell of sells) {
+        const sellYear = sell.date.slice(0,4);
+        const sellMonth = sell.date.slice(5,7);
+        const sellDay = sell.date.slice(8,10);
+     
+        if(sellYear >= fromYear && sellYear <= toYear){
+            if(sellMonth >= fromMonth && sellMonth <= toMonth){
+                if(sellDay >= fromDay && sellDay <= toDay){
+                    sellsToday.push(sell);
+                };
+            };
+        }; 
+    };
+    const departments = storeDepartments.getAllDepartments();
+    let gains = 0;
+    for (const sell of sellsToday) {
+        for (const detail of sell.details) {
+            const product = storeProducts.getProduct(detail.idProduct);
+            gains += detail.price - product.buyPrice;
+            if(departments[product.department.id] != undefined){
+                departments[product.department.id].gains = detail.price - product.buyPrice;
+            };
+        };
+    };
+
+    const arrayDepartments = Object.values(departments).map(dep => {
+        dep.percentage = dep.gains / gains * 100;
+        return dep;
+    });
+    
+
+    return {
+        gains,
+        departments: arrayDepartments,
+        amountOfSells: sellsToday.length,
+    }
+    
 };
 
 module.exports = {
@@ -205,4 +266,5 @@ module.exports = {
     getSellsByCustomer,
     addSell,
     deleteSell,
+    getGainsByDepartment,
 };

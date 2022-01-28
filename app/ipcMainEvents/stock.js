@@ -150,7 +150,7 @@ module.exports = ({
             unitPrice,
             stock: initialStock,
             location,
-            department: department.description,
+            department,
             unitMeasure: `${unitMeasure.longDescription}`,
         });
 

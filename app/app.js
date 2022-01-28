@@ -54,6 +54,8 @@ const {
   createEditUserWindow,
   createDocsWindow,
   createUnitsWindow,
+  createSalesWindow,
+  createAddSaleWindow,
   historyHandlebars,
   mainHandlebars,
 } = require('./createWindows');
@@ -97,6 +99,8 @@ ipcMainEvents.sells({
   createSearchProductsWindow,
   createCustomerListWindow,
   createOrdersWindow,
+  createSalesWindow,
+  createAddSaleWindow,
 });
 
 ipcMainEvents.login({

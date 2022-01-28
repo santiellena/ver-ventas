@@ -10,6 +10,12 @@ if(items.length != 0){
 
         const product = await ipcRenderer.invoke('search-product-byid', id);
         const { stock, unitPrice, description } = product;
+        let discount = 0;
+        if(product.onSale == 1){
+            if(checkPriceList() == 'public'){
+                discount = await ipcRenderer.invoke('get-product-discount', id);
+            };
+        };
         const tr = document.createElement('tr');
         tr.setAttribute('id', `tr${id}`);
         const tdInputQuantity = document.createElement('td');
@@ -28,6 +34,8 @@ if(items.length != 0){
         const tdStock = document.createElement('td');
         const tdUnitPrice = document.createElement('td');
         tdUnitPrice.setAttribute('id', `unitPrice${id}`);
+        const tdDiscount = document.createElement('td');
+        tdDiscount.setAttribute('id', `discount${id}`);
         const tdSubTotal = document.createElement('td');
         tdSubTotal.setAttribute('id', `sub-total${id}`);
         const tdButton = document.createElement('td');
@@ -41,7 +49,8 @@ if(items.length != 0){
         tdId.innerText = id;
         tdStock.innerText = stock;
         tdUnitPrice.innerText = `$ ${unitPrice}`;
-        const subTotal = unitPrice * quantity;
+        tdDiscount.innerText = `$ ${discount * quantity}`;
+        const subTotal = unitPrice * quantity - discount * quantity;
         tdSubTotal.innerText = `$ ${subTotal}`;
     
         tr.appendChild(tdInputQuantity);
@@ -49,6 +58,7 @@ if(items.length != 0){
         tr.appendChild(tdId);
         tr.appendChild(tdStock);
         tr.appendChild(tdUnitPrice);
+        tr.appendChild(tdDiscount);
         tr.appendChild(tdSubTotal);
         tr.appendChild(tdButton);
     

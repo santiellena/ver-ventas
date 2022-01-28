@@ -1,0 +1,78 @@
+<div class="right_col" role="main">
+  <div class="">
+    <div class="clearfix"></div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="x_panel">
+            
+          <div class="x_content">
+              <div class="form-group row">
+              <div class="row" style="display: inline-block; width: 100%;">
+          <div class="tile_count">
+            <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 10rem;">
+              <span class="count_top"><i class="fa fa-money"></i> Ventas </span>
+              <div class="count" style="text-align: center;">{{amountOfSells}}</div>
+            </div>
+            <div class="col-md-2 col-sm-4  tile_stats_count">
+              <span class="count_top"><i class="fa fa-dollar"></i> Ganancias </span>
+              <div class="count">$ {{gains}}</div>
+            </div>
+            <div class="col-md-8 col-sm-4  tile_stats_count" >
+              <span class="count_top"><i class="fa fa-user"></i> Departamento Más Rentable</span>
+              <div class="count green">{{bestDepartment.name}}</div>
+              <span class="count_bottom"><i class="green"></i>%{{bestDepartment.percentage}}</i> Del Total de Ganancia</span>
+            </div>
+          </div>
+          <div class="col-md-6">
+                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                      <span>{{fromDate}} - {{toDate}}</span> <b class="caret"></b>
+                    </div>
+                  </div>
+              </div>
+          </div>
+            <div class="ln_solid" style="margin-top: 0; margin-bottom: .5rem;"></div>
+          <div class="row">
+              <div class="col-md-6 col-sm-6 ">
+              <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                  <h2>Rentabilidad de Departamentos</h2>
+                  <ul class="nav navbar-right panel_toolbox">
+                    <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                    </li>
+                    <li><a class="close-link"><i class="fa fa-close"></i></a>
+                    </li>
+                  </ul>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <h4>Respecto del Total de la Ganancia</h4>
+                  {{#each departments}}
+                  <div class="widget_summary">
+                    <div class="w_left w_25">
+                      <span>{{this.description}}</span>
+                    </div>
+                    <div class="w_center w_55">
+                      <div class="progress">
+                        <div class="progress-bar bg-green" role="progressbar" aria-valuenow="{{this.percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{this.percentage}}%;">
+                          <span class="sr-only">{{this.percentage}}%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="w_right w_20">
+                      <span>$ {{this.gains}}</span>
+                    </div>
+                    <div class="clearfix"></div>
+                  </div>
+                    {{/each}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

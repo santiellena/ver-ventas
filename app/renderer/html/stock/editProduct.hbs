@@ -72,7 +72,7 @@
 											<div class="col-md-14 col-sm-14 ">
 												<select class="form-control"  id="department-product" style="width: 18rem" required="required">
 													{{#each departments}}
-                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                        <option value="{{this.id}}" id="department{{this.description}}">{{this.description}}</option>
                                                     {{/each}}
 												</select>
 											</div>
@@ -82,7 +82,7 @@
 											<div class="col-md-14 col-sm-14">
 												<select class="form-control" style="width: 18rem"  id="locationShow-product" required="required">
 													{{#each locationsShow}}
-                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                        <option value="{{this.id}}" id="locationShow{{this.description}}">{{this.description}}</option>
                                                     {{/each}}
 												</select>
 											</div>
@@ -92,7 +92,7 @@
 											<div class="col-md-14 col-sm-14">
 												<select class="form-control" style="width: 18rem"  id="locationStore-product" required="required">
 													{{#each locationsStore}}
-                                                        <option value="{{this.id}}" id="{{this.description}}">{{this.description}}</option>
+                                                        <option value="{{this.id}}" id="locationStore{{this.description}}">{{this.description}}</option>
                                                     {{/each}}
 												</select>
 											</div>
@@ -102,7 +102,7 @@
 											<div class="col-md-14 col-sm-14">
 												<select class="form-control" style="width: 18rem"  id="unitMeasure-product" required="required">
 													{{#each measures}}
-                                                        <option value="{{this.id}}" id="{{this.longDescription}}">{{this.shortDescription}} - {{this.longDescription}}</option>
+                                                        <option value="{{this.id}}" id="measure{{this.longDescription}}">{{this.shortDescription}} - {{this.longDescription}}</option>
                                                     {{/each}}
 												</select>
 											</div>

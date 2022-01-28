@@ -1,5 +1,11 @@
 const actualDate = new Date();
-const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}`;
+let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
 
 const debtPayments = {
     1: {
@@ -61,7 +67,13 @@ function addPay ({
         };
 
         const actualDate = new Date();
-        const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}`;
+        let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+        const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
 
         return debtPayments[id] = {
             id,

@@ -16,6 +16,8 @@ document.getElementById('view-history-page').addEventListener('click', () => {
     ipcRenderer.send('open-sells-history');
 });
 
+document.getElementById('sales-page').addEventListener('click', () => ipcRenderer.send('load-sales-page'));
+
 document.getElementById('buys-page').addEventListener('click', () => ipcRenderer.send('load-addBuys-window'));
 
 document.getElementById('buys-history-page').addEventListener('click', () => ipcRenderer.send('load-buys-window'));
@@ -36,7 +38,7 @@ document.getElementById('history-in-out-page').addEventListener('click', () => {
     ipcRenderer.send('load-cashflowhistory-window'); 
 });
 
-document.getElementById('stats-page').addEventListener('click', () => loadPageInMain('stats/stats.hbs'));
+document.getElementById('stats-page').addEventListener('click', () => ipcRenderer.send('load-stats-page'));
 
 document.getElementById('stock-page').addEventListener('click', () => ipcRenderer.send('load-stock-window'));
 

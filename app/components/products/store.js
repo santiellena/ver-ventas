@@ -11,8 +11,9 @@ const products = {
         wholesalerPrice: 100,
         buyPrice: 75,
         location: ['Estante 1', 'Pasillo 1'],
-        department: 'Carniceria',
+        department: {id: 2, description:'Carniceria'},
         unitMeasure: 'Unidad',
+        onSale: 1,
     },
     2: {
         id: 2,
@@ -22,8 +23,9 @@ const products = {
         wholesalerPrice: 270,
         buyPrice: 180,
         location: ['Estante 1', 'Pasillo 2'],
-        department: 'Varios',
+        department: {id: 1, description:'Varios'},
         unitMeasure: 'Unidad',
+        onSale: 0,
     },
 }
 
@@ -98,6 +100,7 @@ function addProduct ({
                     unitMeasure,
                     stock: quantity,
                     buyPrice,
+                    onSale: 0,
                 };
             }
         }
@@ -147,8 +150,15 @@ function editProduct ({
                 department,
                 location,
                 unitMeasure,
+                onSale: 0,
             };
         };
+    };
+};
+
+function changeSaleStatus (id) {
+    if(id && products[id] != undefined) {
+        products[id].onSale == 0 ? products[id].onSale = 1 : products[id].onSale = 0;
     };
 };
 
@@ -161,4 +171,5 @@ module.exports = {
     checkExistance,
     deleteProduct,
     editProduct,
+    changeSaleStatus,
 };

@@ -81,6 +81,9 @@ contextBridge.exposeInMainWorld(
                 'load-units-window',
                 'delete-docType',
                 'delete-unitMeasure',
+                'load-sales-page',
+                'load-addsale-page',
+                'load-stats-page',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -120,7 +123,8 @@ contextBridge.exposeInMainWorld(
                 'delete-emplooy-selected',
                 'load-edited-emplooy',
                 'update-userslist-bydelete',
-                'update-userslist-bynew'
+                'update-userslist-bynew',
+                'load-new-sale',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -184,6 +188,11 @@ contextBridge.exposeInMainWorld(
                 'get-added-user',
                 'new-docType',
                 'new-unitMeasure',
+                'get-cash-cashRegister',
+                'get-product-discount',
+                'add-sale',
+                'get-new-sale',
+                'delete-sale',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

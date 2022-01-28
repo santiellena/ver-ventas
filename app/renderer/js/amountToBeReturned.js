@@ -25,7 +25,7 @@ function getMoney () {
             const debtFixed = debt.toFixed(2);
             ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed});
         } else {
-            ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned});
+            ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned, howMuchCash});
         };
 
     } else {

@@ -1,5 +1,11 @@
 const actualDate = new Date();
-const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
 
 const cashFlow = {
     1: {
@@ -83,7 +89,13 @@ function addRegister ({
         };
 
         const nowActualDate = new Date();
-        const nowDate = `${nowActualDate.getFullYear()}/${nowActualDate.getMonth()+1}/${nowActualDate.getDate()}-${nowActualDate.getHours()}:${nowActualDate.getMinutes()}`;
+        let month = '';
+        if((nowActualDate.getMonth()+1).toString().length == 1){
+                month = `0${nowActualDate.getMonth()+1}`;
+        } else {
+                month = nowActualDate.getMonth()+1;
+        };
+        const nowDate = `${nowActualDate.getFullYear()}/${month}/${nowActualDate.getDate()}-${nowActualDate.getHours()}:${nowActualDate.getMinutes()}`;
 
         if(cashFlow[id] == undefined) {
             return cashFlow[id] = {

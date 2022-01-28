@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow, salesWindow, addSaleWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -1168,6 +1168,60 @@ function createPaymentWindow ({
     });
   };
 
+  function createSalesWindow ({sales}) {
+    salesWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1500, height: 1000,
+      title: `Mercado 1990 - Ofertas`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    salesWindow.loadFile(historyHandlebars.render('/sells/sales.hbs', {sales}));
+    
+    handleErrors(salesWindow);
+    
+    // Listen for window being closed
+    salesWindow.on('closed',  () => {
+      salesWindow.removeAllListeners();
+      salesWindow = null;
+    });
+  };
+
+  function createAddSaleWindow () {
+    addSaleWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1150, height: 450,
+      title: `Mercado 1990 - Ofertas - Agregar`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: salesWindow,
+      modal: true,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    addSaleWindow.loadFile(`${__dirname}/renderer/html/sells/addSale.html`);
+    
+    handleErrors(addSaleWindow);
+    
+    // Listen for window being closed
+    addSaleWindow.on('closed',  () => {
+      addSaleWindow.removeAllListeners();
+      addSaleWindow = null;
+    });
+  };
+
   function returnMainWindow () {
     return mainWindow;
   };
@@ -1324,6 +1378,14 @@ function returnDocsWindow () {
   return docsWindow;
 };
 
+function returnSalesWindow () {
+  return salesWindow;
+};
+
+function returnAddSaleWindow () {
+  return addSaleWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -1364,6 +1426,8 @@ module.exports = {
     createEditUserWindow,
     createDocsWindow,
     createUnitsWindow,
+    createSalesWindow,
+    createAddSaleWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -1403,6 +1467,8 @@ module.exports = {
     returnAddUserWindow,
     returnDocsWindow,
     returnUnitsWindow,
+    returnSalesWindow,
+    returnAddSaleWindow,
     mainHandlebars,
     historyHandlebars,
 };

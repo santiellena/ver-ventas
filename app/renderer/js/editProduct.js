@@ -68,10 +68,10 @@ async function checkCodeValue () {
             document.getElementById('wholesalerPrice-product').value = product.wholesalerPrice;
             document.getElementById('unitPrice-product').value = product.unitPrice;
             document.getElementById('stock-product').value = product.stock;
-            document.getElementById(product.unitMeasure).setAttribute('selected', true);
-            document.getElementById(product.department).setAttribute('selected', true);
-            document.getElementById(product.location[0]).setAttribute('selected', true);
-            document.getElementById(product.location[1]).setAttribute('selected', true);
+            document.getElementById(`measure${product.unitMeasure}`).setAttribute('selected', true);
+            document.getElementById(`department${product.department.description}`).setAttribute('selected', true);
+            document.getElementById(`locationShow${product.location[1]}`).setAttribute('selected', true);
+            document.getElementById(`locationStore${product.location[0]}`).setAttribute('selected', true);
         };
     }
 };

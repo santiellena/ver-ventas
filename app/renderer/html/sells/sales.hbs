@@ -1,0 +1,62 @@
+
+<link rel="stylesheet" href="../../css/footer.css">
+<div class="col-md-12 col-sm-12  ">
+                <div class="x_panel" style="height:600px;">
+                  <div class="x_title">
+                    <h2>Ofertas</h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li onclick="window.close();"><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+
+                  <div class="x_content">
+                    <div class="row">
+
+                      <div class="col-md-12" id="contents">
+
+                        <!-- price element -->
+                        {{#each sales}}
+                        <div class="col-md-3 col-sm-6" id="sale{{this.id}}">
+                          <div class="pricing">
+                            <div class="title">
+                              <h2>{{this.product.description}}</h2>
+                              <h1>$ {{this.discount}}</h1>
+                              <span>{{this.fromDate}}  -  {{this.toDate}}</span>
+                            </div>
+                            <div class="x_content">
+                              <div class="">
+                                <div class="pricing_features">
+                                  <ul class="list-unstyled text-left">
+                                    <li><i class="fa fa-check text-success"></i> <strong>Producto:</strong> {{this.product.description}}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong>Precio:</strong> $ {{this.product.unitPrice}}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong>Descuento:</strong> $ {{this.discount}}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong>Fecha de inicio:</strong> {{this.fromDate}}</li>
+                                    <li><i class="fa fa-check text-success"></i> <strong>Fecha de finalización:</strong> {{this.toDate}}</li>
+                                  </ul>
+                                </div>
+                              </div>
+                              <div class="pricing_footer">
+                                <a href="javascript:void(0);" class="btn btn-danger btn-block" role="button" onclick="deleteSale({{this.id}});">Cancelar <span> Oferta!</span></a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- price element -->
+                        {{/each}}
+                       
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="mobile-footer" style="border-top: 1.5px solid #111; background: #2A3F54;">
+                  <div id="mobile-footer-container">
+                    <div class="division-buttons" style="margin-bottom: 2rem; display:flex;">
+                        <button class="btn btn-success" id="add-product-button" onclick="loadAddSaleWindow();"><i class="fa fa-plus"></i> Agregar Oferta</button>
+                        <div id="alert"></div>
+                    </div>
+                  </div>
+              </div>
+              <script src="../../js/sales.js"></script>

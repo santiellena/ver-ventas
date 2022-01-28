@@ -6,7 +6,15 @@ const departments = {
     2: {
         id: 2,
         description: 'Carniceria',
-    }
+    },
+    3: {
+        id: 3,
+        description: 'Panaderia'
+    },
+    4: {
+        id: 4,
+        description: 'Verduleria',
+    },
 };
 
 function getAllDepartments () {
