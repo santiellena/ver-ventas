@@ -7,7 +7,7 @@
         <div class="x_panel">
             
           <div class="x_content">
-              <div class="form-group row">
+              <div class="form-group row" >
               <div class="row" style="display: inline-block; width: 100%;">
           <div class="tile_count">
             <div class="col-md-2 col-sm-4  tile_stats_count" style="width: 10rem;">
@@ -24,11 +24,22 @@
               <span class="count_bottom"><i class="green"></i>%{{bestDepartment.percentage}}</i> Del Total de Ganancia</span>
             </div>
           </div>
-          <div class="col-md-6">
-                    <div id="reportrange" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
-                      <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
-                      <span>{{fromDate}} - {{toDate}}</span> <b class="caret"></b>
-                    </div>
+          <div class="col-md-8">
+                   <div class="search-bytime">
+                                  <label for="from-date">Busqueda por fecha del:</label>
+                                  <input id="from-date" value="{{fromDate}}" name="from-date" placeholder="{{fromDate}}" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+												
+                                  <label for="to-date"> al:</label>
+                                  <input id="to-date" value="{{toDate}}" name="to-date" placeholder="{{toDate}}" type="text" required="required" onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'" onmouseout="timeFunctionLong(this)">
+                                  <script>
+											function timeFunctionLong(input) {
+												setTimeout(function() {
+													input.type = 'text';
+												}, 60000);
+											}
+								</script>
+                  <button class="btn btn-info" onclick="searchBuyByDate()">Buscar</button>
+                          </div>
                   </div>
               </div>
           </div>

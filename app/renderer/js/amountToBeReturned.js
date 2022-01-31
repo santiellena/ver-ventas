@@ -19,13 +19,17 @@ function getMoney () {
     if(totalAmount != null && totalAmount != undefined && totalAmount != 0){
         const howMuchCash = document.getElementById('cash').value;
         const amountToBeReturned = howMuchCash - totalAmount;
-
+        const invoicing = document.getElementById('invoicing');
+        let iValue = 0;
+        if(invoicing.checked == true){
+            iValue = 1;
+        };
         if(amountToBeReturned < 0){
             const debt = amountToBeReturned * (-1);
             const debtFixed = debt.toFixed(2);
-            ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed});
+            ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed, invoicing: iValue});
         } else {
-            ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned, howMuchCash});
+            ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned, howMuchCash, invoicing: iValue});
         };
 
     } else {

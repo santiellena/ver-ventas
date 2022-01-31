@@ -16,7 +16,7 @@ const sells = {
                 idProduct: 2,
                 product: 'Ketchup 250ml',
                 quantity: 3,
-                price: 90,
+                price: 250,
             },
         ],
     },
@@ -237,14 +237,18 @@ function getGainsByDepartment (from, to) {
     for (const sell of sellsToday) {
         for (const detail of sell.details) {
             const product = storeProducts.getProduct(detail.idProduct);
-            gains += detail.price - product.buyPrice;
+            gains += detail.quantity * (detail.price - product.buyPrice);
             if(departments[product.department.id] != undefined){
-                departments[product.department.id].gains = detail.price - product.buyPrice;
-            };
+                if(departments[product.department.id].gains == undefined){
+                    departments[product.department.id].gains = detail.quantity * (detail.price - product.buyPrice);
+                } else {
+                    departments[product.department.id].gains += detail.quantity * (detail.price - product.buyPrice);
+                };
+            };  
         };
     };
-
     const arrayDepartments = Object.values(departments).map(dep => {
+        
         dep.percentage = dep.gains / gains * 100;
         return dep;
     });

@@ -86,7 +86,20 @@ module.exports = ({
         mainWindow.webContents.send('clear-product-list');
     });
 
-    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount}) => {
+    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount, invoincing}) => {
+        const paymentWindow = returnPaymentWindow();
+        if(invoincing == 1){
+            const response = dialog.showMessageBoxSync(paymentWindow, {
+                title: 'Facturar Venta?',
+                message: 'Si confirma, se abrirá el menu de facturación.',
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+
+            if(response == 1){
+                
+            };
+        };
+
         const customers = storeCustomers.getAllCustomers();
         createCustomerListWindow({ totalAmount: debt, totalAmountPlusDebt: totalAmount, customers, howPaid: 'Contado/Cuenta Corriente' });
         const customerList = returnCustomerListWindow(); 

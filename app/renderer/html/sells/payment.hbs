@@ -14,6 +14,17 @@
     <!-- bootstrap-daterangepicker -->
     <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
 
+    <!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+
     <link rel="stylesheet" href="../../css/paymentWindow.css">
 
     <!-- Custom Theme Style -->
@@ -32,6 +43,9 @@
                         <button class="btn btn-warning button-method" onclick="payWithCard();">Tarjeta</button>
                         <button class="btn btn-danger button-method" onclick="payWithCredit();">Cuenta Corriente</button>
                         <button class="btn btn-primary button-method" onclick="newOrder();">Nuevo Pedido</i></button>
+                        <ul class="to_do" >
+                            <li><p style="display: block; font-size: 1rem"><input type="checkbox" value="1" class="flat" id="invoicing"> Facturar</p></li>
+                        </ul>
                     </div>
                   </div>
                 </div>
