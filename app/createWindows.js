@@ -1,4 +1,4 @@
-const { app, BrowserWindow, Tray, Menu, ipcMain } = require('electron');
+const { app, BrowserWindow, Tray, Menu} = require('electron');
 
 const handleErrors = require('./handleErrors');
 const handlebarsHbs = require('esanti-electron-hbs');
@@ -7,7 +7,7 @@ const storeProducts = require('./components/products/store');
 const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
-let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow, salesWindow, addSaleWindow;
+let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow, salesWindow, addSaleWindow, missingStockWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -63,6 +63,7 @@ function createLoginWindow () {
       contextIsolation: true,
       preload: `${__dirname}/preload.js`,
     },
+    resizable: false,
   });
 
   loginWindow.loadFile(`${__dirname}/renderer/html/login.html`);
@@ -71,7 +72,6 @@ function createLoginWindow () {
 
   loginWindow.on('closed',  () => {
     loginWindow.removeAllListeners();
-    ipcMain.removeHandler('login');
     loginWindow = null;
   });
 }
@@ -87,10 +87,12 @@ function createMainWindow  () {
         nodeIntegration: false,
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
-      }
+      },
+      fullscreen: true,
+      frame: false,
     });
   // Load index.hbs into the new BrowserWindow
-  mainWindow.loadFile(mainHandlebars.render('/sells/index.hbs'));
+  mainWindow.loadFile(mainHandlebars.render('/sells/index.hbs'), {});
   
   handleErrors(mainWindow);
   
@@ -118,10 +120,12 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     paymentWindow.loadFile(historyHandlebars.render(`sells/payment.hbs`, { totalAmount, articlesQuantity }));
-    
+
     handleErrors(paymentWindow);
     
     // Listen for window being closed
@@ -145,6 +149,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     settingsWindow.loadFile(`${__dirname}/renderer/html/settings.html`);
@@ -175,8 +181,10 @@ function createPaymentWindow ({
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
       },
+      resizable: false,
       parent: mainWindow,
       modal: true,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -207,6 +215,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
@@ -240,6 +250,8 @@ function createPaymentWindow ({
       },
       parent: paymentWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount, totalAmountPlusDebt, howPaid, operation }));
@@ -269,6 +281,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
 
    
@@ -299,6 +313,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -331,6 +347,8 @@ function createPaymentWindow ({
       },
       parent: suppliersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -361,6 +379,8 @@ function createPaymentWindow ({
       },
       parent: suppliersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -390,6 +410,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -417,6 +439,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -444,6 +468,8 @@ function createPaymentWindow ({
       },
       parent: addBuyWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
 
     const products = storeProducts.getAllProducts();
@@ -477,7 +503,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: mainWindow,
+      frame: false,
       modal: true,
+      resizable: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -510,8 +538,10 @@ function createPaymentWindow ({
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
       },
+      frame: false,
       parent: stockWindow,
       modal: true,
+      resizable: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -545,7 +575,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: stockWindow,
+      frame: false,
       modal: true,
+      resizable: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -575,6 +607,7 @@ function createPaymentWindow ({
       },
       parent: stockWindow,
       modal: true,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -605,6 +638,8 @@ function createPaymentWindow ({
       },
       parent: stockWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -637,7 +672,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: mainWindow,
+      resizable: false,
       modal: true,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -668,7 +705,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: customersWindow,
+      resizable: false,
       modal: true,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -699,6 +738,8 @@ function createPaymentWindow ({
       },
       parent: customersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -727,6 +768,8 @@ function createPaymentWindow ({
       },
       parent: customersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -756,6 +799,8 @@ function createPaymentWindow ({
       },
       parent: listDebtsWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     payDebtsWindow.loadFile(historyHandlebars.render(`customers/payDebt.hbs`, {idCustomer}));
@@ -783,6 +828,8 @@ function createPaymentWindow ({
       },
       parent: customersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -808,6 +855,7 @@ function createPaymentWindow ({
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
       },
+      resizable: false,
     });
   
     firstTimeWindow.loadFile(`${__dirname}/renderer/html/firstTime.html`);
@@ -835,6 +883,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     cashFlowHistoryWindow.loadFile(historyHandlebars.render(`cashRegister/history.hbs`, {cashFlow}));
@@ -862,6 +912,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     cashFlowInWindow.loadFile(`${__dirname}/renderer/html/cashRegister/in.html`);
@@ -888,6 +940,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     cashFlowOutWindow.loadFile(`${__dirname}/renderer/html/cashRegister/out.html`);
@@ -914,6 +968,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     generalMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/maintenance.hbs`, {general}));
@@ -940,6 +996,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
   
     branchesMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/branch.hbs`, {branches, branchName: branch.name, branchId: branch.id}));
@@ -965,6 +1023,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -992,6 +1052,8 @@ function createPaymentWindow ({
       },
       parent: employeesWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -1019,6 +1081,8 @@ function createPaymentWindow ({
       },
       parent: employeesWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -1046,6 +1110,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1073,6 +1139,8 @@ function createPaymentWindow ({
       },
       parent: usersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1100,6 +1168,8 @@ function createPaymentWindow ({
       },
       parent: usersWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1127,6 +1197,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1154,6 +1226,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1181,6 +1255,8 @@ function createPaymentWindow ({
       },
       parent: mainWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1208,6 +1284,8 @@ function createPaymentWindow ({
       },
       parent: salesWindow,
       modal: true,
+      resizable: false,
+      frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1220,6 +1298,35 @@ function createPaymentWindow ({
       addSaleWindow.removeAllListeners();
       addSaleWindow = null;
     });
+  };
+
+  function createMissingStockWindow ({missing}) {
+    missingStockWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1000, height: 700,
+      title: `Mercado 1990 - Flujo de Efectivo / Historial`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: mainWindow,
+      modal: false,
+      resizable: false,
+      frame: false,
+    });
+  
+    missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));
+    
+    handleErrors(missingStockWindow);
+    
+    // Listen for window being closed
+    missingStockWindow.on('closed',  () => {
+      missingStockWindow.removeAllListeners();
+      missingStockWindow = null;
+    });
+    
   };
 
   function returnMainWindow () {
@@ -1386,6 +1493,10 @@ function returnAddSaleWindow () {
   return addSaleWindow;
 };
 
+function returnMissingStockWindow () {
+  return missingStockWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -1428,6 +1539,7 @@ module.exports = {
     createUnitsWindow,
     createSalesWindow,
     createAddSaleWindow,
+    createMissingStockWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -1469,6 +1581,7 @@ module.exports = {
     returnUnitsWindow,
     returnSalesWindow,
     returnAddSaleWindow,
+    returnMissingStockWindow,
     mainHandlebars,
     historyHandlebars,
 };

@@ -86,7 +86,7 @@ CREATE TABLE `versystem`.`usuario` (
   `idusuario` INT NOT NULL AUTO_INCREMENT,
   `id-empleado` INT NULL,
   `id-tipo-usuario` INT NULL,
-  `fecha-registro` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha-registro` VARCHAR(10) NOT NULL,
   `menu-almacen` TINYINT NOT NULL DEFAULT 0,
   `menu-compras` TINYINT NOT NULL DEFAULT 0,
   `menu-ventas` TINYINT NOT NULL DEFAULT 0,
@@ -214,6 +214,7 @@ CREATE TABLE `versystem`.`articulo` (
   `id-deposito` INT NOT NULL,
   `id-exposicion` INT NOT NULL,
   `stock-min` DECIMAL(19,2) NOT NULL,
+  `oferta-activa` TINYINT NOT NULL DEFAULT 0,
   `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idarticulo`),
   INDEX `id-cateogria-articulo_idx` (`id-categoria` ASC) VISIBLE,
@@ -261,7 +262,7 @@ CREATE TABLE `versystem`.`ingreso` (
   `id-tipo-documento` INT NOT NULL,
   `serie-comprobante` VARCHAR(15) NULL,
   `numero-comprobante` INT NOT NULL,
-  `fecha` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha` VARCHAR(16) NOT NULL,
   `impuesto` SMALLINT NOT NULL,
   `total` INT NOT NULL,
   `estado` TINYINT NOT NULL DEFAULT 1,
@@ -298,7 +299,7 @@ CREATE TABLE `versystem`.`pedido` (
   `id-usuario` INT NOT NULL,
   `id-sucursal` INT NOT NULL,
   `tipo-pedido` VARCHAR(20) NOT NULL,
-  `fecha` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha` VARCHAR(16) NOT NULL,
   `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idpedido`),
   INDEX `id-cliente-pedido_idx` (`id-cliente` ASC) VISIBLE,
@@ -374,7 +375,7 @@ CREATE TABLE `versystem`.`venta` (
   `id-tipo-documento` INT NOT NULL,
   `serie-comprobante` INT NULL,
   `num-comprobante` INT NOT NULL,
-  `fecha` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha` VARCHAR(16) NOT NULL,
   `impuesto` SMALLINT NULL,
   `total` INT NOT NULL,
   `factura` TINYINT NOT NULL DEFAULT 0,
@@ -402,12 +403,25 @@ CREATE TABLE `versystem`.`venta` (
 CREATE TABLE `versystem`.`credito` (
   `idcredito` INT NOT NULL AUTO_INCREMENT,
   `id-venta` INT NOT NULL,
-  `fecha-pago` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `fecha-pago` VARCHAR(16) NOT NULL,
   `total-pago` INT NOT NULL,
   PRIMARY KEY (`idcredito`),
   INDEX `id-venta-credito_idx` (`id-venta` ASC) VISIBLE,
   CONSTRAINT `id-venta-credito`
     FOREIGN KEY (`id-venta`)
     REFERENCES `versystem`.`venta` (`idventa`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+  
+CREATE TABLE `versystem`.`oferta` (
+  `idoferta` INT NOT NULL AUTO_INCREMENT,
+  `id-articulo` INT NOT NULL,
+  `desde-fecha` VARCHAR(10) NOT NULL,
+  `hasta-fecha` VARCHAR(10) NOT NULL,
+  PRIMARY KEY (`idoferta`),
+  INDEX `id-articulo-venta_idx` (`id-articulo` ASC) VISIBLE,
+  CONSTRAINT `id-articulo-venta`
+    FOREIGN KEY (`id-articulo`)
+    REFERENCES `versystem`.`articulo` (`idarticulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

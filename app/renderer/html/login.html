@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" onmousedown="return false" onselectstart="return false">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
@@ -22,22 +22,23 @@
 
     <!-- Custom Theme Style -->
     <link href="../css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/highlight.css">
   </head>
 
-  <body class="login">
+  <body class="login" onmousedown="return false" onselectstart="return false">
     <div>
       <a class="hiddenanchor" id="signin"></a>
 
       <div class="login_wrapper">
         <div class="animate form login_form">
           <section class="login_content">
-            <form>
+            <form id="form">
               <h1>Inicio de Sesión</h1>
               <div>
-                <input type="text" class="form-control" placeholder="Usuario" required="" id="username"/>
+                <input type="text" class="form-control" placeholder="Usuario" required id="username" autofocus/>
               </div>
               <div>
-                <input type="password" class="form-control" placeholder="Contraseña" required="" id="password" />
+                <input type="password" class="form-control" placeholder="Contraseña" required id="password" />
               </div>
               <div>
                 <button class="btn btn-default submit" id="button-login" >Iniciar Sesión</button>
@@ -45,7 +46,7 @@
               </div>
 
               <div class="clearfix"></div>
-
+              <div id="alert"></div>
               <div class="separator">
                 <div class="clearfix"></div>
                 <br />
@@ -61,5 +62,14 @@
       </div>
     </div>
     <script src="../js/login.js"></script>
+    <script>
+      const form = document.getElementById('form');
+      
+      const func = e => {
+      e.preventDefault();
+      };
+      
+      form.addEventListener('submit', func, true);
+      </script>
   </body>
 </html>

@@ -70,10 +70,6 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('logout', (e, args) => {
-        createLoginWindow();
-    });
-
     ipcMain.on('fullscreen-mainwindow', (e, args) => {
 
     });
@@ -81,4 +77,13 @@ module.exports = ({
     ipcMain.on('load-settings', (e, args) => {
         createSettingsWindow();
      });
-}
+
+    ipcMain.on('fullscreen-mainwindow', () => {
+        const mainWindow = returnMainWindow();
+        if(!mainWindow.fullScreen){
+            mainWindow.setFullScreen(true);
+        } else {
+            mainWindow.setFullScreen(false);
+        };
+    });
+};

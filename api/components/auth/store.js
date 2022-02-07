@@ -1,0 +1,1 @@
+const { getConnection } = require('../../database/database');

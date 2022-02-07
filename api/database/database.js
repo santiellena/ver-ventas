@@ -20,6 +20,6 @@ const connection = mysql.createConnection({
 function getConnection () {
 
     return connection;
-}
+};
 
 module.exports = getConnection;

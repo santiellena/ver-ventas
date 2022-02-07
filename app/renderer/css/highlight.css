@@ -1,0 +1,17 @@
+p, h1, h2, h3, h4, h5, h6, img, i, span, textarea, ul, li, ol, div,  input, html, body, form, element, a, param, input::placeholder {
+    -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+}
+
+element::selection {
+    color: none;
+    background: none;
+}
+/* For Mozilla Firefox */
+element::-moz-selection {
+    color: none;
+    background: none;
+}

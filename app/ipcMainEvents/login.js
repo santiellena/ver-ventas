@@ -1,4 +1,6 @@
-const { ipcMain, dialog } = require('electron');
+const { ipcMain, dialog, session } = require('electron');
+
+const auth = require('../components/auth/store');
 
 const { 
     mainHandlebars,
@@ -12,22 +14,32 @@ const {
   checkInitialConfig,
   checkUrl,
   checkToken,
+  getUrl,
 } = require('../config/config');
 
 module.exports = ({
     createMainWindow,
     createLoginWindow,
 }) => {
-    ipcMain.handle('login', (e, args) => {
+  
+    ipcMain.handle('login', async (e, args) => {
         const { username, password } = args;
-        if(username == 'admin' &&  password == 'admin'){ 
-        
-          createMainWindow();
-          return true;
+        const token = auth.login(username, password);
+        const cookie = { url: getUrl(), name: 'token', value: `${JSON.stringify(token)}` };
+        if(token){
+          const ses = session.defaultSession;
+          const answer = ses.cookies.set(cookie).then(() => {
+            createMainWindow();
+            return 'success';
+          }).catch(err => {
+            console.log(err, 'No se pudo agregar la cookie, token de login');
+            return 'internal';
+          });
+          
+          return answer;
         } else {
-
-          return false;
-        }
+          return token;
+        };
       });
 
       ipcMain.handle('check-url', (e, url) => {
@@ -56,4 +68,16 @@ module.exports = ({
           };
         };
       });
+
+      ipcMain.on('logout', (e, args) => {
+        createLoginWindow();
+    });
+
+    ipcMain.handle('get-login-info', async () => {
+      const ses = session.defaultSession;
+      const info = await ses.cookies.get({url: getUrl(), name: 'token'});
+      const valueToken = JSON.parse(info[0].value);
+      return valueToken;
+    });
+
 };

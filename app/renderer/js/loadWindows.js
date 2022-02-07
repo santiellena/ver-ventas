@@ -11,3 +11,7 @@ document.getElementById('payment-button').addEventListener('click', () => {
 document.getElementById('search-product-button').addEventListener('click', () => {
     ipcRenderer.send('load-search-products-window');
 });
+
+document.getElementById('fullscreen-button').addEventListener('click', () => {
+    ipcRenderer.send('fullscreen-mainwindow');
+});

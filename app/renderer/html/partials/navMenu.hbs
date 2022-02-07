@@ -16,7 +16,7 @@
               </div>
               <div class="profile_info">
                 <span>Bienvenido,</span>
-                <h2>Administrador</h2>
+                <h2 id="welcome-name"></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -28,56 +28,57 @@
               <div class="menu_section active">
                   <h3>Modulos</h3>
                 <ul class="nav side-menu" style="">
-                  <li><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
+                  <li id="sells-menu"><a><i class="fa fa-shopping-cart"></i> Ventas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu" style="display: none;">
-                      <li class="current-page"><a id="generate-sell-page">Generar venta</a></li>
-                      <li><a id="load-orders-window">Pedidos</a></li>
-                      <li><a id="view-history-page">Historial</a></li>
-                      <li><a id="sales-page">Ofertas</a></li>
+                      <li class="current-page"><a id="generate-sell-page" onclick="loadPageInMain('/sells/index.hbs')">Generar venta</a></li>
+                      <li><a id="load-orders-window" onclick="ipcRenderer.send('load-orders-window');">Pedidos</a></li>
+                      <li><a id="view-history-page" onclick="ipcRenderer.send('open-sells-history');">Historial</a></li>
+                      <li><a id="sales-page" onclick="ipcRenderer.send('load-sales-page');">Ofertas</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-table"></i> Ingresos <span class="fa fa-chevron-down"></span></a>
+                  <li id="buys-menu"><a><i class="fa fa-table"></i> Ingresos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="buys-page">Cargar ingreso</a></li>
-                      <li><a id="buys-history-page">Historial</a></li>
-                      <li><a id="suppliers-page">Proveedores</a></li>
+                      <li><a id="buys-page" onclick="ipcRenderer.send('load-addBuys-window');">Cargar ingreso</a></li>
+                      <li><a id="buys-history-page" onclick="ipcRenderer.send('load-buys-window')">Historial</a></li>
+                      <li><a id="suppliers-page" onclick="ipcRenderer.send('load-suppliers-window');">Proveedores</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
+                  <li id="stats-menu"><a><i class="fa fa-bar-chart-o"></i> Estadisticas <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="stats-page">General</a></li>
+                      <li><a id="stats-page" onclick="ipcRenderer.send('load-stats-page')">General</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-database"></i> Productos <span class="fa fa-chevron-down"></span></a>
+                  <li id="stock-menu"><a><i class="fa fa-database"></i> Productos <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                        <li><a id="stock-page">Stock de Productos</a></li>                    
+                        <li><a id="stock-page" onclick="ipcRenderer.send('load-stock-window');">Stock de Productos</a></li>
+                        <li><a id="missing-stock-page" onclick="ipcRenderer.send('load-missing-stock-window');">Faltante</a></li>                   
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-group"></i> Clientes <span class="fa fa-chevron-down"></span></a>
+                  <li id="customers-menu"><a><i class="fa fa-group"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="customers-page">Clientes</a></li>
+                      <li><a id="customers-page" onclick="ipcRenderer.send('load-customers-window');">Clientes</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-exchange"></i> Caja <span class="fa fa-chevron-down"></span></a>
+                  <li id="cashRegister-menu"><a><i class="fa fa-exchange"></i> Caja <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="cashregister-in-page">Entrada de dinero</a></li>
-                      <li><a id="cashregister-out-page">Salida de dinero</a></li>
-                      <li><a id="history-in-out-page">Historial E/S</a></li>
+                      <li><a id="cashregister-in-page" onclick="ipcRenderer.send('load-cashflowin-window'); ">Entrada de dinero</a></li>
+                      <li><a id="cashregister-out-page" onclick="ipcRenderer.send('load-cashflowout-window'); ">Salida de dinero</a></li>
+                      <li><a id="history-in-out-page" onclick="ipcRenderer.send('load-cashflowhistory-window'); ">Historial E/S</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-wrench"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
+                  <li id="maintenance-menu"><a><i class="fa fa-wrench"></i> Mantenimiento <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="maintenance-page">General</a></li>
-                      <li><a id="maintenance-branch-page">Sucursal</a></li>
-                      <li><a id="maintenance-employees-page">Empleados</a></li>
-                      <li><a id="maintenance-users-page">Usuarios</a></li>
-                      <li><a id="maintenance-docs-page">Tipo de documentos</a></li>
-                      <li><a id="maintenance-units-page">Unidades de Medida</a></li>
+                      <li><a id="maintenance-page" onclick="ipcRenderer.send('load-general-window');">General</a></li>
+                      <li><a id="maintenance-branch-page" onclick="ipcRenderer.send('load-branches-window');">Sucursal</a></li>
+                      <li><a id="maintenance-employees-page" onclick="ipcRenderer.send('load-employees-window');">Empleados</a></li>
+                      <li><a id="maintenance-users-page" onclick="ipcRenderer.send('load-users-window');">Usuarios</a></li>
+                      <li><a id="maintenance-docs-page" onclick="ipcRenderer.send('load-docs-window');">Tipo de documentos</a></li>
+                      <li><a id="maintenance-units-page" onclick="ipcRenderer.send('load-units-window');">Unidades de Medida</a></li>
                     </ul>
                   </li>
-                  <li><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                  <li id="security-menu"><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a id="dump-page">Copia de seguridad</a></li>
+                      <li><a id="dump-page" onclick="ipcRenderer.send('dump-database');">Copia de seguridad</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -111,56 +112,10 @@
                   <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                 </div>
                 <nav class="nav navbar-nav">
-                <ul class=" navbar-right">
-  
-                  <li role="presentation" class="nav-item dropdown open">
-                    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                      <i class="fa fa-envelope-o"></i>
-                      <span class="badge bg-green">3</span>
-                    </a>
-                    <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                      <li class="nav-item">
-                        <a class="dropdown-item">
-                          <span class="image"><img src="../../images/img.jpg" alt="Profile Image"></span>
-                          <span>
-                            <span>Empleado 1</span>
-                            <span class="time">Hace 3 minutos</span>
-                          </span>
-                          <span class="message">
-                            Solicitud de facturación del pedido N 1233
-                          </span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="dropdown-item">
-                          <span class="image"><img src="../../images/user.png" alt="Profile Image"></span>
-                          <span>
-                            <span>Empleado 2</span>
-                            <span class="time">Hace 4 minutos</span>
-                          </span>
-                          <span class="message">
-                            Apertura de cuenta corriente, cliente N 54
-                          </span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="dropdown-item">
-                          <span class="image"><img src="../../images/img.jpg" alt="Profile Image"></span>
-                          <span>
-                            <span>Empleado 1</span>
-                            <span class="time">Hace 1 minuto</span>
-                          </span>
-                          <span class="message">
-                            Informe de ventas semanal
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
               </nav>
             </div>
           </div>
       </div>
 </div>
+
 <script src="../../js/viewsLoader.js"></script>

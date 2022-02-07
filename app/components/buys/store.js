@@ -5,7 +5,14 @@ let month = '';
     } else {
         month = actualDate.getMonth()+1;
     };
-const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+let day= '';
+    if(actualDate.getDate().toString().length == 1){
+        day = `0${actualDate.getDate()}`;
+    } else {
+        day = actualDate.getDate();
+    };
+const date = `${actualDate.getFullYear()}/${month}/${day}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+
 const storeProducts = require('../products/store');
 
 const buys = {

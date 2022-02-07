@@ -13,6 +13,7 @@ const products = {
         location: ['Estante 1', 'Pasillo 1'],
         department: {id: 2, description:'Carniceria'},
         unitMeasure: 'Unidad',
+        stockMin: 10,
         onSale: 1,
     },
     2: {
@@ -25,6 +26,7 @@ const products = {
         location: ['Estante 1', 'Pasillo 2'],
         department: {id: 1, description:'Varios'},
         unitMeasure: 'Unidad',
+        stockMin: 15,
         onSale: 0,
     },
 }
@@ -162,9 +164,27 @@ function changeSaleStatus (id) {
     };
 };
 
+function getProductsMissing () {
+    const allProducts = Object.values(products);
+    const missing = [];
+    for (const product of allProducts) {
+        console.log(product);
+        if(product.stock < product.stockMin){
+            missing.push(product);
+        };  
+    };
+
+    if(missing.length == 0){
+        return null;
+    } else {
+        return missing;
+    };
+};
+
 module.exports = {
     getProduct,
     getAllProducts,
+    getProductsMissing,
     updateStockAndPrices,
     updateStockFormSell,
     addProduct,
@@ -172,4 +192,5 @@ module.exports = {
     deleteProduct,
     editProduct,
     changeSaleStatus,
+    getProductsMissing,
 };

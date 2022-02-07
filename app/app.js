@@ -1,6 +1,6 @@
 'use strict'
 // Modules
-const { app, ipcMain } = require('electron');
+const { app, ipcMain, Menu, MenuItem } = require('electron');
 const devTools = require('./devtools');
 
 const ipcMainEvents = {
@@ -56,9 +56,14 @@ const {
   createUnitsWindow,
   createSalesWindow,
   createAddSaleWindow,
+  createMissingStockWindow,
   historyHandlebars,
   mainHandlebars,
 } = require('./createWindows');
+
+//Menu
+
+let mainMenu = new Menu();
 
 const { checkInitialConfig } = require('./config/config');
 
@@ -68,7 +73,10 @@ if(process.env.NODE_ENV == 'development'){
 
 // Login window
 //app.on('ready', checkInitialConfig); //Production
-app.on('ready', createMainWindow);
+app.on('ready', () =>{
+  createLoginWindow();
+  Menu.setApplicationMenu(mainMenu);
+});
 
 // Quit when all windows are closed - (Not macOS - Darwin)
 app.on('window-all-closed', () => {
@@ -123,6 +131,7 @@ ipcMainEvents.stock({
   createEditProductWindow,
   createDeleteProductWindow,
   createDepartmentsWindow,
+  createMissingStockWindow,
 });
 
 ipcMainEvents.customers({

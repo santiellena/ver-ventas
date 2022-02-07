@@ -13,6 +13,14 @@ const configs = fs.readFileSync(`${__dirname}/config.json`, {encoding: 'utf-8'},
     }
 });
 
+const network = fs.readFileSync(`${__dirname}/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    }
+});
+
 function getConfig () {
     const config = JSON.parse(configs);
     
@@ -36,13 +44,22 @@ function checkUrl (url) {
 
     const connection = (url) => {
         if(url == 'http://mercado1990:3000') {
-            return { businessName: 'Mercado 1990', branchs: [{id: 1, name: 'Principal', dirStreet: 'Corrientes 471'}] };
+            const obj = {url};
+            fs.writeFileSync(`${__dirname}/network.json`, JSON.stringify(obj), (err, data) => {
+                if(err)  throw new Error(err, 'Sobreescritura del archivo de configuración de red.');
+            });
+            return { businessName: 'Mercado 1990', branchs: [{id: 1, name: 'Principal', dirStreet: 'Corrientes 471'}]};
         } else {
             return null;
         };
     };
 
     return connection(url);
+};
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
 };
 
 function checkToken (token, idBranch) {
@@ -131,5 +148,6 @@ module.exports = {
     getBranchDataFromConfig,
     getCashRegisterId,
     updateBranchName,
+    getUrl,
 };
 

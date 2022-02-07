@@ -12,6 +12,7 @@ const { mainHandlebars,
         createEditProductWindow,
         createDeleteProductWindow,
         createDepartmentsWindow,
+        createMissingStockWindow,
         returnStockWindow,
         returnDeleteProductWindow,
         returnEditProductWindow,
@@ -238,5 +239,10 @@ module.exports = ({
             delete modified;
             return editedProduct; 
         });
+    });
+
+    ipcMain.on('load-missing-stock-window', () => {
+        const missing = storeProducts.getProductsMissing();
+        createMissingStockWindow({missing});
     });
 };

@@ -81,6 +81,7 @@ function getDepartment (idDepartment) {
     }
 };
 
+
 function getCity (idCity) {
     const objectCities = JSON.parse(getAllCities());
     let city;
@@ -109,6 +110,7 @@ function getProvince (idProvince) {
             return;
         };
     });
+   
 
     if(prov != undefined) {
         return prov;
@@ -116,7 +118,6 @@ function getProvince (idProvince) {
         return null;
     };
 };
-
 
 module.exports = {
     getAllProvinces,
