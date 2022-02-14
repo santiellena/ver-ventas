@@ -11,8 +11,6 @@ const employees = {
         phoneNumber: 32314221,
         email: 'admin@hotmail.com',
         birthDate: '1990-12-05',
-        login: 'admin',
-        password: 'admin',
     },
     2: {
         id: 2,
@@ -24,8 +22,6 @@ const employees = {
         phoneNumber: 124456544,
         email: 'mschilli@aol.com',
         birthDate: '1987-04-03',
-        login: 'chill',
-        password: 'chill1234',
     },
     3: {
         id: 3,
@@ -37,8 +33,6 @@ const employees = {
         phoneNumber: 993414221,
         email: 'morain@optonline.net',
         birthDate: '1999-09-09',
-        login: 'baudelio',
-        password: 'tere1234',
     },
     4: {
         id: 4,
@@ -50,8 +44,6 @@ const employees = {
         phoneNumber: 2322314221,
         email: 'mwitte@yahoo.com',
         birthDate: '2000-10-13',
-        login: 'felicia',
-        password: 'feli1234',
     },
 };
 
@@ -68,8 +60,6 @@ function newEmplooy ({
     phoneNumber,
     email,
     birthDate,
-    login, 
-    password,
 }) {
     const iterable = Object.entries(getEmployees());
     let newId = 0;
@@ -82,7 +72,7 @@ function newEmplooy ({
             break;
         };
     }; 
-    if(name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate && login && password){
+    if(name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate){
         return employees[newId] = {
             id: newId,
             name, 
@@ -93,8 +83,6 @@ function newEmplooy ({
             phoneNumber,
             email,
             birthDate,
-            login,
-            password,
         };
     };
 };
@@ -109,12 +97,10 @@ function updateEmplooy ({
     phoneNumber,
     email,
     birthDate,
-    login, 
-    password,
 }) {
-    if(id && name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate && login && password){
+    if(id && name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate ){
         if(employees[id] != undefined){
-            if(id == employees[id].id && name == employees[id].name && lastname == employees[id].lastname && docType == employees[id].docType && numDoc == employees[id].numDoc && dirStreet == employees[id].dirStreet && phoneNumber == employees[id].phoneNumber && email == employees[id].email && birthDate == employees[id].birthDate && login == employees[id].login && password == employees[id].password){
+            if(id == employees[id].id && name == employees[id].name && lastname == employees[id].lastname && docType == employees[id].docType && numDoc == employees[id].numDoc && dirStreet == employees[id].dirStreet && phoneNumber == employees[id].phoneNumber && email == employees[id].email && birthDate == employees[id].birthDate  ){
                 return false;
             } else {
                 return employees[id] = {
@@ -127,8 +113,6 @@ function updateEmplooy ({
                     phoneNumber,
                     email,
                     birthDate,
-                    login, 
-                    password,
                 };
             };
         } else return null;

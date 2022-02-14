@@ -9,8 +9,6 @@ async function editEmplooy (id) {
     const dirStreet = document.getElementById('dirStreet').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const birthDate = document.getElementById('date').value;
-    const login = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
     
     if(name && lastname && docTypeId && numDoc && email && dirStreet && phoneNumber && birthDate && login && password){
         const update = await ipcRenderer.invoke('edit-emplooy', {

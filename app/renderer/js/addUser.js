@@ -10,6 +10,8 @@ async function addUser () {
     const mMaintenance = document.getElementById('maintenance');
     const mInvoicing = document.getElementById('invoicing');
     const mAdmin = document.getElementById('admin');
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
     
     let stock = 0, sells = 0, buys = 0, stats = 0, maintenance = 0, invoicing = 0, admin = 0;
     if(mStock.checked == true) {
@@ -64,5 +66,8 @@ async function addUser () {
         };
     };
 
-    ipcRenderer.send('add-user', {permissions, idEmplooy, branches});
+    if(password && username){
+        ipcRenderer.send('add-user', {permissions, idEmplooy, branches, username, password});
+    };
+    
 };

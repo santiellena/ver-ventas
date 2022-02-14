@@ -5,32 +5,33 @@ const config = require('../../config/config');
 
 function login (username, password) {
     const branch = config.getBranchDataFromConfig();
-    const allEmployyes = Object.values(employees);
-    let emplooyFound;
-    for (const emplooy of allEmployyes) {
-        if(emplooy.login == username && emplooy.password == password){
-            emplooyFound = emplooy;
+    const allUsers = Object.values(storeUsers.getAllUsers());
+    let userFound;
+    for (const user of allUsers) {
+        if(user.username == username && user.password == password){
+            if(user.branches.includes(branch.id)){
+            userFound = user;
+            };
+        };
+    };
+    if(userFound){
+        const allEmployees = Object.values(employees);
+    let name;
+    for (const emplooy of allEmployees) {
+        if(userFound.idEmplooy == emplooy.id){
+            name = emplooy.name;
             break;
         };
     };
-    if(emplooyFound){
-        const allUsers = Object.values(storeUsers.getAllUsers());
-    for (const user of allUsers) {
-        if(user.idEmplooy == emplooyFound.id){
-            if(user.branches.includes(branch.id)){
-                return {
-                    name: emplooyFound.name,
-                    menuStock: user.menuStock,
-                    menuBuys: user.menuBuys,
-                    menuSells: user.menuSells,
-                    menuMaintenance: user.menuMaintenance,
-                    menuQuery: user.menuQuery,
-                    menuAdmin: user.menuAdmin,
-                    menuInvoicing: user.menuInvoicing,
-                };
-            };
-            
-        };
+    return {
+        name,
+        menuStock: userFound.menuStock,
+        menuBuys: userFound.menuBuys,
+        menuSells: userFound.menuSells,
+        menuMaintenance: userFound.menuMaintenance,
+        menuQuery: userFound.menuQuery,
+        menuAdmin: userFound.menuAdmin,
+        menuInvoicing: userFound.menuInvoicing,
     };
     } else {
         return null;

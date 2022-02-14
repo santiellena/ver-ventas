@@ -1,25 +1,40 @@
-const mysql = require('promise-mysql');
 const config = require('../config');
+const { Sequelize } = require('sequelize');
+const setupModels = require('./setupModels');
 
-const connection = mysql.createConnection({
+const sequelize = new Sequelize(config.dbName, config.dbUser, config.dbPassword, {
     host: config.dbHost,
-    port: config.dbPort,
-    user: config.dbUser,
-    password: config.dbPassword,
-    database: config.dbName,
-})
-.then(e => {
-    console.log(`EVENT MYSQL DB Connection working...`)
-    
-})
-.catch(err => {
-    console.log('An error has ocurred with MYSQL DB Conection');
-    console.log(err);
+    dialect: 'mysql',
+    logging: false,
 });
 
-function getConnection () {
+setupModels(sequelize);
 
-    return connection;
+sequelize.sync(); //DELETE LINE FOR PRODUCTION
+
+function connect () {
+    sequelize.authenticate()
+    .then(e => console.log('EVENT MYSQL DB Connection working...'))
+    .catch(err => console.log(err));
 };
 
-module.exports = getConnection;
+module.exports = { 
+    sequelize,
+    connect,
+};
+
+// const connection = mysql.createPool({
+//     host: config.dbHost,
+//     port: config.dbPort,
+//     user: config.dbUser,
+//     password: config.dbPassword,
+//     database: config.dbName,
+// })
+// .then(e => {
+//     console.log(`EVENT MYSQL DB Connection working...`);
+//     return e;
+// })
+// .catch(err => {
+//     console.log('An error has ocurred with MYSQL DB Conection');
+//     console.log(err);
+// });

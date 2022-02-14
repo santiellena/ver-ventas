@@ -5,31 +5,23 @@ CREATE TABLE `versystem`.`global` (
   `empresa` VARCHAR(40) NOT NULL,
   `razon_social` VARCHAR (40) NOT NULL,
   `nombre_impuesto` CHAR(4) NULL,
-  `pocentaje_impuesto` SMALLINT NULL,
+  `porcentaje_impuesto` SMALLINT NULL,
   PRIMARY KEY (`idglobal`));
 
 CREATE TABLE `versystem`.`tipo-documento` (
   `idtipo-documento` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(20) NOT NULL,
-  `operacion` VARCHAR(15) NOT NULL,
   PRIMARY KEY (`idtipo-documento`));
-
-CREATE TABLE `versystem`.`marca` (
-  `idmarca` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(40) NOT NULL,
-  PRIMARY KEY (`idmarca`));
 
 CREATE TABLE `versystem`.`unidad-medida` (
   `idunidad-medida` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `prefijo` CHAR(5) NULL,
-  `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idunidad-medida`));
 
 CREATE TABLE `versystem`.`categoria` (
   `idcategoria` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(30) NOT NULL,
-  `estado` TINYINT NULL DEFAULT 1,
   PRIMARY KEY (`idcategoria`));
 
 CREATE TABLE `versystem`.`sucursal` (
@@ -40,7 +32,7 @@ CREATE TABLE `versystem`.`sucursal` (
   `telefono` INT NULL,
   `email` VARCHAR(45) NULL,
   `representante` VARCHAR(45) NULL,
-  `estado` TINYINT NOT NULL,
+  `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idsucursal`));
 
 CREATE TABLE `versystem`.`caja` (
@@ -94,7 +86,7 @@ CREATE TABLE `versystem`.`usuario` (
   `menu-consultas` TINYINT NOT NULL DEFAULT 0,
   `menu-admin` TINYINT NOT NULL DEFAULT 0,
   `menu-facturacion` TINYINT NOT NULL DEFAULT 0,
-  `estado` TINYINT NOT NULL,
+  `estado` TINYINT NOT NULL DEFAULT 1,
   PRIMARY KEY (`idusuario`),
   UNIQUE INDEX `id-empleado_UNIQUE` (`id-empleado` ASC) VISIBLE,
   INDEX `id-tipo-usuario-usuario_idx` (`id-tipo-usuario` ASC) VISIBLE,
@@ -149,13 +141,29 @@ CREATE TABLE `versystem`.`detalle-documento-sucursal` (
 
 CREATE TABLE `versystem`.`deposito` (
   `iddeposito` INT NOT NULL AUTO_INCREMENT,
+  `id-sucursal` INT NOT NULL,
   `nombre-deposito` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`iddeposito`));
+  PRIMARY KEY (`iddeposito`),
+  INDEX `id-sucursal-deposito_idx` (`id-sucursal` ASC) VISIBLE,
+  CONSTRAINT `id-sucursal-deposito`
+  FOREIGN KEY (`id-sucursal`)
+    REFERENCES `versystem`.`sucursal` (`idsucursal`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+  );
 
 CREATE TABLE `versystem`.`exposicion` (
   `idexposicion` INT NOT NULL AUTO_INCREMENT,
   `nombre-exposicion` VARCHAR(30) NOT NULL,
-  PRIMARY KEY (`idexposicion`));
+  `id-sucursal` INT NOT NULL,
+  PRIMARY KEY (`idexposicion`),
+  INDEX `id-sucursal-exposicion_idx` (`id-sucursal` ASC) VISIBLE,
+  CONSTRAINT `id-sucursal-exposicion`
+  FOREIGN KEY (`id-sucursal`)
+    REFERENCES `versystem`.`sucursal` (`idsucursal`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+  );
 
 CREATE TABLE `versystem`.`persona` (
   `idpersona` INT NOT NULL AUTO_INCREMENT,
@@ -207,7 +215,6 @@ CREATE TABLE `versystem`.`articulo` (
   `idarticulo` INT NOT NULL AUTO_INCREMENT,
   `id-categoria` INT NOT NULL,
   `id-unidad-medida` INT NOT NULL,
-  `id-marca` INT NOT NULL,
   `id-proveedor` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `descripcion` TINYTEXT NULL,
@@ -219,7 +226,6 @@ CREATE TABLE `versystem`.`articulo` (
   PRIMARY KEY (`idarticulo`),
   INDEX `id-cateogria-articulo_idx` (`id-categoria` ASC) VISIBLE,
   INDEX `id-unidad-medida-articulo_idx` (`id-unidad-medida` ASC) VISIBLE,
-  INDEX `id-marca-articulo_idx` (`id-marca` ASC) VISIBLE,
   INDEX `id-proveedor-articulo_idx` (`id-proveedor` ASC) VISIBLE,
   INDEX `id-deposito-articulo_idx` (`id-deposito` ASC) VISIBLE,
   INDEX `id-exposicion-articulo_idx` (`id-exposicion` ASC) VISIBLE,
@@ -231,11 +237,6 @@ CREATE TABLE `versystem`.`articulo` (
   CONSTRAINT `id-unidad-medida-articulo`
     FOREIGN KEY (`id-unidad-medida`)
     REFERENCES `versystem`.`unidad-medida` (`idunidad-medida`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `id-marca-articulo`
-    FOREIGN KEY (`id-marca`)
-    REFERENCES `versystem`.`marca` (`idmarca`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `id-proveedor-articulo`
@@ -425,3 +426,15 @@ CREATE TABLE `versystem`.`oferta` (
     REFERENCES `versystem`.`articulo` (`idarticulo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+USE versystem;
+INSERT INTO `tipo-documento` (nombre) VALUES('DNI');
+INSERT INTO `tipo-usuario` (tipo) VALUES('ADMIN');
+INSERT INTO `tipo-usuario` (tipo) VALUES('USER');
+INSERT INTO `global` (empresa,`razon_social`,`nombre_impuesto`,`porcentaje_impuesto`) VALUES('Mercado 1990','Hermanos S.A','IVA',0);
+INSERT INTO `unidad-medida` (nombre,prefijo) VALUES('Kilogramo','Kg');
+INSERT INTO `categoria` (nombre) VALUES('VARIOS');
+INSERT INTO `sucursal` (nombre,cuit,direccion,telefono,email,representante) VALUES('Principal','1111111','DIR 123',213231414,'email@default.dev','Administrador');
+INSERT INTO `exposicion` (`nombre-exposicion`,`id-sucursal`) VALUES('Estante 1',1);
+INSERT INTO `deposito` (`nombre-deposito`,`id-sucursal`) VALUES('Deposito 1',1);
+INSERT INTO `empleado` (apellidos,nombre,`id-tipo-documento`,`numero-documento`,direccion,telefono,email,`fecha-nacimiento`,login,`password`) VALUES('Administrador','Administrador',1,11111111,'Adress Default',111111111,'email@default.dev','2000/02/02','admin','admin');
+INSERT INTO `usuario` (`id-empleado`,`id-tipo-usuario`,`fecha-registro`,`menu-almacen`,`menu-compras`,`menu-ventas`,`menu-mantenimiento`,`menu-consultas`,`menu-admin`,`menu-facturacion`) VALUES(1,1,'2022/02/07',1,1,1,1,1,1,1);

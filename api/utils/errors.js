@@ -2,6 +2,8 @@ const response = require('../network/response.js');
 const boom = require('@hapi/boom');
 const config = require('../config');
 
+const { ValidationError } = require('sequelize')
+
 function withErrorStack(error, stack) {
     if (config.mode == 'DEV') {
       return { ...error, stack };
@@ -29,8 +31,21 @@ const notFound = (req, res) => {
     response.error(req, res, payload, statusCode);
 };
 
+function ormErrorHandler(err, req, res, next) {
+    if (err instanceof ValidationError) {
+        const message = {
+            message: err.name,
+            errors: err.errors,
+            statusCode: 409,
+        };
+        response.error(req, res, message, 409);
+    }
+    next(err);
+}
+
 module.exports = {
     errors,
     wrapErrors,
     notFound,
+    ormErrorHandler,
 }

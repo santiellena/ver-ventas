@@ -197,6 +197,8 @@ contextBridge.exposeInMainWorld(
                 'get-new-sale',
                 'delete-sale',
                 'get-login-info',
+                'edit-user',
+                'get-branches',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

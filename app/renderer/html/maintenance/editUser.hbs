@@ -33,6 +33,22 @@
 											<input type="text" class="form-control" readonly="readonly" placeholder="{{emplooy.name}}, {{emplooy.lastname}}" id="emplooy">
                                      </div>
 	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="username">Usuario</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input type="text" id="username" required="required" class="form-control " value="{{user.username}}">
+		                            </div>
+	                            </div>
+                                <div class="item form-group">
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="password">Contraseña</label>
+			                        <div class="col-md-6 col-sm-6 ">
+			                        <input class="form-control" value="" type="password" id="password" name="password" pattern=".....*" title="Mínimo 5 caracteres" required />
+		                            <span style="position: absolute;right:15px;top:7px;" onclick="hideshow()" >
+													<i id="slash" class="fa fa-eye-slash"></i>
+													<i id="eye" class="fa fa-eye"></i>
+												</span>
+                                    </div>
+	                            </div>
                                  <div class="item form-group" style="display: flex; flex-direction:column;">
                                     <h4 class="lead" style="font-weight: bold; text-align: center; width: 100%; margin-bottom:1rem;">Sucursales</h4>
                                         <ul class="to_do">
@@ -80,6 +96,7 @@
                                     </ul>
                                                 </div>
 	                            </div>
+                                <div id="alert"></div>
                                 <div class="ln_solid"></div>
 								<div class="item form-group" style="display: flex; justify-content: center;">
 										<div class="col-md-6 col-sm-9 offset-md-3">
@@ -99,6 +116,25 @@
 <input type="hidden" name="" id="userId" value="{{user.id}}">
 
 <script src="../../js/editUser.js"></script>
+<script>
+		function hideshow(){
+			var password = document.getElementById("password");
+			var slash = document.getElementById("slash");
+			var eye = document.getElementById("eye");
+			
+			if(password.type === 'password'){
+				password.type = "text";
+				slash.style.display = "block";
+				eye.style.display = "none";
+			}
+			else{
+				password.type = "password";
+				slash.style.display = "none";
+				eye.style.display = "block";
+			}
+
+		}
+	</script>
 <script>
 	const form = document.getElementById('form');
 

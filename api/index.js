@@ -14,12 +14,13 @@ const app = express();
 //Middlewares
 app.use(express.json());
 app.use(cors());
-db();
+db.connect();
 
 //Routes
 router(app);
 
 //Errors middleware
+app.use(errors.ormErrorHandler);
 app.use(errors.wrapErrors);
 app.use(errors.errors);
 

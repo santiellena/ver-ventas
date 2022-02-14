@@ -16,6 +16,8 @@ const users = {
         id: 1,
         idEmplooy: 1,
         idUserType: 1,
+        username: 'admin',
+        password: 'admin',
         branches: [1, 2],
         registerDate: '',
         menuStock: 1,
@@ -29,6 +31,8 @@ const users = {
     2: {
         id: 2,
         idEmplooy: 2,
+        username: 'pablo',
+        password: 'pablo',
         idUserType: 2,
         branches: [1],
         registerDate: '',
@@ -80,6 +84,8 @@ function checkUserTypeId (id) {
 function addUser ({
     idEmplooy,
     idUserType,
+    username,
+    password,
     branches,
     menuStock,
     menuBuys, 
@@ -106,11 +112,13 @@ function addUser ({
     };
     const actualDate = new Date();
     const registerDate = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
-    if(branches && idEmplooy && idUserType && menuStock != null && menuBuys != null && menuSells != null && menuMaintenance != null && menuQuery != null && menuAdmin != null && menuInvoicing != null){
+    if(branches && idEmplooy && idUserType && menuStock != null && menuBuys != null && menuSells != null && menuMaintenance != null && menuQuery != null && menuAdmin != null && menuInvoicing != null && password && username){
         if(users[newId] == undefined){
             return users[newId] = {
                 id: newId,
                 idEmplooy,
+                username,
+                password,
                 branches,
                 idUserType,
                 registerDate,
@@ -135,17 +143,31 @@ function updateUser ({
     menuQuery,
     menuAdmin,
     menuInvoicing,
+    menuStats,
+    username,
+    password,
+    branches,
 }) {
-    if(id && menuStock && menuBuys && menuSells && menuMaintenance && menuQuery && menuAdmin && menuInvoicing){
+    if(id &&
+        username &&
+        branches &&
+        password &&
+        menuStock != null &&
+        menuAdmin != null &&
+        menuBuys != null &&
+        menuMaintenance != null &&
+        menuSells != null &&
+        menuInvoicing != null &&
+        menuStats != null){
         if(users[id] != undefined) {
-            if(menuStock == users[id].menuStock && menuBuys == users[id].menuBuys && menuSells == users[id].menuSells && menuMaintenance == users[id].menuMaintenance && menuQuery == users[id].menuQuery && menuAdmin == users[id].menuAdmin && menuInvoicing == users[id].menuInvoicing){
+            if(menuStock == users[id].menuStock && menuBuys == users[id].menuBuys && menuSells == users[id].menuSells && menuMaintenance == users[id].menuMaintenance && menuQuery == users[id].menuQuery && menuAdmin == users[id].menuAdmin && menuInvoicing == users[id].menuInvoicing && username == users[id].username && password == users[id].password){
                 return false;
             } else {
                 return users[id] = {
                     id,
                     idEmplooy: users[id].idEmplooy,
                     idUserType: users[id].idUserType,
-                    branches: users[id].branches,
+                    branches,
                     menuStock,
                     menuBuys,
                     menuSells,
@@ -153,6 +175,8 @@ function updateUser ({
                     menuQuery,
                     menuAdmin,
                     menuInvoicing,
+                    username,
+                    password,
                 };
             };
         } else return null;

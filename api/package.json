@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "migrations:delete": "sequelize-cli db:migrate:undo:all"
   },
   "repository": "https://github.com/santiellena/ver-ventas.git",
   "author": "ESanti",
@@ -16,10 +20,14 @@
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "promise-mysql": "^5.0.4"
+    "mysql2": "^2.3.3",
+    "promise-mysql": "^5.0.4",
+    "sequelize": "^6.16.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.13"
+    "nodemon": "^2.0.13",
+    "sequelize-cli": "^6.4.1"
   }
 }
