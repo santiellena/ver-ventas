@@ -1,16 +1,16 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const { BUY_TABLE } = require('../buys/model');
+const { SELL_TABLE } = require('../sells/model');
 const { PRODUCT_TABLE } = require('../products/model');
 
-const BUY_PRODUCT_TABLE = 'buy_product';
+const SELL_PRODUCT_TABLE = 'sell_product';
 
-const buyProductSchema = {
+const sellProductSchema = {
     id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idbuy_product'
+        field: 'idsell_product'
     },
     idProduct: {
         allowNull: false,
@@ -23,13 +23,13 @@ const buyProductSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
     },
-    idBuy: {
+    idSell: {
         allowNull: false,
-        field: 'id_buy',
+        field: 'id_sell',
         type: DataTypes.INTEGER,
         reference: {
-            model: BUY_TABLE,
-            key: 'idbuy',
+            model: SELL_TABLE,
+            key: 'idsell',
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -44,22 +44,22 @@ const buyProductSchema = {
     },
 };
 
-class BuyProduct extends Model {
+class SellProduct extends Model {
     static associate(models) {
     };
   
     static config(sequelize) {
       return {
         sequelize,
-        tableName: BUY_PRODUCT_TABLE,
-        modelName: 'BuyProduct',
+        tableName: SELL_PRODUCT_TABLE,
+        modelName: 'SellProduct',
         timestamps: false
       };
     };
 };
 
 module.exports = {
-    BuyProduct,
-    buyProductSchema,
-    BUY_PRODUCT_TABLE,
+    SellProduct,
+    sellProductSchema,
+    SELL_PRODUCT_TABLE,
 };

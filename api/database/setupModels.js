@@ -7,7 +7,21 @@ const { CashRegister, cashRegisterSchema } = require('../components/cashRegister
 const { Emplooy, emplooySchema } = require('../components/employees/model');
 const { UserType, userTypeSchema } = require('../components/userTypes/model');
 const { User, userSchema } = require('../components/auth/model');
-
+const { LocationExposition, locationExpositionSchema } = require('../components/locationExposition/model');
+const { LocationStore, locationStoreSchema } = require('../components/locationStore/model');
+const { People, peopleSchema } = require('../components/people/model');
+const { Customer, customerSchema } = require('../components/customers/model');
+const { Supplier, supplierSchema } = require('../components/suppliers/model');
+const { Product, productSchema } = require('../components/products/model');
+const { BranchUser, branchUserSchema } = require('../components/branchesByUser/model');
+const { Buy, buySchema } = require('../components/buys/model');
+const { BuyProduct, buyProductSchema } = require('../components/detailBuys/model');
+const { Sell, sellSchema } = require('../components/sells/model');
+const { SellProduct, sellProductSchema } = require('../components/detailSells/model');
+const { Order, orderSchema } = require('../components/orders/model');
+const { OrderProduct, orderProductSchema } = require('../components/detailOrders/model');
+const { DebtPaid, debtPaidSchema } = require('../components/debtsPaid/model');
+const { CashFlow, cashFlowSchema } = require('../components/cashFlow/model');
 
 function setupModels(sequelize) {
     Global.init(globalSchema, Global.config(sequelize));
@@ -16,16 +30,42 @@ function setupModels(sequelize) {
     Department.init(departmentSchema, Department.config(sequelize));
     Branch.init(branchSchema, Branch.config(sequelize));
     CashRegister.init(cashRegisterSchema, CashRegister.config(sequelize));
-    CashRegister.associate(sequelize.models);
-    Branch.associate(sequelize.models);
     Emplooy.init(emplooySchema, Emplooy.config(sequelize));
     UserType.init(userTypeSchema, UserType.config(sequelize));
     User.init(userSchema, User.config(sequelize));
+    LocationExposition.init(locationExpositionSchema, LocationExposition.config(sequelize));
+    LocationStore.init(locationStoreSchema, LocationStore.config(sequelize));
+    People.init(peopleSchema, People.config(sequelize));
+    Customer.init(customerSchema, Customer.config(sequelize));
+    Supplier.init(supplierSchema, Supplier.config(sequelize));
+    Product.init(productSchema, Product.config(sequelize));
+    BranchUser.init(branchUserSchema, BranchUser.config(sequelize));
+    Buy.init(buySchema, Buy.config(sequelize));
+    BuyProduct.init(buyProductSchema, BuyProduct.config(sequelize));
+    Sell.init(sellSchema, Sell.config(sequelize));
+    SellProduct.init(sellProductSchema, SellProduct.config(sequelize));
+    Order.init(orderSchema, Order.config(sequelize));
+    OrderProduct.init(orderProductSchema, OrderProduct.config(sequelize));
+    DebtPaid.init(debtPaidSchema, DebtPaid.config(sequelize));
+    CashFlow.init(cashFlowSchema, CashFlow.config(sequelize));
+
+    CashRegister.associate(sequelize.models);
+    Branch.associate(sequelize.models);
     DocType.associate(sequelize.models)
     Emplooy.associate(sequelize.models);
     UserType.associate(sequelize.models);
     User.associate(sequelize.models);
-    
+    LocationExposition.associate(sequelize.models);
+    LocationStore.associate(sequelize.models);    
+    People.associate(sequelize.models);
+    Customer.associate(sequelize.models);
+    Supplier.associate(sequelize.models);
+    Department.associate(sequelize.models);
+    Product.associate(sequelize.models);
+    Buy.associate(sequelize.models);
+    Sell.associate(sequelize.models);
+    Order.associate(sequelize.models);
+    CashFlow.associate(sequelize.models);
 };
 
 module.exports = setupModels;

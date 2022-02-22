@@ -1,27 +1,27 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const empresa = joi.string().max(40);
-const razonSocial = joi.string().max(40);
-const nombreImpuesto = joi.string().max(4);
-const porcentajeImpuesto = joi.number().precision(2).max(100);
+const fantasyName = joi.string().max(40);
+const bussinesName = joi.string().max(40);
+const taxName = joi.string().max(4);
+const taxPercentage = joi.number().precision(2).max(100);
 
 const getGlobalSchema = joi.object({
     id: id.required(),
 });
 
 const createGlobalSchema = joi.object({
-    empresa: empresa.required(),
-    razonSocial: razonSocial.required(),
-    nombreImpuesto: nombreImpuesto.required(),
-    porcentajeImpuesto: porcentajeImpuesto.required(),
+    fantasyName: fantasyName.required(),
+    bussinesName: bussinesName.required(),
+    taxName: taxName.required(),
+    taxPercentage: taxPercentage.required(),
 });
 
 const updateGlobalSchema = joi.object({
-    empresa,
-    razonSocial,
-    nombreImpuesto,
-    porcentajeImpuesto,
+    fantasyName,
+    bussinesName,
+    taxName,
+    taxPercentage,
 });
 
 const deleteGlobalSchema = joi.object({

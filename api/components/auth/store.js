@@ -2,16 +2,20 @@ const { User } = require('../../database/database').sequelize.models;
 const boom = require('@hapi/boom');
 
 const getOneByUsername = async (username) => {
-    const user = await User.findOne({where: {username: username}, include: ['empleado', 'tipoUsuario']});
-    return user;
+    const user = await User.findOne({where: {username: username}, include: ['emplooy','userType']});
+    if(!user){
+        throw boom.badRequest();
+    } else {
+        return user;
+    };
 };
 
 const getAll = async () => {
-    return await User.findAll({include: ['empleado','tipoUsuario']});
+    return await User.findAll({include: ['emplooy','userType','branches']});
 };
 
 const getOne = async (id) => {
-    const user = await User.findByPk(id, {include: ['empleado','tipoUsuario']});
+    const user = await User.findByPk(id, {include: ['emplooy','userType','branches']});
     if(!user){
         throw boom.badRequest();
     } else {

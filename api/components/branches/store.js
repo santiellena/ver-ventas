@@ -4,12 +4,12 @@ const models = require('../../database/database').sequelize.models;
 const { Branch } = models;
 
 const getAll = async () => {
-    return await Branch.findAll({where: { estado: 1}, include: ['cajas']});
+    return await Branch.findAll({include: ['boxes']});
 };
 
 const getOne = async (id) => {
-    const branch = await Branch.findByPk(id, {include: 'cajas'});
-    if(!branch || branch.estado == 0){
+    const branch = await Branch.findByPk(id, {include: ['boxes']});
+    if(!branch){
         throw boom.badRequest();
     } else {
         return branch;

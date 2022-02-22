@@ -1,16 +1,16 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const USER_TYPE_TABLE = 'tipo_usuario';
+const USER_TYPE_TABLE = 'user-type';
 
 const userTypeSchema = {
-    idTipoUsuario: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idtipo_usuario'
+        field: 'iduser_type'
     },
-    tipo: {
+    type: {
         unique: true,
         allowNull: false,
         type: DataTypes.STRING(30),
@@ -19,7 +19,7 @@ const userTypeSchema = {
 
 class UserType extends Model {
     static associate(models) {
-        this.hasMany(models.User, { as: 'usuarios', foreignKey: 'idTipoUsuario'});
+        this.hasMany(models.User, { as: 'users', foreignKey: 'idUserType'});
     };
   
     static config(sequelize) {

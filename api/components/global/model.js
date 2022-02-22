@@ -3,31 +3,32 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 const GLOBAL_TABLE = 'global';
 
 const globalSchema = {
-    idGlobal: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
         field: 'idglobal'
     },
-    empresa: {
+    fantasyName: {
         allowNull: false,
         type: DataTypes.STRING(40),
+        field: 'fantasy_name',
     },
-    razonSocial: {
+    bussinesName: {
         allowNull: false,
         type: DataTypes.STRING(40),
-        field: 'razon_social',
+        field: 'bussines_name',
         unique: true,
     },
-    nombreImpuesto: {
+    taxName: {
         allowNull: false,
         type: DataTypes.STRING(4),
-        field: 'nombre_impuesto',
+        field: 'tax_name',
     },
-    porcentajeImpuesto: {
+    taxPercentage: {
         allowNull: false,
-        field: 'porcentaje_impuesto',
+        field: 'tax_percentage',
         type: DataTypes.DECIMAL(2),
         defaultValue: 0, 
     },

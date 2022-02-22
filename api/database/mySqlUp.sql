@@ -191,7 +191,7 @@ CREATE TABLE `versystem`.`persona` (
 CREATE TABLE `versystem`.`cliente` (
   `idcliente` INT NOT NULL AUTO_INCREMENT,
   `id-persona` INT NULL,
-  `cuenta-corriente` TINYINT NULL DEFAULT 0,
+  `deuda` DECIMAL(19,4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`idcliente`),
   INDEX `id-persona-cliente_idx` (`id-persona` ASC) VISIBLE,
   CONSTRAINT `id-persona-cliente`

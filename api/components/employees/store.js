@@ -2,11 +2,11 @@ const boom = require('@hapi/boom');
 const { Emplooy } = require('../../database/database').sequelize.models;
 
 const getAll = async () => {
-    return await Emplooy.findAll({include: ['usuario','tipoDocumento']});
+    return await Emplooy.findAll({include: ['user','docType']});
 };
 
 const getOne = async (id) => {
-    const emplooy = await Emplooy.findByPk(id, { include: ['usuario','tipoDocumento']});
+    const emplooy = await Emplooy.findByPk(id, { include: ['user','docType']});
     if(!emplooy){
         throw boom.badRequest();
     } else {

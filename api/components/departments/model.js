@@ -1,32 +1,32 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const DEPARTMENT_TABLE = 'categoria';
+const DEPARTMENT_TABLE = 'department';
 
 const departmentSchema = {
-    idDepartmento: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idcategoria'
+        field: 'iddepartment'
     },
-    nombre: {
+    description: {
         allowNull: false,
         type: DataTypes.STRING(30),
     },
 };
 
 class Department extends Model {
-    static associate() {
-      // associate
-    }
+    static associate(models) {
+        this.hasMany(models.Product, {as: 'products', foreignKey: 'idDepartment'});
+    };
   
     static config(sequelize) {
       return {
         sequelize,
         tableName: DEPARTMENT_TABLE,
         modelName: 'Department',
-        timestamps: false
+        timestamps: false,
       };
     };
 };

@@ -1,22 +1,24 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const UNIT_MEASURE_TABLE = 'unidad-medida';
+const UNIT_MEASURE_TABLE = 'unit-measure';
 
 const unitMeasureSchema = {
-    idUnitMeasure: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idunidad_medida'
+        field: 'idunit_measure'
     },
-    nombre: {
+    longDescription: {
         allowNull: false,
         type: DataTypes.STRING(45),
+        field: 'long_description',
     },
-    prefijo: {
+    shortDescription: {
         allowNull: false,
         type: DataTypes.STRING(5),
+        field: 'short_description',
     },
 };
 

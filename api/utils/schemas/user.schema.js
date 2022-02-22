@@ -1,47 +1,50 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const idEmpleado = joi.number().integer();
-const idTipoUsuario = joi.number().integer();
-const menuAlmacen = joi.number().integer().max(1);
-const menuCompras = joi.number().integer().max(1);
-const menuVentas = joi.number().integer().max(1);
-const menuMantenimiento = joi.number().integer().max(1);
-const menuConsultas = joi.number().integer().max(1);
+const idEmplooy = joi.number().integer();
+const idUserType = joi.number().integer();
+const menuStock = joi.number().integer().max(1);
+const menuBuys = joi.number().integer().max(1);
+const menuSells = joi.number().integer().max(1);
+const menuMaintenance = joi.number().integer().max(1);
+const menuQueries = joi.number().integer().max(1);
 const menuAdmin = joi.number().integer().max(1);
-const menuFacturacion = joi.number().integer().max(1);
+const menuInvoicing = joi.number().integer().max(1);
 const username = joi.string().max(15);
 const password = joi.string().max(15);
+const branches = joi.array().min(1);
 
 const getUserSchema = joi.object({
     id: id.required(),
 });
 
 const createUserSchema = joi.object({
-    idEmpleado: idEmpleado.required(),
-    idTipoUsuario: idTipoUsuario.required(),
-    menuAlmacen,
-    menuCompras,
-    menuVentas,
-    menuMantenimiento,
-    menuConsultas,
+    idEmplooy: idEmplooy.required(),
+    idUserType: idUserType.required(),
+    menuStock,
+    menuBuys,
+    menuSells,
+    menuMaintenance,
+    menuQueries,
     menuAdmin,
-    menuFacturacion,
+    menuInvoicing,
     username: username.required(),
     password: password.required(),
+    branches: branches.required(),
 });
 
 const updateUserSchema = joi.object({
-    idTipoUsuario,
-    menuAlmacen,
-    menuCompras,
-    menuVentas,
-    menuMantenimiento,
-    menuConsultas,
+    idUserType,
+    menuStock,
+    menuBuys,
+    menuSells,
+    menuMaintenance,
+    menuQueries,
     menuAdmin,
-    menuFacturacion,
+    menuInvoicing,
     username,
     password,
+    branches,
 });
 
 module.exports = {

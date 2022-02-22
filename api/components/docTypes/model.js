@@ -1,16 +1,16 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const DOC_TYPE_TABLE = 'tipo-documento';
+const DOC_TYPE_TABLE = 'doc-type';
 
 const docTypeSchema = {
-    idTipoDocumento: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idtipo_documento'
+        field: 'iddoc_type'
     },
-    nombre: {
+    description: {
         allowNull: false,
         type: DataTypes.STRING(20),
     },
@@ -18,7 +18,7 @@ const docTypeSchema = {
 
 class DocType extends Model {
     static associate(models) {
-      this.hasMany(models.Emplooy, {as: 'empleados', foreignKey: 'idTipoDocumento'});
+      this.hasMany(models.Emplooy, {as: 'employees', foreignKey: 'idDocType'});
     };
   
     static config(sequelize) {

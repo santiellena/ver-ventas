@@ -7,6 +7,11 @@ const departments = require('../components/departments/network');
 const cashRegisters = require('../components/cashRegister/network');
 const employees = require('../components/employees/network');
 const userTypes = require('../components/userTypes/network');
+const locationStore = require('../components/locationStore/network');
+const locationExposition = require('../components/locationExposition/network');
+const customers = require('../components/customers/network');
+const suppliers = require('../components/suppliers/network');
+const products = require('../components/products/network');
 const { notFound } = require('../utils/errors');
 
 module.exports = (app) => {
@@ -19,5 +24,10 @@ module.exports = (app) => {
     app.use('/api/cash-register', cashRegisters);
     app.use('/api/emplooy', employees);
     app.use('/api/user-type', userTypes);
+    app.use('/api/location/store', locationStore);
+    app.use('/api/location/exposition', locationExposition);
+    app.use('/api/customer', customers);
+    app.use('/api/supplier', suppliers);
+    app.use('/api/product', products);
     app.use(notFound);
 };

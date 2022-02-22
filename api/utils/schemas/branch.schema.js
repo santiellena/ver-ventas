@@ -1,38 +1,37 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const nombre = joi.string().max(30);
+const name = joi.string().max(30);
 const cuit = joi.string().max(15);
-const direccion = joi.string().max(30);
-const telefono = joi.number().integer();
+const dirStreet = joi.string().max(30);
+const phoneNumber = joi.number().integer();
 const email = joi.string().email();
-const representante =  joi.string().max(45);
-const estado = joi.number().integer().max(1);
+const representative =  joi.string().max(45);
 
 const getOneBranchSchema = joi.object({
     id: id.required(),
 });
 
 const createBranchSchema = joi.object({
-    nombre: nombre.required(),
+    name: name.required(),
     cuit: cuit.required(),
-    direccion: direccion.required(),
-    telefono: telefono.required(),
+    dirStreet: dirStreet.required(),
+    phoneNumber: phoneNumber.required(),
     email: email.required(),
-    representante: representante.required(),
+    representative: representative.required(),
 });
 
 const updateBranchSchema = joi.object({
-    nombre,
+    name,
     cuit,
-    direccion,
-    telefono,
+    dirStreet,
+    phoneNumber,
     email,
-    representante,
+    representative,
 });
 
 const deleteBranchSchema = joi.object({
-    estado: estado.required(),
+    id: id.required(),
 });
 
 module.exports = {

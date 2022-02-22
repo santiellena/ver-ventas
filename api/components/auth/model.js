@@ -1,83 +1,83 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { EMPLOOY_TABLE } = require('../employees/model');
 const { USER_TYPE_TABLE } = require('../userTypes/model');
-const USER_TABLE = 'usuario';
+const USER_TABLE = 'user';
 
 const userSchema = {
-  idUsuario: {
+  id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.INTEGER,
-    field: 'idusuario'
+    field: 'iduser'
   },
-  idEmpleado: {
+  idEmplooy: {
     allowNull: false,
     type: DataTypes.INTEGER,
-    field: 'id_empleado',
+    field: 'id_emplooy',
     unique: true,
     references: {
       model: EMPLOOY_TABLE,
-      key: 'idempleado'
+      key: 'idemplooy'
     },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   },
-  idTipoUsuario: {
+  idUserType: {
     allowNull: false,
     type: DataTypes.INTEGER,
-    field: 'id_tipo_usuario',
+    field: 'id_user_type',
     references: {
       model: USER_TYPE_TABLE,
-      key: 'idtipo_usuario'
+      key: 'iduser_type'
     },
     onUpdate: 'CASCADE',
     onDelete: 'CASCADE',
   },
-  fechaRegistro: {
-    field: 'fecha_registro',
+  registerDate: {
+    field: 'register_date',
     allowNull: false,
     type: DataTypes.DATE,
     defaultValue: Sequelize.NOW,
   },
-  menuAlmacen: {
-    field: 'menu_almacen',
+  menuStock: {
+    field: 'menu_stock',
     type: DataTypes.TINYINT,
     allowNull: false,
     default: 0,
   },
-  menuCompras: {
-    field: 'menu_compras',
+  menuBuys: {
+    field: 'menu_buys',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
-  menuVentas: {
-    field: 'menu_ventas',
+  menuSells: {
+    field: 'menu_sells',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
-  menuMantenimiento: {
-    field: 'menu_mantenimiento',
+  menuMaintenance: {
+    field: 'menu_manteinance',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
-  menuConsultas: {
-    field: 'menu_consultas',
+  menuQueries: {
+    field: 'menu_queries',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
   menuAdmin: {
-    field: 'menu_administrador',
+    field: 'menu_admin',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
   },
-  menuFacturacion: {
-    field: 'menu_facturacion',
+  menuInvoicing: {
+    field: 'menu_invoicing',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,
@@ -95,8 +95,9 @@ const userSchema = {
 
 class User extends Model {
     static associate(models) {
-      this.belongsTo(models.UserType, {as: 'tipoUsuario', foreignKey: 'idTipoUsuario'});
-      this.belongsTo(models.Emplooy, {as: 'empleado', foreignKey: 'idEmpleado'});
+      this.belongsTo(models.UserType, {as: 'userType', foreignKey: 'idUserType'});
+      this.belongsTo(models.Emplooy, {as: 'emplooy', foreignKey: 'idEmplooy'});
+      this.belongsToMany(models.Branch, {through: models.BranchUser, foreignKey: 'idUser', otherKey: 'idBranch', as: 'branches'});
     };
   
     static config(sequelize) {

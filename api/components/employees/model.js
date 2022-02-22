@@ -2,64 +2,66 @@ const { Model, DataTypes, Sequelize } = require('sequelize');
 
 const { DOC_TYPE_TABLE } = require('../docTypes/model');
 
-const EMPLOOY_TABLE = 'empleado';
+const EMPLOOY_TABLE = 'emplooy';
 
 const emplooySchema = {
-    idEmpleado: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idempleado'
+        field: 'idemplooy'
     },
-    apellidos: {
+    lastname: {
         allowNull: false,
         type: DataTypes.STRING(30),
     },
-    nombre: {
+    name: {
         allowNull: false,
         type: DataTypes.STRING(15),
     },
-    idTipoDocumento: {
+    idDocType: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        field: 'id_tipo_documento',
+        field: 'id_doc_type',
         references: {
             model: DOC_TYPE_TABLE,
-            key: 'idtipo_documento'
+            key: 'iddoc_type'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
     },
-    numeroDocumento: {
+    numDoc: {
         allowNull: false,
         type: DataTypes.STRING(15),
-        field: 'numero_documento',
+        field: 'num_doc',
         unique: true,
     },
-    direccion: {
+    dirStreet: {
         allowNull: true,
         type: DataTypes.STRING(30),
+        field: 'dir_street',
     },
-    telefono: {
+    phoneNumber: {
         allowNull: true,
         type: DataTypes.BIGINT,
+        field: 'phone_number',
     },  
     email: {
         allowNull: true,
         type: DataTypes.STRING(45),
     },
-    fechaNacimiento: {
+    birthDate: {
         allowNull: true,
         type: DataTypes.STRING(10),
-        field: 'fecha_nacimiento',
+        field: 'birth_date',
     },
 };
 
 class Emplooy extends Model {
     static associate(models) {
-        this.belongsTo(models.DocType, {as: 'tipoDocumento', foreignKey: 'idTipoDocumento'});
-        this.hasOne(models.User, { as: 'usuario', foreignKey: 'idEmpleado'});
+        this.belongsTo(models.DocType, {as: 'docType', foreignKey: 'idDocType'});
+        this.hasOne(models.User, { as: 'user', foreignKey: 'idEmplooy'});
     };
   
     static config(sequelize) {

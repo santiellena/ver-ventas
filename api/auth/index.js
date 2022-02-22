@@ -28,7 +28,6 @@ const check = {
 }
 
 const getToken = (auth) => {
-
     if(!auth){
         throw boom.unauthorized('There is not TOKEN');
     }
@@ -39,7 +38,7 @@ const getToken = (auth) => {
     let token = auth.replace('Bearer ', '');
     
     return token;
-}
+};
 
 const decodeHeader = (req) => {
     const authorization = req.headers.authorization || '';

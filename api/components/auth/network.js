@@ -6,6 +6,7 @@ const response = require('../../network/response');
 const validator = require('../../utils/middlewares/validator');
 const { getUserSchema, updateUserSchema, createUserSchema } = require('../../utils/schemas/user.schema');
 const { loginSchema } = require('../../utils/schemas/auth.schema');
+const checkAllow = require('../../utils/middlewares/chechAllow');
 
 
 router.get('/login', validator(loginSchema, 'body'), (req, res, next) => {
@@ -15,7 +16,7 @@ router.get('/login', validator(loginSchema, 'body'), (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAllow(['menu-maintenance']) ,(req, res, next) => {
     controller.getAll()
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));

@@ -12,4 +12,5 @@ module.exports = {
     jwt: {
         secret: process.env.JWT_SECRET,
     },
+    publicToken: process.env.PUBLIC_TOKEN,
 }

@@ -4,25 +4,25 @@ const { BRANCH_TABLE } = require('../branches/model');
 const CASH_REGISTER_TABLE = 'caja';
 
 const cashRegisterSchema = {
-    idCaja: {
+    id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idcaja'
+        field: 'idbox'
     },
-    dinero: {
+    moneyAmount: {
         allowNull: false,
         default: 0,
         type: DataTypes.DECIMAL(19,2),
     },
-    idSucursal: {
+    idBranch: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        field: 'id-sucursal',
-        references: {
+        field: 'id-branch',
+        reference: {
             model: BRANCH_TABLE,
-            key: 'idsucursal'
+            key: 'idbranch'
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -31,7 +31,7 @@ const cashRegisterSchema = {
 
 class CashRegister extends Model {
     static associate(models) {
-        this.belongsTo(models.Branch, {as: 'sucursal', foreignKey: 'idSucursal'});
+        this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
     };
   
     static config(sequelize) {

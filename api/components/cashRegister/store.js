@@ -2,7 +2,7 @@ const { CashRegister } = require('../../database/database').sequelize.models;
 const boom = require('@hapi/boom');
 
 const getOne = async (id) => {
-    const cashRegister = await CashRegister.findByPk(id, {include: 'sucursal'});
+    const cashRegister = await CashRegister.findByPk(id, {include: 'branch'});
     if(!cashRegister){
         throw boom.badRequest();
     } else {
@@ -12,7 +12,7 @@ const getOne = async (id) => {
 
 const getAll = async () => {
     return await CashRegister.findAll({
-        include: ['sucursal']
+        include: ['branch']
     });
 };
 

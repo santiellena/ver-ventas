@@ -1,39 +1,39 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const apellidos = joi.string().max(30);
-const nombre = joi.string().max(15);
-const idTipoDocumento = joi.number().integer();
-const numeroDocumento = joi.string().max(15);
-const direccion = joi.string().max(30);
-const telefono = joi.number().integer();
+const lastname = joi.string().max(30);
+const name = joi.string().max(15);
+const idDocType = joi.number().integer();
+const numDoc = joi.string().max(15);
+const dirStreet = joi.string().max(30);
+const phoneNumber = joi.number().integer();
 const email = joi.string().email();
-const fechaNacimiento = joi.string().max(10);
+const birthDate = joi.string().max(10);
 
 const getEmplooySchema = joi.object({
     id: id.required(),
 });
 
 const createEmplooySchema = joi.object({
-    apellidos: apellidos.required(),
-    nombre: nombre.required(),
-    idTipoDocumento: idTipoDocumento.required(),
-    numeroDocumento: numeroDocumento.required(),
-    direccion,
-    telefono,
+    lastname: lastname.required(),
+    name: name.required(),
+    idDocType: idDocType.required(),
+    numDoc: numDoc.required(),
+    dirStreet,
+    phoneNumber,
     email,
-    fechaNacimiento,
+    birthDate,
 });
 
 const updateEmploySchema = joi.object({
-    apellidos,
-    nombre,
-    direccion,
-    idTipoDocumento,
-    numeroDocumento,
-    telefono,
+    lastname,
+    name,
+    dirStreet,
+    idDocType,
+    numDoc,
+    phoneNumber,
     email,
-    fechaNacimiento,
+    birthDate,
 });
 
 module.exports = {

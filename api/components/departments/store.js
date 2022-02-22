@@ -2,7 +2,7 @@ const boom = require('@hapi/boom');
 const { Department } = require('../../database/database').sequelize.models;
 
 const getOne = async (id) => {
-    const department = await Department.findByPk(id);
+    const department = await Department.findByPk(id, {include: ['products']});
     if(!department){
      throw boom.badRequest();
     } else {
@@ -11,7 +11,7 @@ const getOne = async (id) => {
 };
 
 const getAll = async () => {
-    return await Department.findAll();
+    return await Department.findAll({include: ['products']});
 };
 
 const create = async (data) => {
