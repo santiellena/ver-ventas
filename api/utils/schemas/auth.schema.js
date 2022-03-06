@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const username = joi.string().max(15);
 const password = joi.string().max(15);
-const token = joi.string();
+const token = joi.any();
 
 const loginSchema = joi.object({
     username: username.required(),
@@ -12,4 +12,4 @@ const loginSchema = joi.object({
 
 module.exports = {
     loginSchema,
-}
+};

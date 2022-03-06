@@ -48,8 +48,14 @@ const decodeHeader = (req) => {
     return decoded;
 };
 
+const decodeToken = (token) => {
+    const decoded = verify(token);
+    return decoded;
+};
+
 module.exports = {
     sign,
     check,
     decodeHeader,
+    decodeToken,
 };

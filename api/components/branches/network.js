@@ -2,6 +2,7 @@ const router = require('express').Router();
 const response = require('../../network/response');
 const validator = require('../../utils/middlewares/validator');
 const { getOneBranchSchema, createBranchSchema, updateBranchSchema, deleteBranchSchema } = require('../../utils/schemas/branch.schema.js');
+const checkAllow = require('../../utils/middlewares/chechAllow');
 
 const controller = require('./controller');
 

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS -->
+    <!-- Bootstrap -->
+    <link href="../../css/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="../../css/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="../../css/nprogress/nprogress.css" rel="stylesheet">
+    <!-- bootstrap-daterangepicker -->
+    <link href="../../css/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link href="../../css/datatables.net/css/jquery.dataTables.min.css">
+<!-- Datatables -->
+    
+    <link href="../../css/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
+    <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../../css/paymentWindow.css">
+
+    <!-- Custom Theme Style -->
+    <link href="../../css/custom.css" rel="stylesheet">
+</head>
+<body>
+    
+    <div class="container body">
+        <div class="main_container" style="display: flex;">
+            <div class="x_content">
+                <div class="bs-example" data-example-id="simple-jumbotron">
+                  <div class="jumbotron col-md-5" style="height: 98vh; margin-bottom: 0;">
+                    <div class="methods-container">
+                        <h2>Número de artículos: <span id="articles-quant">{{ articlesQuantity }}</span></h4>
+                        <button class="btn btn-warning button-method">Efectivo</button>
+                        <button class="btn btn-warning button-method" onclick="payWithCard();">Tarjeta</button>
+                        <button class="btn btn-danger button-method" onclick="payWithCredit();">Cuenta Corriente</button>
+                        <ul class="to_do" >
+                            <li><p style="display: block; font-size: 1rem"><input type="checkbox" value="1" class="flat" id="invoicing"> Facturar</p></li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="second-content">
+                    <h2 style="font-size: 1.7rem;" class="lead">Total a Cobrar</h2>
+                    <h3 style="color: #0f0;">$ <span id="total-amount">{{ totalAmount }}</span></h3>
+                    <div class="col-md-6 col-sm-6  form-group has-feedback">
+                        <input type="number" class="form-control has-feedback-left" id="cash" placeholder="Efectivo" onkeyup="amountToReturn()" autofocus>
+                        <span class="fa fa-dollar form-control-feedback left" aria-hidden="true"></span>
+                    </div>
+                    <h3 style="color: #f00;">$ <span id="return-amount">0</span></h3>
+                    <br>
+                    <button class="btn btn-success" style="width: 50%;" onclick="getMoney();"><span class="fa fa-check icn-method"></span>Cobrar</button>
+                    <button class="btn btn-danger" style="width: 50%;" onclick="window.close();"><span class="fa fa-close icn-method"></span>Cancelar</button>
+                </div>
+              </div>
+        </div>
+    </div>
+    <input type="hidden" name="" value="{{priceList}}" id="priceList">
+    <input type="hidden" name="" value="{{idCustomer}}" id="idCustomer">
+    <script>
+        const ipcRenderer = window.app;
+    </script>
+
+    <!-- JS -->
+         <!-- jQuery -->
+         <script src="../../js/jquery/dist/jquery.min.js"></script>
+         <!-- Bootstrap -->
+        <script src="../../js/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+         <!-- FastClick -->
+         <script src="../../js/fastclick/lib/fastclick.js"></script>
+         <!-- NProgress -->
+         <script src="../../js/nprogress/nprogress.js"></script>
+         <!-- jQuery Sparklines -->
+         <script src="../../js/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+         <!-- Custom Theme Scripts -->
+         <script src="../../js/custom.min.js"></script>
+
+         <script src="../../js/amountToBeReturnedOrder.js"></script>
+         <script src="../../js/sessionStorage.js"></script>
+
+</body>
+</html>

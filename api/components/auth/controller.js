@@ -46,7 +46,7 @@ const login = async (username, password, token) => {
                 return auth.sign(tokenData);  //Returns TOKEN
             } else{
 
-                return boom.unauthorized('Incorrect Information', 401);
+                throw boom.unauthorized();
             };
         })
         .catch();
@@ -82,6 +82,12 @@ const remove = async (id) => {
     return await store.remove(id);
 };
 
+const getUserByToken = async (token) => {
+    const userInfo = auth.decodeToken(token);
+    const user = await store.getOne(userInfo.id);
+    return user;
+};
+
 module.exports = {
     login,
     getAll,
@@ -89,4 +95,5 @@ module.exports = {
     create,
     update,
     remove,
+    getUserByToken,
 };

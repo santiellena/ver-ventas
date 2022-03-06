@@ -75,7 +75,7 @@ function getCustomer (id) {
 function addToDebt (id, debt) {
     if(id && debt){
         if(customers[id] != undefined){
-            const resultNewDebts = customers[id].debts + debt;
+            const resultNewDebts = parseFloat(customers[id].debts) + parseFloat(debt);
             const toParseNumber = resultNewDebts.toFixed(2);
             customers[id].debts = parseFloat(toParseNumber);
         };

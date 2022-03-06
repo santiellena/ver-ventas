@@ -19,7 +19,6 @@ const update = async (id, data) => {
 const remove = async (id) => {
     return await store.remove(id);
 };
-
 module.exports = {
     getAll,
     getOne,

@@ -1,5 +1,7 @@
 const express = require('express');
 const router = require('./network/routes.js');
+const controllerGlobal = require('./components/global/controller');
+const response = require('./network/response');
 
 const db = require('./database/database.js');
 
@@ -15,6 +17,21 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 db.connect();
+
+app.get('/api', (req, res, next) => {
+    controllerGlobal.getFirstTimeInfo()
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
+app.get('/api/token/:token', (req, res, next) => {
+    const { token } = req.params;
+    if(config.publicToken == token){
+        response.success(req, res, {message: 'RIGHT'}, 200);
+    } else {
+        response.error(req, res, null, 400);
+    };
+});
 
 //Routes
 router(app);

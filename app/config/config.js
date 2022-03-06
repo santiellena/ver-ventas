@@ -1,4 +1,5 @@
 const fs = require('fs');
+const axios = require('axios');
 const { 
     createMainWindow,
     createFirstTimeWindow,
@@ -18,7 +19,7 @@ const network = fs.readFileSync(`${__dirname}/network.json`, {encoding: 'utf-8'}
         throw new Error(err);
     } else {
         return JSON.parse(data);
-    }
+    };
 });
 
 function getConfig () {
@@ -36,25 +37,22 @@ function checkInitialConfig () {
     };
 };
 
-function checkUrl (url) {
+async function checkUrl (url) {
     //Axios connection to check server status. 
     //If connection is successful, Status Code must be 200.
     //Data: { businessName: '', branchs};
-    //Branchs == [ { id: 1, name: '', dirStreet: ''} ]
-
-    const connection = (url) => {
-        if(url == 'http://mercado1990:3000') {
-            const obj = {url};
-            fs.writeFileSync(`${__dirname}/network.json`, JSON.stringify(obj), (err, data) => {
-                if(err)  throw new Error(err, 'Sobreescritura del archivo de configuración de red.');
-            });
-            return { businessName: 'Mercado 1990', branchs: [{id: 1, name: 'Principal', dirStreet: 'Corrientes 471'}]};
-        } else {
-            return null;
-        };
+    //Branchs == [ { id: 1, name: '', dirStreet: ''}
+    const conn = await axios({
+       method: 'GET',
+       url: `${url}/api/`, 
+    });
+    if(conn.data){
+        const { global, branches } = conn.data;
+        const info = { businessName: global.businessName, branches };
+        return info;
+    } else {
+        return null;
     };
-
-    return connection(url);
 };
 
 function getUrl () {
@@ -62,11 +60,17 @@ function getUrl () {
     return net.url;
 };
 
-function checkToken (token, idBranch) {
+async function checkToken (token, idBranch) {
     if(idBranch && token){
-    
-        const branch = getBranchData(idBranch, token);
-        const cashRegister = getNewCashRegisterData(token);
+        const response = await axios({
+            url: `${getUrl()}/api/token/${token}`,
+            method: 'GET',
+        });
+        if(response.status != 200 && response.status != 201){
+            return null;
+        };
+        const branch = await getBranchData(idBranch);
+        const cashRegister = await getNewCashRegisterData(idBranch);
 
         const config = getConfig();
 
@@ -89,30 +93,26 @@ function checkToken (token, idBranch) {
     };
 };
 
-const validator = (token) => {
-    if(token == '123'){
-        return true;
-    };
+
+async function getBranchData (idBranch) {
+    const branch = await axios({
+        url: `${getUrl()}/api/branch/${idBranch}`,
+        method: 'GET',
+    });
+    return branch.data;
 };
 
-function getBranchData (idBranch, token) {
-    if(idBranch && token){
-        if(validator(token)){
-            if(idBranch == 1){
-                return { id: 1, name: 'Principal'};
-            }
-        } else {
-            return null;
-        };
-    };
-};
+async function getNewCashRegisterData (idBranch) {
+    const newCashRegister = await axios({
+        method: 'POST',
+        url: `${getUrl()}/api/cash-register`,
+        data: {
+            idBranch,
+            moneyAmount: 0,
+        },
+    });
 
-function getNewCashRegisterData (token) {
-    if(validator(token)){
-        return 1;
-    } else {
-        return null;
-    }
+    return newCashRegister.data.id;
 };
 
 function getBranchDataFromConfig () {
@@ -141,6 +141,10 @@ function updateBranchName (newName) {
     };
 }
 
+function returnToken () {
+    return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwic2NvcGVzIjpbIm1lbnUtc3RvY2siLCJtZW51LXNlbGxzIiwibWVudS1idXlzIiwibWVudS1hZG1pbiIsIm1lbnUtcXVlcmllcyIsIm1lbnUtbWFpbnRlbmFuY2UiLCJtZW51LWludm9pY2luZyJdLCJpYXQiOjE2NDU1NDE5Mjh9.HCtdIq6yfp6C3ApCtvEW9kbkIXWm6cfuFGEyn-UrEUA';
+};
+
 module.exports = {
     checkInitialConfig,
     checkUrl,
@@ -149,5 +153,6 @@ module.exports = {
     getCashRegisterId,
     updateBranchName,
     getUrl,
+    returnToken,
 };
 

@@ -1,5 +1,5 @@
 const ipcRenderer = window.app;
-let branchsPivot;
+let branchesPivot;
 
 async function checkServer () {
     const url = document.getElementById('url').value;
@@ -8,9 +8,9 @@ async function checkServer () {
 
     if(valid && url){
         const data = await ipcRenderer.invoke('check-url', url);
-
+        
         if(data != null){
-            loadServerData({businessName: data.businessName, branchs: data.branchs});
+            loadServerData({businessName: data.businessName, branches: data.branches});
         } else {
             alertDiv.innerHTML = '';
     alertDiv.innerHTML = '<div class="alert alert-danger alert-dismissible " role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="clearAlert();"><span aria-hidden="true">×</span></button><strong>Error!</strong> La URL ingresada no coincide con ningún servidor accesable</div>'
@@ -25,12 +25,12 @@ function clearAlert () {
     alertDiv.innerHTML = '';
 };
 
-function loadServerData ({ businessName, branchs}) {
-    if(businessName && branchs){
-        branchsPivot = branchs;
+function loadServerData ({ businessName, branches}) {
+    if(businessName && branches){
+        branchesPivot = branches;
         const content = document.getElementById('content');
         content.innerHTML = '';
-
+        console.log('IN IF SVDATA');
         const mainDiv = document.createElement('div');
         mainDiv.setAttribute('style', 'display: flex; justify-content: center; flex-direction: column;');
         const divTitle = document.createElement('div');
@@ -40,9 +40,9 @@ function loadServerData ({ businessName, branchs}) {
         title.innerText = `Servidor: ${businessName}`;
         mainDiv.appendChild(divTitle);
 
-        if(branchs.length > 0) {
+        if(branches.length > 0) {
             let radios = '';
-            branchs.map(branch => {
+            branches.map(branch => {
                 const newRadio = `<div class="radio">
                 <label for="${branch.name}">
                     <input type="radio" checked="" value="${branch.id}" id="${branch.name}" name="optionsRadios"> 
@@ -93,7 +93,7 @@ function loadServerData ({ businessName, branchs}) {
 async function tokenValidation () {
     const token = document.getElementById('token').value;
     let branchChecked;
-   for (const e of branchsPivot) {
+   for (const e of branchesPivot) {
     if(document.getElementById(e.name).checked == true){
         branchChecked = e.id;
         break;

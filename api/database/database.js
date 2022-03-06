@@ -10,7 +10,7 @@ const sequelize = new Sequelize(config.dbName, config.dbUser, config.dbPassword,
 
 setupModels(sequelize);
 
-sequelize.sync({force: true}); //DELETE LINE FOR PRODUCTION
+//sequelize.sync({force: true}); //DELETE LINE FOR PRODUCTION
 
 function connect () {
     sequelize.authenticate()

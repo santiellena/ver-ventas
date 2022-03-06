@@ -25,6 +25,7 @@ const storeUnitMeasures = require("../components/unitMeasures/store");
 const {
   getBranchDataFromConfig,
   updateBranchName,
+  returnToken,
 } = require("../config/config");
 
 module.exports = ({
@@ -39,18 +40,19 @@ module.exports = ({
   createDocsWindow,
   createUnitsWindow,
 }) => {
-  ipcMain.on("load-general-window", () => {
-    const general = storeMaintenance.getGeneralInfo();
+  ipcMain.on("load-general-window", async () => {
+    const token = returnToken();
+    const general = await storeMaintenance.getGeneralInfo(token);
     createGeneralMaintenanceWindow({ general });
   });
 
   ipcMain.handle(
     "update-general-info",
-    (e, { fantasyName, bussinesName, taxName, taxPercentage }) => {
-      if (fantasyName && bussinesName && taxName && taxPercentage) {
-        const update = storeMaintenance.updateGeneralInfo({
+    async (e, { fantasyName, businessName, taxName, taxPercentage }) => {
+      if (fantasyName && businessName && taxName && taxPercentage) {
+        const update = await storeMaintenance.updateGeneralInfo({
           fantasyName,
-          bussinesName,
+          businessName,
           taxName,
           taxPercentage,
         });
@@ -64,16 +66,14 @@ module.exports = ({
     }
   );
 
-  ipcMain.on("load-branches-window", () => {
-    const branches = storeMaintenance.getAllBranches();
+  ipcMain.on("load-branches-window", async () => {
+    const branches = await storeMaintenance.getAllBranches();
     const branch = getBranchDataFromConfig();
     createBranchesMaintenanceWindow({ branches, branch });
   });
 
   ipcMain.handle(
-    "update-branch-info",
-    (
-      e,
+    "update-branch-info", async (e, 
       {
         idBranch,
         branchName,
@@ -94,7 +94,7 @@ module.exports = ({
         representative
       ) {
         const branch = getBranchDataFromConfig();
-        const update = storeMaintenance.updateBranchInfo({
+        const update = await storeMaintenance.updateBranchInfo({
           idBranch,
           branchName,
           cuit,
@@ -113,22 +113,22 @@ module.exports = ({
     }
   );
 
-  ipcMain.on("load-employees-window", () => {
-    const employees = storeEmployees.getEmployees();
+  ipcMain.on("load-employees-window", async () => {
+    const employees = await storeEmployees.getEmployees();
     createEmployeesWindow({ employees });
   });
 
-  ipcMain.on("load-addemplooy-window", () => {
-    const docTypes = storeDocTypes.getAllDocTypes();
+  ipcMain.on("load-addemplooy-window", async () => {
+    const docTypes = await storeDocTypes.getAllDocTypes();
     if (docTypes) {
       createAddEmplooyWindow({ docTypes });
     }
   });
 
-  ipcMain.on("load-editemplooy-window", (e, id) => {
+  ipcMain.on("load-editemplooy-window", async (e, id) => {
     if (id) {
-      const emplooy = storeEmployees.getEmplooy(id);
-      const docTypes = storeDocTypes.getAllDocTypes();
+      const emplooy = await storeEmployees.getEmplooy(id);
+      const docTypes = await storeDocTypes.getAllDocTypes();
       if (emplooy && docTypes) {
         createEditEmplooyWindow({ emplooy, docTypes });
       }
@@ -138,7 +138,7 @@ module.exports = ({
   let addedEmplooy;
   ipcMain.on(
     "add-emplooy",
-    (
+    async (
       e,
       {
         name,
@@ -153,8 +153,8 @@ module.exports = ({
         password,
       }
     ) => {
-      const docType = storeDocTypes.getDocType(docTypeId);
-      const newEmplooy = storeEmployees.newEmplooy({
+      const docType = await storeDocTypes.getDocType(docTypeId);
+      const newEmplooy = await storeEmployees.newEmplooy({
         name,
         lastname,
         docType,
@@ -183,9 +183,9 @@ module.exports = ({
     return added;
   });
 
-  ipcMain.on("delete-emplooy", (e, id) => {
+  ipcMain.on("delete-emplooy", async (e, id) => {
     if (id) {
-      const emplooy = storeEmployees.getEmplooy(id);
+      const emplooy = await storeEmployees.getEmplooy(id);
 
       if (emplooy) {
         const editEmplooyWindow = returnEditEmployeesWindow();
@@ -197,7 +197,7 @@ module.exports = ({
         });
 
         if (response == 0) {
-          storeEmployees.deleteEmplooy(id);
+          await storeEmployees.deleteEmplooy(id);
 
           editEmplooyWindow.close();
 
@@ -211,7 +211,7 @@ module.exports = ({
   let pivotEmplooyEdited;
   ipcMain.handle(
     "edit-emplooy",
-    (
+    async (
       e,
       {
         id,
@@ -227,9 +227,9 @@ module.exports = ({
         password,
       }
     ) => {
-      const docType = storeDocTypes.getDocType(docTypeId);
+      const docType = await storeDocTypes.getDocType(docTypeId);
       if (docType) {
-        const update = storeEmployees.updateEmplooy({
+        const update = await storeEmployees.updateEmplooy({
           id,
           name,
           lastname,
@@ -259,18 +259,18 @@ module.exports = ({
     return edited;
   });
 
-  ipcMain.on("load-users-window", () => {
-    const users = storeUsers.getAllUsers();
+  ipcMain.on("load-users-window", async () => {
+    const users = await storeUsers.getAllUsers();
     const iterable = Object.values(users);
     const withbranch = iterable.map((user) => {
       let branchName = "";
       for (let i = 0; i < user.branches.length; i++) {
-        const branch = storeMaintenance.getBranch(user.branches[i]);
+        const branch = await storeMaintenance.getBranch(user.branches[i]);
         if (i == 0) branchName += `${branch.name}`;
         else branchName += `, ${branch.name}`;
       }
 
-      const emplooy = storeEmployees.getEmplooy(user.idEmplooy);
+      const emplooy = await storeEmployees.getEmplooy(user.idEmplooy);
       user.branchName = branchName;
       user.name = emplooy.name;
       user.lastname = emplooy.lastname;
@@ -280,41 +280,41 @@ module.exports = ({
     createUsersWindow({ users: withbranch });
   });
 
-  ipcMain.on("load-adduser-window", () => {
-    const employees = storeEmployees.getEmployeesToUser();
-    const branches = storeMaintenance.getAllBranches();
+  ipcMain.on("load-adduser-window", async () => {
+    const employees = await storeEmployees.getEmployeesToUser();
+    const branches = await storeMaintenance.getAllBranches();
     createAddUserWindow({ employees, branches });
   });
 
-  ipcMain.on("load-edituser-window", (e, id) => {
-    const user = storeUsers.getUser(id);
-    const emplooy = storeEmployees.getEmplooy(user.idEmplooy);
-    const branches = storeMaintenance.getAllBranches();
+  ipcMain.on("load-edituser-window", async (e, id) => {
+    const user = await storeUsers.getUser(id);
+    const emplooy = await storeEmployees.getEmplooy(user.idEmplooy);
+    const branches = await storeMaintenance.getAllBranches();
 
     if (user && emplooy && branches) {
       createEditUserWindow({ user, branches, emplooy });
     }
   });
 
-  ipcMain.handle("get-branches-selected-byuser", (e, idUser) => {
+  ipcMain.handle("get-branches-selected-byuser", async (e, idUser) => {
     if (idUser) {
-      const user = storeUsers.getUser(idUser);
-      return storeMaintenance.getBranches(user.branches);
+      const user = await storeUsers.getUser(idUser);
+      return await storeMaintenance.getBranches(user.branches);
     }
   });
 
-  ipcMain.handle("get-user-permissions", (e, idUser) => {
+  ipcMain.handle("get-user-permissions", async (e, idUser) => {
     if (idUser) {
-      const permissions = storeUsers.getPermissions(idUser);
+      const permissions = await storeUsers.getPermissions(idUser);
 
       return permissions;
     }
   });
 
   let idDeletedUserPivot;
-  ipcMain.on("delete-user", (e, idUser) => {
+  ipcMain.on("delete-user", async (e, idUser) => {
     if (idUser) {
-      const user = storeUsers.getUser(idUser);
+      const user = await storeUsers.getUser(idUser);
       const editUserWindow = returnEditUserWindow();
 
       const actualUserSession = { id: 1, name: "Administrador" }; // Modificar cuando se implementen sesiones
@@ -332,7 +332,7 @@ module.exports = ({
         });
 
         if (response == 0) {
-          storeUsers.deleteUser(idUser);
+          await storeUsers.deleteUser(idUser);
           const usersWindow = returnUsersWindow();
           usersWindow.webContents.send("update-userslist-bydelete");
           editUserWindow.close();
@@ -351,10 +351,10 @@ module.exports = ({
   let newUser;
   ipcMain.on(
     "add-user",
-    (e, { permissions, idEmplooy, branches, username, password }) => {
+    async (e, { permissions, idEmplooy, branches, username, password }) => {
       if (permissions && idEmplooy && branches && username && password) {
-        const idUserType = storeUsers.getEmplooyType().id;
-        const added = storeUsers.addUser({
+        const idUserType = await storeUsers.getEmplooyType().id;
+        const added = await storeUsers.addUser({
           idEmplooy,
           idUserType,
           branches,
@@ -372,8 +372,8 @@ module.exports = ({
           const addUserWindow = returnAddUserWindow();
           addUserWindow.close();
 
-          const emplooy = storeEmployees.getEmplooy(added.idEmplooy);
-          const allowedBranches = storeMaintenance.getBranches(added.branches);
+          const emplooy = await storeEmployees.getEmplooy(added.idEmplooy);
+          const allowedBranches = await storeMaintenance.getBranches(added.branches);
 
           let branchName = "";
 
@@ -405,42 +405,42 @@ module.exports = ({
     return added;
   });
 
-  ipcMain.handle("get-all-branches", () => {
-    const branches = storeMaintenance.getAllBranches();
+  ipcMain.handle("get-all-branches", async () => {
+    const branches = await storeMaintenance.getAllBranches();
     return branches;
   });
 
-  ipcMain.on("load-docs-window", () => {
-    const docTypes = storeDocTypes.getAllDocTypes();
+  ipcMain.on("load-docs-window", async () => {
+    const docTypes = await storeDocTypes.getAllDocTypes();
     createDocsWindow({ docTypes });
   });
 
-  ipcMain.on("load-units-window", () => {
-    const measures = storeUnitMeasures.getAllMeasures();
+  ipcMain.on("load-units-window", async () => {
+    const measures = await storeUnitMeasures.getAllMeasures();
     createUnitsWindow({ measures });
   });
 
-  ipcMain.handle("new-docType", (e, newName) => {
-    return storeDocTypes.addDocType(newName);
+  ipcMain.handle("new-docType", async (e, newName) => {
+    return await storeDocTypes.addDocType(newName);
   });
 
-  ipcMain.on("delete-docType", (e, id) => {
+  ipcMain.on("delete-docType", async (e, id) => {
     if (id) {
-      storeDocTypes.deleteDocType(id);
+      await storeDocTypes.deleteDocType(id);
     }
   });
 
-  ipcMain.on("delete-unitMeasure", (e, id) => {
+  ipcMain.on("delete-unitMeasure", async (e, id) => {
     if (id) {
-      storeUnitMeasures.deleteMeasure(id);
+      await storeUnitMeasures.deleteMeasure(id);
     }
   });
 
   ipcMain.handle(
     "new-unitMeasure",
-    (e, { shortDescription, longDescription }) => {
+    async (e, { shortDescription, longDescription }) => {
       if (longDescription && shortDescription) {
-        return storeUnitMeasures.addMeasure({
+        return await storeUnitMeasures.addMeasure({
           shortDescription,
           longDescription,
         });
@@ -448,14 +448,14 @@ module.exports = ({
     }
   );
 
-  ipcMain.handle("get-branches", () => {
-    const branches = storeMaintenance.getAllBranches();
+  ipcMain.handle("get-branches", async () => {
+    const branches = await storeMaintenance.getAllBranches();
     return branches;
   });
 
   ipcMain.handle(
     "edit-user",
-    (
+    async (
       e,
       {
         id,
@@ -484,7 +484,7 @@ module.exports = ({
         menuInvoicing != null &&
         menuStats != null
       ) {
-        const edit = storeUsers.updateUser({
+        const edit = await storeUsers.updateUser({
           id,
           username,
           branches,

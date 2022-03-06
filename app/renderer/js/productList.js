@@ -389,3 +389,21 @@ ipcRenderer.on('get-sells-details', () => {
     const priceList = document.getElementById('price-list-select').value;
     ipcRenderer.send('get-sells-details', {sessionStorage, priceList});
 });
+
+ipcRenderer.on('get-sells-details-card', () => {
+    const sessionStorage = getAllItemSession();
+    const priceList = document.getElementById('price-list-select').value;
+    ipcRenderer.send('get-sells-details-card', {sessionStorage, priceList});
+});
+
+ipcRenderer.on('get-sells-details-credit', () => {
+    const sessionStorage = getAllItemSession();
+    const priceList = document.getElementById('price-list-select').value;
+    ipcRenderer.send('get-sells-details-credit', {sessionStorage, priceList});
+});
+
+ipcRenderer.on('get-sells-details-order', () => {
+    const sessionStorage = getAllItemSession();
+    const priceList = document.getElementById('price-list-select').value;
+    ipcRenderer.send('get-sells-details-order', {sessionStorage, priceList});
+});

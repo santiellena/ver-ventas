@@ -2,7 +2,7 @@ const joi = require('joi');
 
 const id = joi.number().integer();
 const fantasyName = joi.string().max(40);
-const bussinesName = joi.string().max(40);
+const businessName = joi.string().max(40);
 const taxName = joi.string().max(4);
 const taxPercentage = joi.number().precision(2).max(100);
 
@@ -12,14 +12,14 @@ const getGlobalSchema = joi.object({
 
 const createGlobalSchema = joi.object({
     fantasyName: fantasyName.required(),
-    bussinesName: bussinesName.required(),
+    businessName: businessName.required(),
     taxName: taxName.required(),
     taxPercentage: taxPercentage.required(),
 });
 
 const updateGlobalSchema = joi.object({
     fantasyName,
-    bussinesName,
+    businessName,
     taxName,
     taxPercentage,
 });

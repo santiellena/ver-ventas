@@ -117,8 +117,9 @@ function addSell ({
     howPaid,
     details,
     priceList,
+    howMuchPaid,
 }) {
-    if(amount, branch, customer, howPaid, details, priceList, emplooy) {
+    if(amount, branch, customer, howPaid, details, priceList, emplooy, howMuchPaid) {
         const actualDate = new Date();
         let minutesString = actualDate.getMinutes().toString();
         let minutes = '';
@@ -179,6 +180,7 @@ function addSell ({
             howPaid,
             details: detailsForSell,
             emplooy,
+            howMuchPaid,
         };
     };
 };
@@ -262,6 +264,10 @@ function getGainsByDepartment (from, to) {
     
 };
 
+function addSellFromOrder (order) {
+
+};
+
 module.exports = {
     getAllSells,
     getSell,
@@ -271,4 +277,5 @@ module.exports = {
     addSell,
     deleteSell,
     getGainsByDepartment,
+    addSellFromOrder,
 };

@@ -86,6 +86,19 @@ contextBridge.exposeInMainWorld(
                 'load-stats-page',
                 'load-missing-stock-window',
                 'fullscreen-mainwindow',
+                'add-sell-from-order',
+                'get-sells-details-card',
+                'get-sells-details-credit',
+                'sell-cash-incompleted-order',
+                'sell-cash-confirmation-order',
+                'select-customer-whopays-order',
+                'send-details-order-credit',
+                'delete-order',
+                'get-sells-details-order',
+                'send-details-order-incompleted',
+                'send-details-order-cash',
+                'send-details-order-card',
+                
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -128,6 +141,12 @@ contextBridge.exposeInMainWorld(
                 'update-userslist-bynew',
                 'load-new-sale',
                 'load-login-info',
+                'get-sells-details-card',
+                'get-sells-details-credit',
+                'send-sell-details-order',
+                'confirm-order-sell',
+                'send-sell-details-order-credit',
+                'get-sells-details-order',
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.on(channel, (e, ...args) => func(...args))
@@ -199,6 +218,7 @@ contextBridge.exposeInMainWorld(
                 'get-login-info',
                 'edit-user',
                 'get-branches',
+                'get-order-details',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

@@ -51,3 +51,22 @@ async function deleteOrder(id){
         };
     };
 };
+
+let idPivot = 0;
+async function addSell (idOrder) {
+    if(idOrder){
+        ipcRenderer.send('add-sell-from-order', idOrder);
+        idPivot = idOrder;
+    };
+};
+
+ipcRenderer.on('confirm-order-sell', () => {
+    ipcRenderer.send('delete-order', idPivot);
+    const tr = document.getElementById(`tr${idPivot}`);
+            tr.remove();
+            const childElements = document.getElementsByClassName('child');
+            for (const element of childElements) {
+                element.remove();
+            };
+    idPivot = 0;
+});

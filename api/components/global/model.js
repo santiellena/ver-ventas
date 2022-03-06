@@ -15,10 +15,10 @@ const globalSchema = {
         type: DataTypes.STRING(40),
         field: 'fantasy_name',
     },
-    bussinesName: {
+    businessName: {
         allowNull: false,
         type: DataTypes.STRING(40),
-        field: 'bussines_name',
+        field: 'business_name',
         unique: true,
     },
     taxName: {

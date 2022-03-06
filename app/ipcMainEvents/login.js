@@ -24,8 +24,11 @@ module.exports = ({
   
     ipcMain.handle('login', async (e, args) => {
         const { username, password } = args;
-        const token = auth.login(username, password);
-        const cookie = { url: getUrl(), name: 'token', value: `${JSON.stringify(token)}` };
+        const token = await auth.login(username, password);
+        if(token.data.message){
+          return null;
+        };
+        const cookie = { url: getUrl(), name: 'token', value: token.data };
         if(token){
           const ses = session.defaultSession;
           const answer = ses.cookies.set(cookie).then(() => {
@@ -42,9 +45,9 @@ module.exports = ({
         };
       });
 
-      ipcMain.handle('check-url', (e, url) => {
+      ipcMain.handle('check-url', async (e, url) => {
         if(url){
-          const infoData = checkUrl(url);
+          const infoData = await checkUrl(url);
           if(infoData){
             return infoData;
           } else {
@@ -53,10 +56,10 @@ module.exports = ({
         };
       });
 
-      ipcMain.handle('join-branch', (e, {token, idBranch}) => {
+      ipcMain.handle('join-branch', async (e, {token, idBranch}) => {
         if(idBranch && token){
-          const response = checkToken(token, idBranch);
-
+          const response = await checkToken(token, idBranch);
+          console.log(response);
           if(response) {
             const firstTimeWindow = returnFirstTimeWindow();
             createLoginWindow();
@@ -76,8 +79,16 @@ module.exports = ({
     ipcMain.handle('get-login-info', async () => {
       const ses = session.defaultSession;
       const info = await ses.cookies.get({url: getUrl(), name: 'token'});
-      const valueToken = JSON.parse(info[0].value);
-      return valueToken;
+      const userData = await auth.getUserData(info[0].value);
+      if(!userData){
+        throw new Error('BAD LOGIN DATA');
+      } else if(userData.data.message){
+        return null;
+      } else {
+        userData.data.name = userData.data.emplooy.name;
+        return userData.data;
+      };
+      
     });
 
 };

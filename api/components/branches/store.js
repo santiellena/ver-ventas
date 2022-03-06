@@ -4,7 +4,7 @@ const models = require('../../database/database').sequelize.models;
 const { Branch } = models;
 
 const getAll = async () => {
-    return await Branch.findAll({include: ['boxes']});
+    return await Branch.findAll();
 };
 
 const getOne = async (id) => {

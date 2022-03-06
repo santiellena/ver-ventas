@@ -57,6 +57,7 @@ const {
   createSalesWindow,
   createAddSaleWindow,
   createMissingStockWindow,
+  createPayOrderWindow,
   historyHandlebars,
   mainHandlebars,
 } = require('./createWindows');
@@ -74,8 +75,8 @@ if(process.env.NODE_ENV == 'development'){
 // Login window
 //app.on('ready', checkInitialConfig); //Production
 app.on('ready', () =>{
-  createLoginWindow();
-  Menu.setApplicationMenu(mainMenu);
+  checkInitialConfig();
+  //Menu.setApplicationMenu(mainMenu);
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)
@@ -109,6 +110,7 @@ ipcMainEvents.sells({
   createOrdersWindow,
   createSalesWindow,
   createAddSaleWindow,
+  createPayOrderWindow,
 });
 
 ipcMainEvents.login({

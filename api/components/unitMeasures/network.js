@@ -3,6 +3,7 @@ const validator = require('../../utils/middlewares/validator');
 const response = require('../../network/response');
 const controller = require('./controller');
 const { getUnitMeasureSchema, createUnitMeasureSchema, updateUnitMeasureSchema } = require('../../utils/schemas/unitMeasure.schema');
+const checkAllow = require('../../utils/middlewares/chechAllow');
 
 router.get('/', (req, res, next) => {
     controller.getAll()

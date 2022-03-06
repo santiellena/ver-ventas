@@ -19,7 +19,8 @@ const { mainHandlebars,
         returnOrdersWindow,
         returnSalesWindow,
         returnAddSaleWindow,
-        
+        returnPayDebtsWindow,
+        returnPayOrdersWindow,
 } = require('../createWindows');
 
 module.exports = ({
@@ -30,6 +31,7 @@ module.exports = ({
     createOrdersWindow,
     createSalesWindow,
     createAddSaleWindow,
+    createPayOrderWindow,
 }) => {
 
     ipcMain.on('open-sells-history', () => {
@@ -63,79 +65,132 @@ module.exports = ({
         createSearchProductsWindow({products});
     });
 
+    let amountCashPivot = 0;
     ipcMain.on('sell-cash-confirmation', (e, args) => {
         const paymentWindow = returnPaymentWindow();
-        const { totalAmount, amountToBeReturned, howMuchCash } = args;
-        dialog.showMessageBoxSync(paymentWindow, {
-            title: 'Venta Finalizada',
-            message: `Cobrar: $ ${totalAmount}. 
-            Paga con: $ ${howMuchCash}.
-            Vuelto: $ ${amountToBeReturned.toFixed(2)}.`,
-            type: 'info',
-            buttons: ['Cerrar'],
-        });
-
-        const branchConfig = configs.getBranchDataFromConfig();
-        const boxConfig = configs.getCashRegisterId();
-
-        storeCashRegister.addToBox(boxConfig, branchConfig.id, totalAmount);
-
-        paymentWindow.close();
-        const mainWindow = returnMainWindow();
-
-        mainWindow.webContents.send('clear-product-list');
-    });
-
-    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount, invoincing}) => {
-        const paymentWindow = returnPaymentWindow();
-        if(invoincing == 1){
+        const { totalAmount, amountToBeReturned, howMuchCash, invoicing } = args;
+        if(invoicing == 1){
             const response = dialog.showMessageBoxSync(paymentWindow, {
                 title: 'Facturar Venta?',
                 message: 'Si confirma, se abrirá el menu de facturación.',
                 buttons: ['Confirmar', 'Cancelar'],
             });
-
-            if(response == 1){
-                
+            if(response == 0){
+                //facturar
             };
-        };
-
-        const customers = storeCustomers.getAllCustomers();
-        createCustomerListWindow({ totalAmount: debt, totalAmountPlusDebt: totalAmount, customers, howPaid: 'Contado/Cuenta Corriente' });
-        const customerList = returnCustomerListWindow(); 
-
-        const response = dialog.showMessageBoxSync(customerList, {
-            title: 'Confirmación',
-            message: `El monto restante de la venta en efectivo ($ ${debt}) se agregará a la cuenta corriente del cliente que seleccione...`,
-            type: 'info',
-            buttons: ['Aceptar', 'Cancelar'],
-        });
-
-        if(response == 0){
-            return
         } else {
-            customerList.close();
+            dialog.showMessageBoxSync(paymentWindow, {
+                title: 'Venta Finalizada',
+                message: `Cobrar: $ ${totalAmount}. 
+                Paga con: $ ${howMuchCash}.
+                Vuelto: $ ${amountToBeReturned.toFixed(2)}.`,
+                type: 'info',
+                buttons: ['Cerrar'],
+            });
+    
+            const branchConfig = configs.getBranchDataFromConfig();
+            const boxConfig = configs.getCashRegisterId();
+    
+            storeCashRegister.addToBox(boxConfig, branchConfig.id, totalAmount);
+            paymentWindow.close();
+            const mainWindow = returnMainWindow();
+            amountCashPivot = totalAmount;
+            mainWindow.webContents.send('get-sells-details');
+            
         };
     });
 
+    ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
+        const totalAmount = amountCashPivot;
+        delete amountCashPivot;
+        const branchConfig = configs.getBranchDataFromConfig();
+        const emplooy = {id: 1, name: 'Administrador'};
+        const sell = storeSells.addSell({
+            amount: totalAmount,
+            branch: branchConfig.id,
+            emplooy, //Modificar cuando se hagan las sesiones.
+            customer: {name: 'Consumidor Final', id: 99},
+            howPaid: 'Efectivo',
+            howMuchPaid: totalAmount,
+            details: sessionStorage,
+            priceList,
+        });
+        const mainWindow = returnMainWindow();
+        mainWindow.webContents.send('clear-product-list');
+    });
+
+    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount, invoicing}) => {
+        const paymentWindow = returnPaymentWindow();
+        if(invoicing == 1){
+            const response = dialog.showMessageBoxSync(paymentWindow, {
+                title: 'Facturar Venta?',
+                message: 'Si confirma, se abrirá el menu de facturación.',
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(response == 0 ){
+                //facturar
+            } else {
+                return
+            };
+        } else {
+            const customers = storeCustomers.getAllCustomers();
+            createCustomerListWindow({ totalAmount: debt, totalAmountPlusDebt: totalAmount, customers, howPaid: 'Contado/Cuenta Corriente' });
+            const customerList = returnCustomerListWindow(); 
+    
+            const response = dialog.showMessageBoxSync(customerList, {
+                title: 'Confirmación',
+                message: `El monto restante de la venta en efectivo ($ ${debt}) se agregará a la cuenta corriente del cliente que seleccione...`,
+                type: 'info',
+                buttons: ['Aceptar', 'Cancelar'],
+            });
+    
+            if(response == 0){
+                return
+            } else {
+                customerList.close();
+            };
+        }
+    });
+
+    let amountPivotCard = 0;
     ipcMain.on('sell-card-confirmation', (e, args) => {
         const paymentWindow = returnPaymentWindow();
          const response  = dialog.showMessageBoxSync(paymentWindow, {
-            title: 'Venta por tarjeta',
-            message: 'Venta finalizada',
+            title: 'Venta por Tarjeta',
+            message: 'Confirmación de Venta',
             type: 'question',
-            message: `Ingrese la tarjeta y cobre ${args}, si la tarjeta fue aceptada presione "Confirmar."`,
+            message: `Ingrese la tarjeta y cobre $ ${args}, si la tarjeta fue aceptada presione "Confirmar."`,
             buttons: ['Confirmar', 'Cancelar'],
         });
 
         if(response == 0){
-
-            paymentWindow.close();
-            //Update db para agregar venta
+            const mainWindow = returnMainWindow();
+                //confirmar venta function, update deuda, update stock, update todo
+                paymentWindow.close();
+                mainWindow.webContents.send('get-sells-details-card');
+                amountPivotCard = args;
         } else if(response == 1){
             return
-        }
-       
+        };
+    });
+
+    ipcMain.on('get-sells-details-card', (e, {sessionStorage, priceList}) => {
+        const totalAmount = amountPivotCard;
+        delete amountPivotCard;
+        const emplooy = {id: 1, name: 'Administrador'};
+        const branch = configs.getBranchDataFromConfig();
+        storeSells.addSell({
+            amount: totalAmount,
+            branch: branch.id,
+            emplooy, //Modificar cuando se hagan las sesiones.
+            customer: {name: 'Consumidor Final', id: 99},
+            howPaid: 'Tarjeta',
+            howMuchPaid: totalAmount,
+            details: sessionStorage,
+            priceList,
+        });
+        const mainWindow = returnMainWindow();
+        mainWindow.webContents.send('clear-product-list');
     });
 
     ipcMain.handle('search-product-byid', (e, id) => {
@@ -146,8 +201,8 @@ module.exports = ({
         return product;
     });
 
-    ipcMain.handle('get-tax-percentage', (e, args) => {
-        return storeMaintenance.getTaxPercentage();
+    ipcMain.handle('get-tax-percentage', async  (e, args) => {
+        return await storeMaintenance.getTaxPercentage(configs.returnToken());
     });
 
     let idSellList;
@@ -165,18 +220,32 @@ module.exports = ({
         return id;
     });
 
-    ipcMain.on('load-customer-list', (e, {totalAmount, operation}) => {
+    ipcMain.on('load-customer-list', (e, {totalAmount, operation, invoicing}) => {
         const customers = storeCustomers.getAllCustomers();
-        createCustomerListWindow({
-            totalAmount,
-            customers,
-            totalAmountPlusDebt: totalAmount,
-            howPaid: 'Cuenta Corriente',
-            operation,
-        });
-       
+        if(invoicing == 1){
+            const response = dialog.showMessageBoxSync(paymentWindow, {
+                title: 'Facturar Venta?',
+                message: 'Si confirma, se abrirá el menu de facturación.',
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(response == 0 ){
+                //facturar
+            } else {
+                return
+            };
+        } else {
+            
+            createCustomerListWindow({
+                totalAmount,
+                customers,
+                totalAmountPlusDebt: totalAmount,
+                howPaid: 'Cuenta Corriente',
+                operation,        
+            });
+        };
     });
 
+    let customerCreditPivot, amountCreditPivot;
     ipcMain.on('select-customer-whopays', (e, args) => {
        
         let customer;
@@ -195,7 +264,6 @@ module.exports = ({
         if(customerConfirmation == 1){
             customerList.close();
             const paymentWindow = returnPaymentWindow();
-
             const sellConfirmation = dialog.showMessageBoxSync(paymentWindow, {
                 title: `Cliente: ${customer.id} ${customer.name}`,
                 message: `Monto: $ ${args.totalAmount}. 
@@ -208,24 +276,33 @@ module.exports = ({
                 //confirmar venta function, update deuda, update stock, update todo
                 paymentWindow.close();
                 storeCustomers.addToDebt(customer.id, args.totalAmount);
-                mainWindow.webContents.send('get-sells-details');
-                ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
-                    const emplooy = {id: 1, name: 'Administrador'};
-                    storeSells.addSell({
-                        amount: args.totalAmountPlusDebt,
-                        branch: 'Principal', //Modificar cuando se hagan las sesiones.
-                        emplooy, //Modificar cuando se hagan las sesiones.
-                        customer: {name: customer.name, id: customer.id},
-                        howPaid: args.howPaid,
-                        details: sessionStorage,
-                        priceList,
-                    });
-                    mainWindow.webContents.send('clear-product-list');
-                    
-                });
-                
+                mainWindow.webContents.send('get-sells-details-credit');
+                amountCreditPivot = args.totalAmountPlusDebt;
+                customerCreditPivot = customer;
             };
         }
+        
+    });
+
+    ipcMain.on('get-sells-details-credit', (e, {sessionStorage, priceList}) => {
+        const totalAmount = amountCreditPivot;
+        const customer = customerCreditPivot;
+        delete amountCreditPivot;
+        delete customerCreditPivot;
+        const branch = configs.getBranchDataFromConfig();
+        const emplooy = {id: 1, name: 'Administrador'};
+        storeSells.addSell({
+            amount: totalAmount,
+            branch: branch.id, //Modificar cuando se hagan las sesiones.
+            emplooy, //Modificar cuando se hagan las sesiones.
+            customer: {name: customer.name, id: customer.id},
+            howPaid: 'Cuenta Corriente',
+            howMuchPaid: 0,
+            details: sessionStorage,
+            priceList,
+        });
+        const mainWindow = returnMainWindow();
+        mainWindow.webContents.send('clear-product-list');
         
     });
 
@@ -259,6 +336,7 @@ module.exports = ({
         return storeOrders.getAllOrders();
     });
 
+    let customerOrderPivot, amountOrderPivot = 0;
     ipcMain.on('select-customer-for-order', (e, {id, totalAmount}) => {
         let customer;
         if(id != null && id != undefined){
@@ -288,23 +366,30 @@ module.exports = ({
                 const mainWindow = returnMainWindow();
                 //confirmar venta function, update deuda, update stock, update todo
                 paymentWindow.close();
-                mainWindow.webContents.send('get-sells-details');
-                ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
-                    storeOrders.addOrder({
-                        amount: totalAmount,
-                        branch: 'Principal', //Modificar cuando se hagan las sesiones.
-                        emplooy: {id: 1, name: 'Administrador'}, //Modificar cuando se hagan las sesiones.
-                        customer: {id: customer.id, name: customer.name},
-                        details: sessionStorage,
-                        priceList,
-                    });
-                    mainWindow.webContents.send('clear-product-list');
-                    
-                });
-                
+                customerOrderPivot = customer;
+                amountOrderPivot = totalAmount;
+                mainWindow.webContents.send('get-sells-details-order');
             };
         }
         
+    });
+
+    ipcMain.on('get-sells-details-order', (e, {sessionStorage, priceList}) => {
+        const branch = configs.getBranchDataFromConfig();
+        const totalAmount = amountOrderPivot;
+        delete amountOrderPivot;
+        const customer = customerOrderPivot;
+        delete customerOrderPivot;
+        storeOrders.addOrder({
+            amount: totalAmount,
+            branch: branch.id, //Modificar cuando se hagan las sesiones.
+            emplooy: {id: 1, name: 'Administrador'}, //Modificar cuando se hagan las sesiones.
+            customer: {id: customer.id, name: customer.name},
+            details: sessionStorage,
+            priceList,
+        });
+        const mainWindow = returnMainWindow();
+        mainWindow.webContents.send('clear-product-list');
     });
 
     ipcMain.handle('delete-sell', (e, id) => {
@@ -333,7 +418,7 @@ module.exports = ({
             const order = storeOrders.getOrder(id);
             const answer = dialog.showMessageBoxSync(ordersWindow, {
                 title: `Eliminar pedido N ${order.id}`,
-                message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer}`,
+                message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer.name}`,
                 type: 'question',
                 buttons: ['Cancelar', 'Confirmar'],
             });
@@ -344,6 +429,20 @@ module.exports = ({
             } else {
                 return false;
             }
+        }
+    });
+
+    ipcMain.on('delete-order', (e, id) => {
+        if(id){
+            const ordersWindow = returnOrdersWindow();
+            const order = storeOrders.getOrder(id);
+            const answer = dialog.showMessageBoxSync(ordersWindow, {
+                title: `Pedido N ${order.id}`,
+                message: `Pedido concretado como venta. Cliente: ${order.customer.name}`,
+                type: 'info',
+                buttons: ['Cerrar'],
+            });
+            storeOrders.deleteOrder(id);
         }
     });
 
@@ -405,6 +504,145 @@ module.exports = ({
     ipcMain.handle('delete-sale', (e, idSale) => {
         const answer = storeSales.deleteSale(idSale);
         return answer;
+    });
+
+    let detailsPivot;
+    ipcMain.on('add-sell-from-order', (e, idOrder) => {
+        const order = storeOrders.getOrder(idOrder);
+        const ordersWindow = returnOrdersWindow();
+        const answer = dialog.showMessageBoxSync(ordersWindow, {
+            title: `Confirmar Venta por Pedido N ${order.id}`,
+            message: `Avanzar a zona de pagos? Cliente: ${order.customer.name}`,
+            buttons: ['Confirmar', 'Cancelar'],
+        });
+        if(answer == 0){
+            let totalAmount = 0;
+            const articlesQuantity = order.details.length;
+            for (const detail of order.details) {
+                const product = storeProducts.getProduct(detail.idProduct);
+                if(order.priceList == 'public'){
+                    totalAmount += product.unitPrice;
+                } else {
+                    totalAmount += product.wholesalerPrice;
+                };
+            };
+            detailsPivot = order.details;
+            createPayOrderWindow({totalAmount, articlesQuantity, priceList: order.priceList, idCustomer: order.customer.id});
+        };
+    });
+
+    ipcMain.handle('get-order-details', () => {
+        const details = detailsPivot;
+        delete detailsPivot;
+        return details;
+    });
+
+    ipcMain.on('send-details-order-incompleted', (e, {sessionStorage, priceList, totalAmount, debt, idCustomer, invoicing}) => {
+        const customer = storeCustomers.getCustomer(idCustomer);
+        const branch = configs.getBranchDataFromConfig();
+        const emplooy = {id: 1, name: 'Administrador'};
+        if(invoicing == 1){
+
+        } else {
+            const cash = totalAmount - debt;
+            const payOrderWindow = returnPayOrdersWindow();
+            const answer = dialog.showMessageBoxSync(payOrderWindow, {
+                title: `Realizar Venta desde Pedido`,
+                message: `Cliente: ${customer.name}.
+                Monto: $ ${totalAmount}.
+                Paga con $ ${cash.toFixed(2)}.
+                Debe: $ ${debt}. Agregar restante a CUENTA CORRIENTE?.
+                `,
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(answer == 0){
+                storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
+                storeCustomers.addToDebt(idCustomer, debt);
+                storeSells.addSell({
+                    amount: totalAmount,
+                    branch: branch.id, //Modificar cuando se hagan las sesiones.
+                    emplooy, //Modificar cuando se hagan las sesiones.
+                    customer: {name: customer.name, id: customer.id},
+                    howPaid: 'Contado/Cuenta Corriente',
+                    howMuchPaid: cash.toFixed(2),
+                    details: sessionStorage,
+                    priceList,
+                });
+
+                payOrderWindow.close();
+                const ordersWindow = returnOrdersWindow();
+                ordersWindow.webContents.send('confirm-order-sell');
+            };
+        };
+    });
+
+    ipcMain.on('send-details-order-cash', (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing, amountToBeReturned}) => {
+        const customer = storeCustomers.getCustomer(idCustomer);
+        const branch = configs.getBranchDataFromConfig();
+        const emplooy = {id: 1, name: 'Administrador'};
+        if(invoicing == 1){
+
+        } else {
+            const payOrderWindow = returnPayOrdersWindow();
+            const answer = dialog.showMessageBoxSync(payOrderWindow, {
+                title: `Realizar Venta desde Pedido`,
+                message: `Cliente: ${customer.name}.
+                Monto: $ ${totalAmount}.
+                Paga con $ ${totalAmount}.
+                Vuelto: $ ${amountToBeReturned}.`,
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(answer == 0){
+                storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
+                storeSells.addSell({
+                    amount: totalAmount,
+                    branch: branch.id, //Modificar cuando se hagan las sesiones.
+                    emplooy, //Modificar cuando se hagan las sesiones.
+                    customer: {name: customer.name, id: customer.id},
+                    howPaid: 'Efectivo',
+                    howMuchPaid: totalAmount,
+                    details: sessionStorage,
+                    priceList,
+                });
+                
+                payOrderWindow.close();
+                const ordersWindow = returnOrdersWindow();
+                ordersWindow.webContents.send('confirm-order-sell');
+            };
+        };
+    });
+
+
+    ipcMain.on('send-details-order-credit', (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing}) => {
+        const customer = storeCustomers.getCustomer(idCustomer);
+        const branch = configs.getBranchDataFromConfig();
+        const emplooy = {id: 1, name: 'Administrador'};
+        if(invoicing == 1){
+
+        } else {
+            const payOrderWindow = returnPayOrdersWindow();
+            const answer = dialog.showMessageBoxSync(payOrderWindow, {
+                title: `Agregar a CUENTA CORRIENTE`,
+                message: `Cliente: ${customer.name}`,
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(answer == 0){
+                storeSells.addSell({
+                    amount: totalAmount,
+                    branch: branch.id, //Modificar cuando se hagan las sesiones.
+                    emplooy, //Modificar cuando se hagan las sesiones.
+                    customer: {name: customer.name, id: customer.id},
+                    howPaid: 'Cuenta Corriente',
+                    howMuchPaid: 0,
+                    details: sessionStorage,
+                    priceList,
+                });
+                
+                payOrderWindow.close();
+                const ordersWindow = returnOrdersWindow();
+                ordersWindow.webContents.send('confirm-order-sell');
+            };
+        };
     });
 
 };

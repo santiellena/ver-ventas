@@ -163,6 +163,7 @@ function addOrder ({
 function deleteOrder (id) {
     if(id){
         delete orders[id];
+        return id;
     }
 }
 

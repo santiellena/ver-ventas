@@ -8,6 +8,8 @@ function selectCustomer (id) {
                 ipcRenderer.send('select-customer-whopays', {id, totalAmount, totalAmountPlusDebt, howPaid});  
             } else if (operation == 'order'){
                 ipcRenderer.send('select-customer-for-order', {id, totalAmount});
+            } else if(operation == 'pay-order'){
+                ipcRenderer.send('select-customer-whopays-order', {id, totalAmount, totalAmountPlusDebt, howPaid});  
             };
         };
 };

@@ -13,6 +13,7 @@ const menuInvoicing = joi.number().integer().max(1);
 const username = joi.string().max(15);
 const password = joi.string().max(15);
 const branches = joi.array().min(1);
+const token = joi.any();
 
 const getUserSchema = joi.object({
     id: id.required(),
@@ -47,8 +48,13 @@ const updateUserSchema = joi.object({
     branches,
 });
 
+const tokenSchema = joi.object({
+    token: token.required(),
+});
+
 module.exports = {
     getUserSchema,
     updateUserSchema,
     createUserSchema,
+    tokenSchema,
 };

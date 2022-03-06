@@ -3,6 +3,7 @@ const response = require('../../network/response');
 const { getEmplooySchema, updateEmploySchema, createEmplooySchema } = require('../../utils/schemas/emplooy.schema');
 const validator = require('../../utils/middlewares/validator');
 const controller = require('./controller');
+const checkAllow = require('../../utils/middlewares/chechAllow');
 
 router.get('/', (req, res, next) => {
     controller.getAll()

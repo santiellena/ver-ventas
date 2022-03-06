@@ -21,14 +21,14 @@ const wrapErrors = (err, req, res, next) => {
 const errors = (err, req, res, next) => {
     const { output: {statusCode, payload} } = err;
     const message = withErrorStack(payload, err.stack);
-    response.error(req, res, message, statusCode);
+    response.error(req, res, message, 200);
 };
 
 const notFound = (req, res) => {
     const { output: { statusCode, payload }
     } = boom.notFound();
   
-    response.error(req, res, payload, statusCode);
+    response.error(req, res, {payload, message: {statusCode,}}, 200);
 };
 
 function ormErrorHandler(err, req, res, next) {
@@ -38,7 +38,7 @@ function ormErrorHandler(err, req, res, next) {
             errors: err.errors,
             statusCode: 409,
         };
-        response.error(req, res, message, 409);
+        response.error(req, res, {message}, 200);
     }
     next(err);
 }
