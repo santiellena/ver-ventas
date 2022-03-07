@@ -25,10 +25,17 @@ router.post('/', validator(createProductSchema, 'body'), (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.patch('/:id', validator(getProductSchema, 'paramas'), validator(updateProductSchema, 'body'), (req, res, next) => {
+router.patch('/:id', validator(getProductSchema, 'params'), validator(updateProductSchema, 'body'), (req, res, next) => {
     const { id } = req.params;
     const changes = req.body;
     controller.update(id, changes)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
+router.put('/sale/:id', validator(getProductSchema, 'params'), (req, res, next) => {
+    const { id } = req.params;
+    controller.updateOnSale(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });

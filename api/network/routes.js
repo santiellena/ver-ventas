@@ -12,6 +12,7 @@ const locationExposition = require('../components/locationExposition/network');
 const customers = require('../components/customers/network');
 const suppliers = require('../components/suppliers/network');
 const products = require('../components/products/network');
+const buys = require('../components/buys/network');
 const { notFound } = require('../utils/errors');
 
 module.exports = (app) => {
@@ -29,5 +30,6 @@ module.exports = (app) => {
     app.use('/api/customer', customers);
     app.use('/api/supplier', suppliers);
     app.use('/api/product', products);
+    app.use('/api/buy', buys);
     app.use(notFound);
 };

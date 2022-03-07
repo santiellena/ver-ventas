@@ -21,10 +21,17 @@ const remove = async (id) => {
     return await store.remove(id);
 };
 
+const updateOnSale = async (id) => {
+    const product = store.getOne(id);
+    if(product.onSale == 0)return await store.update(id, {onSale: 1})
+    else return await store.update(id, {onSale: 0});
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    updateOnSale,
 };

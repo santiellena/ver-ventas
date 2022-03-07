@@ -2,6 +2,11 @@ const storeDepartments = require('../departments/store');
 const storeLocations = require('../locations/store');
 const StoreUnitMeasure = require('../unitMeasures/store');
 
+const config = require('../../config/config');
+const axios = require('axios');
+const { getUrl }= config;
+const { getSessionToken } = require('../../config/auth');
+
 const products = {
     1: {
         id: 1,
@@ -31,46 +36,57 @@ const products = {
     },
 }
 
-function getProduct (code) {
-    if(products[code] != null && products[code] != undefined){
-        const product = products[code];
-        return product;
-    } else {
+async function getProduct (id) {
+    if(id){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/product/${id}`,
+            Headers: `Bearer ${await getSessionToken()}`,       
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
+};
+
+async function getAllProducts () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/product`,
+        Headers: `Bearer ${await getSessionToken()}`,       
+    });
+    if(response.data.message){
         return null;
-    }
+    } else return response.data;
 };
 
-function getAllProducts () {
-    return products
-
+async function checkExistance (id) {
+    if(id){
+        const product = await getProduct(id);
+        if(product){
+            return true;
+        } else return false;
+    } else return null;
 };
 
-function checkExistance (id) {
-    if( products[id] == undefined || products[id] == null ){
-
-        return false;
-    } else {
-        return true;
-    }
-};
-
-function updateStockAndPrices (details) {
+async function updateStockAndPrices (details) {
+    // [ {quantity: '123', unitPrice: '123', price: '123', wholesalerPrice: '123'} ];
     if(details){
-        for (const detail of details) {
-            const quantity = parseFloat(detail.quantity);
-            const unitPrice = parseFloat(detail.unitPrice);
-            const buyPrice = parseFloat(detail.price)
-            const wholesalerPrice = parseFloat(detail.wholesalerPrice);
-
-            products[detail.product].stock += quantity;
-            products[detail.product].unitPrice = unitPrice;
-            products[detail.product].wholesalerPrice = wholesalerPrice;
-            products[detail.product].buyPrice = buyPrice;
-        };
-    }
+        const response = await axios({
+            method: 'PATCH',
+            url: `${getUrl()}/api/product`,
+            Headers: `Bearer ${await getSessionToken()}`,  
+            data: {
+                details,
+            },
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
 };
 
-function addProduct ({
+async function addProduct ({
     id,
     description,
     stock,
@@ -91,8 +107,11 @@ function addProduct ({
         department,
         unitMeasure){
             const quantity = parseFloat(stock);
-            if(products[id] == undefined){
-                return products[id] = {
+            const response = await axios({
+                method: 'POST',
+                url: `${getUrl()}/api/product`,
+                Headers: `Bearer ${await getSessionToken()}`, 
+                data: {
                     id,
                     description,
                     unitPrice,
@@ -103,26 +122,39 @@ function addProduct ({
                     stock: quantity,
                     buyPrice,
                     onSale: 0,
-                };
-            }
-        }
+                }
+            });
+            if(response.data.message) return null
+            else return response.data;
+        };
 };
 
-function deleteProduct (id) {
-    if(products[id] == undefined){
-        return;
-    } else {
-        delete products[id];
-    };
+async function deleteProduct (id) {
+    if(id){
+        const response = await axios({
+            method: 'DELETE',
+            url: `${getUrl()}/api/product/${id}`,
+            Headers: `Bearer ${await getSessionToken()}`,       
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
 };
 
-function updateStockFormSell (id, minusStock) {
-    if(products[id] != undefined) {
-        products[id].stock = products[id].stock - minusStock;
-    };
+async function updateStockFromSell (id, minusStock) {
+    if(id && minusStock){
+        const response = await axios({
+            method: 'PUT',
+            url: `${getUrl()}/api/product/${id}?minus=${minusStock}`,
+            Headers: `Bearer ${await getSessionToken()}`,
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function editProduct ({
+async function editProduct ({
     id,
     description,
     buyPrice,
@@ -135,36 +167,41 @@ function editProduct ({
     unitMeasureId,
 }) {
     if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && departmentId && locationShowId && locationStoreId && unitMeasureId) {
-        const department = storeDepartments.getDepartment(departmentId).description;
-        const locationShow = storeLocations.getLocationShow(locationShowId).description;
-        const locationStore = storeLocations.getLocationStore(locationStoreId).description;
-        const location = [locationStore, locationShow];
-        const unitMeasure = StoreUnitMeasure.getMeasure(unitMeasureId).longDescription;
-        
-        if(products[id] != undefined){
-            return products[id] = {
-                id: parseInt(id),
+        const response = await axios({
+            method: 'PATCH',
+            url: `${getUrl()}/api/product/${id}`,
+            Headers: `Bearer ${await getSessionToken()}`,
+            data: {
                 description,
-                buyPrice: parseFloat(buyPrice),
-                wholesalerPrice: parseFloat(wholesalerPrice),
-                unitPrice: parseFloat(unitPrice),
-                stock: parseFloat(stock),
-                department,
-                location,
-                unitMeasure,
+                buyPrice,
+                wholesalerPrice,
+                unitPrice,
+                stock,
+                idDepartment: departmentId,
+                idStore: locationStoreId,
+                idExposition: locationShowId,
+                idUnitMeasure: unitMeasureId,
                 onSale: 0,
-            };
-        };
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
     };
 };
 
-function changeSaleStatus (id) {
-    if(id && products[id] != undefined) {
-        products[id].onSale == 0 ? products[id].onSale = 1 : products[id].onSale = 0;
-    };
+async function changeSaleStatus (id) {
+    if(id){
+        const response = await axios({
+            method: 'PATCH',
+            url: `${getUrl()}/api/product/sale/${id}`,
+            Headers: `Bearer ${await getSessionToken()}`,         
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function getProductsMissing () {
+async function getProductsMissing () {
     const allProducts = Object.values(products);
     const missing = [];
     for (const product of allProducts) {
@@ -186,7 +223,7 @@ module.exports = {
     getAllProducts,
     getProductsMissing,
     updateStockAndPrices,
-    updateStockFormSell,
+    updateStockFromSell,
     addProduct,
     checkExistance,
     deleteProduct,
