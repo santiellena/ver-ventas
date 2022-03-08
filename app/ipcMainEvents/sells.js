@@ -60,8 +60,8 @@ module.exports = ({
         
     });
 
-    ipcMain.on('load-search-products-window', () => {
-        const products = storeProducts.getAllProducts();
+    ipcMain.on('load-search-products-window', async () => {
+        const products = await storeProducts.getAllProducts();
         createSearchProductsWindow({products});
     });
 
@@ -193,8 +193,8 @@ module.exports = ({
         mainWindow.webContents.send('clear-product-list');
     });
 
-    ipcMain.handle('search-product-byid', (e, id) => {
-        const product = storeProducts.getProduct(id);
+    ipcMain.handle('search-product-byid', async (e, id) => {
+        const product = await storeProducts.getProduct(id);
         if(product == null){
             return 'Producto no encontrado. F10-Buscar'
         }
@@ -464,7 +464,7 @@ module.exports = ({
     });
 
     let newSalePivot
-    ipcMain.handle('add-sale', (e, {
+    ipcMain.handle('add-sale', async (e, {
         idProduct,
         discount,
         fromDate,
@@ -483,7 +483,7 @@ module.exports = ({
             newSalePivot = newSale;
 
             if(newSale.productChange == 1){
-                storeProducts.changeSaleStatus(newSale.idProduct);
+                await storeProducts.changeSaleStatus(newSale.idProduct);
             };
 
             return 1;
@@ -492,11 +492,11 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('get-new-sale', () => {
+    ipcMain.handle('get-new-sale', async () => {
         const sale = newSalePivot;
         delete newSalePivot;
 
-        const product = storeProducts.getProduct(sale.idProduct);
+        const product = await storeProducts.getProduct(sale.idProduct);
         sale.product = product;
         return sale;
     });
@@ -507,7 +507,7 @@ module.exports = ({
     });
 
     let detailsPivot;
-    ipcMain.on('add-sell-from-order', (e, idOrder) => {
+    ipcMain.on('add-sell-from-order', async (e, idOrder) => {
         const order = storeOrders.getOrder(idOrder);
         const ordersWindow = returnOrdersWindow();
         const answer = dialog.showMessageBoxSync(ordersWindow, {
@@ -519,12 +519,14 @@ module.exports = ({
             let totalAmount = 0;
             const articlesQuantity = order.details.length;
             for (const detail of order.details) {
-                const product = storeProducts.getProduct(detail.idProduct);
+                new Promise(async (a, b) => {
+                    const product = await storeProducts.getProduct(detail.idProduct);
                 if(order.priceList == 'public'){
                     totalAmount += product.unitPrice;
                 } else {
                     totalAmount += product.wholesalerPrice;
                 };
+                });
             };
             detailsPivot = order.details;
             createPayOrderWindow({totalAmount, articlesQuantity, priceList: order.priceList, idCustomer: order.customer.id});

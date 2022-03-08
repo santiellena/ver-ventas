@@ -9,6 +9,23 @@ const getOne = async (id) => {
     return await store.getOne(id);
 };
 
+const getMissing = async () => {
+    const allProducts = store.getAll();
+    const missing = [];
+    for (const product of allProducts) {
+        console.log(product);
+        if(product.stock < product.stockMin){
+            missing.push(product);
+        };  
+    };
+
+    if(missing.length == 0){
+        throw boom.notFound();
+    } else {
+        return missing;
+    };
+};
+
 const create = async (data) => {
     return await store.create(data);
 };
@@ -27,11 +44,20 @@ const updateOnSale = async (id) => {
     else return await store.update(id, {onSale: 0});
 };
 
+const updateFromSell = async (id, minus) => {
+    const product = await store.getOne(id);
+    const minusStock = parseFloat(minus);
+    const newStock = product.stock - minusStock;
+    return await store.update(id, {stock: newStock});
+};
+
 module.exports = {
     getAll,
     getOne,
+    getMissing,
     create,
     update,
-    remove,
     updateOnSale,
+    updateFromSell,
+    remove,
 };

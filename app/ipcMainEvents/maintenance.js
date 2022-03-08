@@ -262,12 +262,15 @@ module.exports = ({
   ipcMain.on("load-users-window", async () => {
     const users = await storeUsers.getAllUsers();
     const iterable = Object.values(users);
-    const withbranch = iterable.map((user) => {
+    const withbranch = iterable.map(async (user) => {
       let branchName = "";
       for (let i = 0; i < user.branches.length; i++) {
-        const branch = await storeMaintenance.getBranch(user.branches[i]);
+        new Promise(async (resolve, reject) => {
+          const branch = await storeMaintenance.getBranch(user.branches[i]);
         if (i == 0) branchName += `${branch.name}`;
         else branchName += `, ${branch.name}`;
+        });
+        
       }
 
       const emplooy = await storeEmployees.getEmplooy(user.idEmplooy);

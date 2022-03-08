@@ -5,27 +5,33 @@ const { getProductSchema, createProductSchema, updateProductSchema, deleteProduc
 const controller = require('./controller');
 const checkAllow = require('../../utils/middlewares/chechAllow');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAllow(['menu-stock']), (req, res, next) => {
     controller.getAll()
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
 
-router.get('/:id', validator(getProductSchema, 'params'), (req, res, next) => {
-    const { id } = req.params;
+router.get('/missing/', checkAllow(['menu-stock']), (req, res, next) => {
+    controller.getMissing()
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
 
+router.get('/:id', validator(getProductSchema, 'params'), checkAllow(['menu-stock']), (req, res, next) => {
+    const { id } = req.params;
     controller.getOne(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
 
-router.post('/', validator(createProductSchema, 'body'), (req, res, next) => {
+
+router.post('/', validator(createProductSchema, 'body'), checkAllow(['menu-stock']), (req, res, next) => {
     controller.create(req.body)
     .then(data => response.success(req, res, data, 201))
     .catch(err => next(err));
 });
 
-router.patch('/:id', validator(getProductSchema, 'params'), validator(updateProductSchema, 'body'), (req, res, next) => {
+router.patch('/:id', checkAllow(['menu-stock']), validator(getProductSchema, 'params'), validator(updateProductSchema, 'body'), (req, res, next) => {
     const { id } = req.params;
     const changes = req.body;
     controller.update(id, changes)
@@ -33,14 +39,22 @@ router.patch('/:id', validator(getProductSchema, 'params'), validator(updateProd
     .catch(err => next(err));
 });
 
-router.put('/sale/:id', validator(getProductSchema, 'params'), (req, res, next) => {
+router.put('/sale/:id', checkAllow(['menu-stock']), validator(getProductSchema, 'params'), (req, res, next) => {
     const { id } = req.params;
     controller.updateOnSale(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
 
-router.delete('/:id', validator(deleteProductSchema, 'params'), (req, res, next) => {
+router.put('/sell/:id', checkAllow(['menu-stock']), validator(getProductSchema, 'params'), (req, res, next) => {
+    const { id } = req.params;
+    const { minus } = req.query;
+    controller.updateFromSell(id, minus)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
+router.delete('/:id', checkAllow(['menu-stock']), validator(deleteProductSchema, 'params'), (req, res, next) => {
     const { id } = req.params;   
     controller.remove(id)
     .then(data => response.success(req, res, data, 200))

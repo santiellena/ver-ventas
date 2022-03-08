@@ -11,7 +11,9 @@ async function getAllBuys(){
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/buy`,
-        Headers: `Bearer ${await getSessionToken()}`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
     });
     if(response.data.message){
         return null;
@@ -25,7 +27,9 @@ async function getBuy(id){
         const response = await axios({
             method: 'GET',
             url: `${getUrl()}/api/buy/${id}`,
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;
@@ -38,7 +42,9 @@ async function getBuysByDate(from, to){
         const response = await axios({
             method: 'GET',
             url: `${getUrl()}/api/buy/date?from=${from}&to=${to}`  ,
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;
@@ -75,7 +81,9 @@ async function addBuy({
         const response = await axios({
             method: 'POST',
             url: `${getUrl()}/api/buy`,
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
             data: {
                 idEmplooy: emplooy.id,
                 idBranch: branch.id,
@@ -97,7 +105,9 @@ async function deleteBuy(id){
         const response = await axios({
             method: 'DELETE',
             url: `${getUrl()}/api/buy/id`,
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;

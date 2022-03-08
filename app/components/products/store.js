@@ -41,7 +41,9 @@ async function getProduct (id) {
         const response = await axios({
             method: 'GET',
             url: `${getUrl()}/api/product/${id}`,
-            Headers: `Bearer ${await getSessionToken()}`,       
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;
@@ -53,7 +55,9 @@ async function getAllProducts () {
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/product`,
-        Headers: `Bearer ${await getSessionToken()}`,       
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,   
+        },    
     });
     if(response.data.message){
         return null;
@@ -75,7 +79,9 @@ async function updateStockAndPrices (details) {
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/product`,
-            Headers: `Bearer ${await getSessionToken()}`,  
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },  
             data: {
                 details,
             },
@@ -110,7 +116,9 @@ async function addProduct ({
             const response = await axios({
                 method: 'POST',
                 url: `${getUrl()}/api/product`,
-                Headers: `Bearer ${await getSessionToken()}`, 
+                headers: {
+                    authorization: `Bearer ${await getSessionToken()}`,   
+                }, 
                 data: {
                     id,
                     description,
@@ -134,7 +142,9 @@ async function deleteProduct (id) {
         const response = await axios({
             method: 'DELETE',
             url: `${getUrl()}/api/product/${id}`,
-            Headers: `Bearer ${await getSessionToken()}`,       
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },       
         });
         if(response.data.message){
             return null;
@@ -146,8 +156,10 @@ async function updateStockFromSell (id, minusStock) {
     if(id && minusStock){
         const response = await axios({
             method: 'PUT',
-            url: `${getUrl()}/api/product/${id}?minus=${minusStock}`,
-            Headers: `Bearer ${await getSessionToken()}`,
+            url: `${getUrl()}/api/product/sell/${id}?minus=${minusStock}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message) return null
         else return response.data;
@@ -170,7 +182,9 @@ async function editProduct ({
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/product/${id}`,
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
             data: {
                 description,
                 buyPrice,
@@ -194,7 +208,9 @@ async function changeSaleStatus (id) {
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/product/sale/${id}`,
-            Headers: `Bearer ${await getSessionToken()}`,         
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },         
         });
         if(response.data.message) return null
         else return response.data;
@@ -202,20 +218,15 @@ async function changeSaleStatus (id) {
 };
 
 async function getProductsMissing () {
-    const allProducts = Object.values(products);
-    const missing = [];
-    for (const product of allProducts) {
-        console.log(product);
-        if(product.stock < product.stockMin){
-            missing.push(product);
-        };  
-    };
-
-    if(missing.length == 0){
-        return null;
-    } else {
-        return missing;
-    };
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/product/missing/`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
 module.exports = {

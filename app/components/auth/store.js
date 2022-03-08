@@ -18,7 +18,9 @@ async function login (username, password) {
 async function getUserData(token) {
             const response = await axios({
                 url: `${getUrl()}/api/auth/data/user`,
-                Headers: `Bearer ${token}`,
+                headers: {
+                    authorization: `Bearer ${token}`,   
+                },
                 data: {
                     token,
                 },

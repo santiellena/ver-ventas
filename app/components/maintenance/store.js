@@ -7,7 +7,9 @@ async function getGeneralInfo () {
     const  generalInfo = await axios({
         method: 'GET',
         url: `${getUrl()}/api/global`,
-        Headers: `Bearer ${await getSessionToken()}`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
     });
     return generalInfo.data[0];
 };
@@ -16,7 +18,9 @@ async function getTaxPercentage () {
     const  generalInfo = await axios({
         method: 'GET',
         url: `${getUrl()}/api/global`,
-        Headers: `Bearer ${await getSessionToken()}`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
     });
     return generalInfo.data[0].taxPercentage;
 };
@@ -27,6 +31,7 @@ async function updateGeneralInfo ({
     taxName,
     taxPercentage,
 }) {
+    const general = await getGeneralInfo();
     if(fantasyName == general.fantasyName && businessName == general.businessName && taxName == general.taxName && taxPercentage == general.taxPercentage){
         return null
     } else {
@@ -40,7 +45,9 @@ async function updateGeneralInfo ({
                 taxName,
                 taxPercentage: floatTax,
             },
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;
@@ -54,7 +61,9 @@ async function getAllBranches () {
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/branch`,
-        Headers: `Bearer ${await getSessionToken()}`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
     });
     if(response.data.message){
         return null;
@@ -67,7 +76,9 @@ async function getBranch(id) {
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/branch/${id}`,
-        Headers: `Bearer ${await getSessionToken()}`,
+        headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
     });
     if(response.data.message){
         return null;
@@ -84,7 +95,9 @@ async function getBranches (branchesIds) {
             data: {
                 branches: branchesIds,
             },
-            Headers: `Bearer ${await getSessionToken()}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
         });
         if(response.data.message){
             return null;
@@ -112,7 +125,9 @@ async function updateBranchInfo ({
                 const response = await axios({
                     method: 'PATCH',
                     url: `${getUrl()}/api/branch/${idBranch}`,
-                    Headers: `Bearer ${await getSessionToken()}`,
+                    headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
                     data: {
                         branchName,
                         cuit,
