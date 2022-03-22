@@ -1,57 +1,52 @@
+const dates = require('../../config/date');
+const config = require('../../config/config');
+const axios = require('axios');
+const { getSessionToken } = require('../../config/auth');
+
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
+
 const storeUsers = require('../users/store');
 
-const employees = {
-    1: {
-        id: 1,
-        name: 'Administrador',
-        lastname: 'Administrador',
-        docType: { id: 1, description: 'DNI' },
-        numDoc: 21314343,
-        dirStreet: 'LOM 123',
-        phoneNumber: 32314221,
-        email: 'admin@hotmail.com',
-        birthDate: '1990-12-05',
-    },
-    2: {
-        id: 2,
-        name: 'Aurelio',
-        lastname: 'Spencer',
-        docType: { id: 1, description: 'DNI' },
-        numDoc: 21445355,
-        dirStreet: 'Patria 2332',
-        phoneNumber: 124456544,
-        email: 'mschilli@aol.com',
-        birthDate: '1987-04-03',
-    },
-    3: {
-        id: 3,
-        name: 'Baudelio Teresita',
-        lastname: 'Matrone',
-        docType: { id: 1, description: 'DNI' },
-        numDoc: 1356773,
-        dirStreet: 'Patria 443',
-        phoneNumber: 993414221,
-        email: 'morain@optonline.net',
-        birthDate: '1999-09-09',
-    },
-    4: {
-        id: 4,
-        name: 'Felicia',
-        lastname: 'Key',
-        docType: { id: 1, description: 'DNI' },
-        numDoc: 55343322,
-        dirStreet: 'Patria 123',
-        phoneNumber: 2322314221,
-        email: 'mwitte@yahoo.com',
-        birthDate: '2000-10-13',
-    },
+async function getEmployees () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/emplooy`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
-function getEmployees () {
-    return employees;
+async function getEmplooy (id) {
+    if(id) {
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/emplooy/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function newEmplooy ({
+async function newEmplooy ({
     name,
     lastname,
     docType,
@@ -61,33 +56,30 @@ function newEmplooy ({
     email,
     birthDate,
 }) {
-    const iterable = Object.entries(getEmployees());
-    let newId = 0;
-    for (let i = 1; i < iterable.length + 1; i++) {
-        if(employees[i] == undefined){
-            newId = i;
-            break;
-        } else if(employees[i+1] == undefined){
-            newId = i+1;
-            break;
-        };
-    }; 
     if(name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate){
-        return employees[newId] = {
-            id: newId,
-            name, 
-            lastname,
-            docType,
-            numDoc,
-            dirStreet,
-            phoneNumber,
-            email,
-            birthDate,
-        };
-    };
+        const response = await axios({
+            method: 'POST',
+            url: `${getUrl()}/api/emplooy`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+            data: {
+                name, 
+                lastname,
+                idDocType: docType,
+                numDoc,
+                dirStreet,
+                phoneNumber,
+                email,
+                birthDate,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function updateEmplooy ({
+async function updateEmplooy ({
     id,
     name,
     lastname,
@@ -99,66 +91,70 @@ function updateEmplooy ({
     birthDate,
 }) {
     if(id && name && lastname && docType && numDoc && dirStreet && phoneNumber && email && birthDate ){
-        if(employees[id] != undefined){
-            if(id == employees[id].id && name == employees[id].name && lastname == employees[id].lastname && docType == employees[id].docType && numDoc == employees[id].numDoc && dirStreet == employees[id].dirStreet && phoneNumber == employees[id].phoneNumber && email == employees[id].email && birthDate == employees[id].birthDate  ){
-                return false;
-            } else {
-                return employees[id] = {
-                    id,
-                    name, 
-                    lastname,
-                    docType,
-                    numDoc,
-                    dirStreet,
-                    phoneNumber,
-                    email,
-                    birthDate,
-                };
-            };
-        } else return null;
+                const response = await axios({
+                    method: 'PATCH',
+                    url: `${getUrl()}/api/emplooy/${id}`,
+                    headers: {
+                        authorization: `Bearer ${await getSessionToken()}`,
+                    },
+                    data: {
+                        name, 
+                        lastname,
+                        idDocType: docType,
+                        numDoc,
+                        dirStreet,
+                        phoneNumber,
+                        email,
+                        birthDate,
+                    },
+                });
+                if(response.data.message) return null
+                else return response.data;
     } else return null;
 };
 
-function deleteEmplooy (id) {
-    if(id && employees[id] != undefined) {
-        delete employees[id];
-        return id;
-    };
+async function deleteEmplooy (id) {
+    if(id) {
+        const response = await axios({
+            method: 'DELETE',
+            url: `${getUrl()}/api/emplooy/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function getEmplooy (id) {
-    if(id && employees[id] != undefined) {
-        return employees[id];
-    };
-};
-
-function checkEmplooyId (id) {
-    console.log('STORE EMPLOYEES');
+async function checkEmplooyId (id) {
     if(id){
-        if(employees[id] != undefined){
-            return true;
-        } else return false;
+        const emplooy = await getEmplooy(id);
+        if(emplooy) return true
+        else return false;
     } else return false;
 };
 
-function getEmployeesToUser () {
-    const users = Object.values(storeUsers.getAllUsers());
+async function getEmployeesToUser () {
+    const users = await storeUsers.getAllUsers();
 
-    const blackList = users.map(user => {
-      return employees[user.idEmplooy];
+    const blackList = users.map(async user => {
+      return await getEmplooy(user.idEmplooy);
     });
-    const rightList = [];
-    Object.values(getEmployees()).map(emplooy => {
-        let flag = true;
-        for (const user of blackList) {
-            if(emplooy.id == user.id){
-                flag = false;
+    const employees = await getEmployees();
+    if(employees){
+        const rightList = employees.map(emplooy => {
+            let flag = true;
+            for (const user of blackList) {
+                if(emplooy.id == user.id){
+                    flag = false;
+                };
             };
-        };
-        if(flag) rightList.push(emplooy);
-    });
-
-    return rightList;
+            if(flag) return emplooy;
+        });
+    
+        return rightList;
+    };
 };
 
 module.exports = {

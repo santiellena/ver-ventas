@@ -1,8 +1,21 @@
 const config = require('../../config/config.js');
 const axios = require('axios');
-const { getUrl } = config;
 const { getSessionToken } = require('../../config/auth');
 const dates = require('../../config/date');
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
 
 async function getAllOrders() {
     const response = await axios({
@@ -48,7 +61,7 @@ async function getOrdersByDate(from, to){ // yyyy-mm-dd
     const toMonth = to.slice(5,7);
     const toDay = to.slice(8,10);
 
-    const ordersByDate = allOrders.map(e => {
+    const ordersByDate = allOrders.map(async e => {
         const orderYear = e.date.slice(0,4);
         const orderMonth = e.date.slice(5,7);
         const orderDay = e.date.slice(8,10);

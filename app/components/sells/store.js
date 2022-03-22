@@ -1,6 +1,5 @@
 const config = require("../../config/config");
 const axios = require("axios");
-const { getUrl } = config;
 const { getSessionToken } = require("../../config/auth");
 
 const dates = require('../../config/date');
@@ -8,6 +7,21 @@ const dates = require('../../config/date');
 const storeProducts = require('../products/store');
 const storeDepartments = require('../departments/store');
 const storeCustomers = require('../customers/store');
+
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
 
 async function getAllSells () {
     const response = await axios({
@@ -66,7 +80,7 @@ async function addSell ({
     if(amount, branch, customer, howPaid, details, priceList, emplooy, howMuchPaid) {
         const detailsForSell = [];
 
-        details.map(detail => {
+        details.map(async detail => {
             const id = parseInt(detail[0]);
             const minusStock = parseInt(detail[1]);
             await storeProducts.updateStockFromSell(id, minusStock);

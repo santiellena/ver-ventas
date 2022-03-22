@@ -21,6 +21,7 @@ const storeDocTypes = require("../components/docTypes/store");
 const storeEmployees = require("../components/employees/store");
 const storeUsers = require("../components/users/store");
 const storeUnitMeasures = require("../components/unitMeasures/store");
+const auth = require('../config/auth');
 
 const {
   getBranchDataFromConfig,
@@ -153,11 +154,10 @@ module.exports = ({
         password,
       }
     ) => {
-      const docType = await storeDocTypes.getDocType(docTypeId);
       const newEmplooy = await storeEmployees.newEmplooy({
         name,
         lastname,
-        docType,
+        docType: docTypeId,
         numDoc,
         email,
         dirStreet,
@@ -223,24 +223,19 @@ module.exports = ({
         dirStreet,
         phoneNumber,
         birthDate,
-        login,
-        password,
       }
     ) => {
-      const docType = await storeDocTypes.getDocType(docTypeId);
-      if (docType) {
+      
         const update = await storeEmployees.updateEmplooy({
           id,
           name,
           lastname,
-          docType,
+          docType: docTypeId,
           numDoc,
           email,
           dirStreet,
           phoneNumber,
           birthDate,
-          login,
-          password,
         });
 
         pivotEmplooyEdited = update;
@@ -249,7 +244,6 @@ module.exports = ({
         employeesWindow.webContents.send("load-edited-emplooy");
 
         return update;
-      } else return null;
     }
   );
 
@@ -320,7 +314,7 @@ module.exports = ({
       const user = await storeUsers.getUser(idUser);
       const editUserWindow = returnEditUserWindow();
 
-      const actualUserSession = { id: 1, name: "Administrador" }; // Modificar cuando se implementen sesiones
+      const actualUserSession = await auth.getUserSessionInfo(); // Modificar cuando se implementen sesiones
 
       if (actualUserSession.id == idUser) {
         dialog.showMessageBoxSync(editUserWindow, {

@@ -1,8 +1,20 @@
-const dates = require('../../config/date');
 const config = require('../../config/config');
 const axios = require('axios');
-const { getUrl }= config;
 const { getSessionToken } = require('../../config/auth');
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
 
 async function getCashRegister(id){
     const response = await axios({
@@ -52,7 +64,7 @@ async function substractToBox (idBox, idBranch, amount) {
     
 };  
 
-function addToBox (idBox, idBranch, amount) {
+async function addToBox (idBox, idBranch, amount) {
     if(idBranch == config.getBranchDataFromConfig().id){
         const amountFloat = parseFloat(amount);
         const sum = await getCashRegister(idBox).moneyAmount + amountFloat;

@@ -1,7 +1,20 @@
 const config = require('../../config/config');
 const axios = require('axios');
-const { getUrl }= config;
 const { getSessionToken } = require('../../config/auth');
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
 
 async function getMeasure (id) {
     if(id){

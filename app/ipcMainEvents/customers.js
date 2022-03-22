@@ -6,6 +6,8 @@ const storeDocTypes = require('../components/docTypes/store');
 const storeSells = require('../components/sells/store');
 const storeDebtPayments = require('../components/debtPayments/store');
 
+const auth = require('../config/auth');
+
 const { mainHandlebars,
         historyHandlebars,
         returnCustomersWindow,
@@ -104,13 +106,12 @@ module.exports = ({
             const dirProv = storeDirections.getProvince(province);
             const dirDepto = storeDirections.getDepartment(department);
             const dirCity = storeDirections.getCity(city);
-            const typeDoc = await storeDocTypes.getDocType(docType);
 
 
             const added = await storeCustomers.addCustomer({
                 id, 
                 name,
-                docType: typeDoc,
+                docType,
                 numDoc,
                 cuit,
                 email,
@@ -161,12 +162,11 @@ module.exports = ({
             const dirProv = storeDirections.getProvince(province);
             const dirDepto = storeDirections.getDepartment(department);
             const dirCity = storeDirections.getCity(city);
-            const typeDoc = await storeDocTypes.getDocType(docType);
 
             const editedCustomer = storeCustomers.editCustomer({
                 id,
                 name,
-                docType: typeDoc,
+                docType,
                 numDoc,
                 cuit,
                 email,
@@ -217,7 +217,7 @@ module.exports = ({
 
         if(response == 1){
             if(id){
-                storeCustomers.deleteCustomer(id);
+                await storeCustomers.deleteCustomer(id);
             };
     
             deletedPivot = id;
@@ -280,14 +280,13 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = {id: 1, name:'Administrador'};
-                const infoCustomer = {id: customer.id, name: customer.name};
+                const emplooy = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: infoCustomer,
-                    emplooy,
+                    customer: customer.id,
+                    emplooy: emplooy.idEmplooy,
                     howPaid: 'Contado',
                 });
 
@@ -315,14 +314,13 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = {id: 1, name:'Administrador'};
-                const infoCustomer = {id: customer.id, name: customer.name};
+                const emplooy = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: infoCustomer,
-                    emplooy,
+                    customer: customer.id,
+                    emplooy: emplooy.idEmplooy,
                     howPaid: 'Tarjeta',
                 });
 
@@ -350,14 +348,13 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = {id: 1, name:'Administrador'};
-                const infoCustomer = {id: customer.id, name: customer.name};
+                const emplooy = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: infoCustomer,
-                    emplooy,
+                    customer: customer.id,
+                    emplooy: emplooy.idEmplooy,
                     howPaid: 'Transferencia Bancaria',
                 });
 

@@ -2,19 +2,22 @@ const storeProducts = require('../products/store');
 
 const config = require('../../config/config.js');
 const axios = require('axios');
-const { getUrl } = config;
 const { getSessionToken } = require('../../config/auth');
 const dates = require('../../config/date');
 
-const sales = {
-    1: {
-        id: 1,
-        idProduct: 1,
-        fromDate: '2022/01/24',
-        toDate: '2022/01/31',
-        discount: 20,
-        productChange: 1,
-    },
+const fs = require('fs');
+
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
 };
 
 async function addSale ({

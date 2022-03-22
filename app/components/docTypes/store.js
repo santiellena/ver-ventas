@@ -29,7 +29,7 @@ async function getDocType (id) {
     } else return null;
 };
 
-function addDocType (newName) {
+async function addDocType (newName) {
     if(newName){
         const response = await axios({
             method: 'POST',
@@ -46,7 +46,7 @@ function addDocType (newName) {
     };
 };
 
-function deleteDocType (id) {
+async function deleteDocType (id) {
     if(id){
         const response = await axios({
             method: 'DELETE',

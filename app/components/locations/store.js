@@ -1,4 +1,3 @@
-const dates = require('../../config/date');
 const config = require('../../config/config');
 const axios = require('axios');
 const { getUrl }= config;
@@ -16,7 +15,7 @@ async function getAllLocationsStore () {
     else return response.data;
 };
 
-function getLocationStore (id) {
+async function getLocationStore (id) {
     if(id){
         const response = await axios({
             method: 'GET',
@@ -30,7 +29,7 @@ function getLocationStore (id) {
     } else return null;
 };
 
-function getLocationShow (id) {
+async function getLocationShow (id) {
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/location/exposition/${id}`,
@@ -42,7 +41,7 @@ function getLocationShow (id) {
     else return response.data;
 };
 
-function getAllLocationsShow () {
+async function getAllLocationsShow () {
     const response = await axios({
         method: 'GET',
         url: `${getUrl()}/api/location/exposition`,

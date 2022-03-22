@@ -1,52 +1,10 @@
-const actualDate = new Date();
-let month = '';
-    if((actualDate.getMonth()+1).toString().length == 1){
-        month = `0${actualDate.getMonth()+1}`;
-    } else {
-        month = actualDate.getMonth()+1;
-    };
-const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
+const config = require("../../config/config.js");
+const axios = require("axios");
+const { getUrl } = config;
+const { getSessionToken } = require("../../config/auth");
+const dates = require("../../config/date");
 
-const debtPayments = {
-    1: {
-        id: 1,
-        date,
-        emplooy: {id: 1, name:'Administrador'},
-        customer: {id: 2, name: 'Julian Paoloski'},
-        amount: 2200,
-        observation: 'Pago la madre',
-        howPaid: 'Contado',
-    },
-    2: {
-        id: 2,
-        date,
-        emplooy: {id: 1, name:'Administrador'},
-        customer: {id: 3, name: 'Ricardo Marquez'},
-        amount: 1500,
-        observation: 'Pago la hija',
-        howPaid: 'Transferencia',
-    },
-    3: {
-        id: 3,
-        date,
-        emplooy: {id: 1, name:'Administrador'},
-        customer: {id: 2, name: 'Julian Paoloski'},
-        amount: 1000,
-        observation: '',
-        howPaid: 'T. Crédito',
-    },
-    4: {
-        id: 4,
-        date,
-        emplooy: {id: 1, name:'Administrador'},
-        customer: {id: 1, name: 'Jorge Lintos'},
-        amount: 500,
-        observation: '',
-        howPaid: 'Contado',
-    },
-};
-
-function addPay ({
+async function addPay ({
     emplooy,
     customer,
     amount,
@@ -54,52 +12,39 @@ function addPay ({
     howPaid,
 }) {
     if(emplooy && customer && amount && observation && howPaid){
-        const iterable = Object.entries(debtPayments);
-        let id = 0;
-        for (let i = 1; i < iterable.length + 1; i++) {
-            if(debtPayments[i] == undefined){
-                id = i;
-                break;
-            } else if(debtPayments[i+1] == undefined){
-                id = i+1;
-                break;
-            };
-        };
+        const date = dates.actualDate();
 
-        const actualDate = new Date();
-        let month = '';
-    if((actualDate.getMonth()+1).toString().length == 1){
-        month = `0${actualDate.getMonth()+1}`;
-    } else {
-        month = actualDate.getMonth()+1;
-    };
-        const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
-
-        return debtPayments[id] = {
-            id,
-            emplooy,
-            customer,
-            amount,
-            observation,  
-            howPaid,
-            date,
-        };
+        const response = await axios({
+            method: 'POST',
+            url: `${getUrl()}/api/debt-payment`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+            data: {
+                idEmplooy: emplooy,
+                idCustomer: customer,
+                amount,
+                observation,  
+                howPaid,
+                date,  
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
     };
 };
 
-function getPaymentsByCustomer (idCustomer) {
+async function getPaymentsByCustomer (idCustomer) {
     if(idCustomer){
-        const payments = [];
-
-        const iterator = Object.entries(debtPayments);
-
-        iterator.map(e => {
-            if(e[1].customer.id == idCustomer){
-
-                payments.push(debtPayments[e[0]]);
-            };
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/customer/debt-payment/${idCustomer}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
         });
-        return payments;
+        if(response.data.message) return null
+        else return response.data;
     };
 };
 

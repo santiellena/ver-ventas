@@ -22,9 +22,13 @@ const debtPaidSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
     },
-    totalAmount: {
+    amount: {
         allowNull: false,
         type: DataTypes.DECIMAL(19,2),
+    },
+    date: {
+        allowNull: false,
+        type: DataTypes.STRING(10),
     },
     registerDate: {
         allowNull: false,
