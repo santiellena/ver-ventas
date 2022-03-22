@@ -1,11 +1,5 @@
 const storeProducts = require('../products/store');
 
-const config = require('../../config/config.js');
-const axios = require('axios');
-const { getUrl } = config;
-const { getSessionToken } = require('../../config/auth');
-const dates = require('../../config/date');
-
 const sales = {
     1: {
         id: 1,
@@ -17,7 +11,7 @@ const sales = {
     },
 };
 
-async function addSale ({
+function addSale ({
     idProduct,
     fromDate,
     toDate,
@@ -58,9 +52,17 @@ async function addSale ({
     };
 };
 
-async function getSaleByProduct (idProduct) {
-    const allSales = await getAllSales();
-    const date = dates.actualDate();
+function getSaleByProduct (idProduct) {
+    const allSales = Object.values(sales);
+    const actualDate = new Date();
+    let month = '';
+    if((actualDate.getMonth()+1).toString().length == 1){
+        month = `0${actualDate.getMonth()+1}`;
+    } else {
+        month = actualDate.getMonth()+1;
+    };
+    const date =  `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
+
     const actualYear = date.slice(0,4);
     const actualMonth = date.slice(5,7);
     const actualDay = date.slice(8,10);
@@ -78,54 +80,38 @@ async function getSaleByProduct (idProduct) {
                     if(actualDay >= fromDay && actualDay <= toDay){
                         
                         return sale;
-                    } await deleteSale(sale.id);
-                } await deleteSale(sale.id);
-            } else await deleteSale(sale.id);
+                    } deleteSale(sale.id);
+                } deleteSale(sale.id);
+            } else deleteSale(sale.id);
         };
     };
 
     return 0;
 };
 
-async function deleteSale (id) {
-    const sale = await getSale(id);
-    if(id && sale) {
-        await storeProducts.changeSaleStatus(sale.idProduct);
-        const response = await axios({
-            method: 'DELETE',
-            url: `${getUrl()}/api/sale/${id}`,
-            headers: {
-                authorization: `Bearer ${await getSessionToken()}`,
-            },
-        });
-        if(response.data == undefined) return 1
-        else if (response.data.message) return null
-        else return response.data;
-    } else return null;
+function deleteSale (id) {
+    if(sales[id] != undefined) {
+        storeProducts.changeSaleStatus(sales[id].idProduct);
+        delete sales[id];
+    };
+    if(sales[id] == undefined) return 1
+    else return null;
 };
 
-async function getAllSales () {
-    const response = await axios({
-        method: 'GET',
-        url: `${getUrl()}/api/sale`,
-        headers: {
-            authorization: `Bearer ${await getSessionToken()}`,
-        },
-    });
-    if(response.data.message) return null
-    else return response.data;
+function getAllSales () {
+    return sales;
 };
 
-async function getAllSalesWithProducts () {
-    const response = await axios({
-        method: 'GET',
-        url: `${getUrl()}/api/sale`,
-        headers: {
-            authorization: `Bearer ${await getSessionToken()}`,
-        },
+function getAllSalesWithProducts () {
+    const allSales = Object.values(sales);
+
+    const allSalesWithProduct = allSales.map(sale => {
+        const product = storeProducts.getProduct(sale.idProduct);
+        if(product) sale.product = product;
+        return sale;
     });
-    if(response.data.message) return null
-    else return response.data;
+
+    return allSalesWithProduct;
 };
 
 module.exports = { 

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "electron .",
     "watch": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/evm .",
-    "start": "electron .",
+    "start": "electron . ",
     "debug": "electron . --trace-deprecation",
     "inspect": "electron --inspect=5858 ."
   },
@@ -24,7 +24,7 @@
   "license": "ISC",
   "devDependencies": {
     "@ekoneko/evm": "^1.0.5",
-    "electron": "^15.3.0",
+    "electron": "^17.0.0",
     "nodemon": "^2.0.14"
   },
   "dependencies": {

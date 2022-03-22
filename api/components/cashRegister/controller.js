@@ -1,8 +1,8 @@
 const store = require('./store');
 const boom = require('@hapi/boom');
 
-const getAll = async () => {
-    return await store.getAll();
+const getAll = async (idBranch) => {
+    return await store.getAll(idBranch);
 };
 
 const getOne = async (id) => {
@@ -23,10 +23,15 @@ const remove = async (id) => {
     return await store.remove(id);
 };
 
+const getCashFlow = async (id) => {
+    return await store.getCashFlow(id);
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    getCashFlow,
 };

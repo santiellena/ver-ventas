@@ -1,6 +1,5 @@
 const { ipcMain, dialog } = require('electron');
 
-const storeDepartments = require('../components/departments/store');
 const storeSells = require('../components/sells/store');
 
 const { mainHandlebars,
@@ -27,7 +26,7 @@ module.exports = ({
         
     });
     
-    ipcMain.on('load-stats-page', () => {
+    ipcMain.on('load-stats-page', async () => {
         const mainWindow = returnMainWindow()
         if( mainWindow != null && mainWindow != undefined ) {
             const actualDate = new Date();
@@ -39,7 +38,7 @@ module.exports = ({
             };
             const fromDate =  `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
             const toDate = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}`;
-            const {departments, gains, amountOfSells} = storeSells.getGainsByDepartment(fromDate, toDate);
+            const {departments, gains, amountOfSells} = await storeSells.getGainsByDepartment(fromDate, toDate);
             let bestDepartment = {};
             let bet = 0;
             for (const dep of departments) {
@@ -53,10 +52,10 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('load-stats-change-date', (e, {fromDate, toDate}) => {
+    ipcMain.on('load-stats-change-date', async (e, {fromDate, toDate}) => {
         const mainWindow = returnMainWindow()
         if( mainWindow != null && mainWindow != undefined ) {
-            const {departments, gains, amountOfSells} = storeSells.getGainsByDepartment(fromDate, toDate);
+            const {departments, gains, amountOfSells} = await storeSells.getGainsByDepartment(fromDate, toDate);
             let bestDepartment = {};
             let bet = 0;
             for (const dep of departments) {

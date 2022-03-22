@@ -7,7 +7,8 @@ const storeSells = require('../components/sells/store');
 const storeMaintenance = require('../components/maintenance/store');
 const storeCashRegister = require('../components/cashRegister/store');
 const storeSales = require('../components/sales/store');
-const configs = require('../config/config');
+const auth = require('../config/auth');
+const configs = require('../config/config.js');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -34,20 +35,20 @@ module.exports = ({
     createPayOrderWindow,
 }) => {
 
-    ipcMain.on('open-sells-history', () => {
-        const sells = storeSells.getAllSells();
+    ipcMain.on('open-sells-history', async () => {
+        const sells = await storeSells.getAllSells();
         createSellsHistoryWindow({sells});
     });
 
-    ipcMain.handle('get-sell-detail', (e, id) => {
-        const sellDetail = storeSells.getSellDetail(id);
+    ipcMain.handle('get-sell-detail', async (e, id) => {
+        const sellDetail = await storeSells.getSellDetail(id);
         if(sellDetail){
             return sellDetail;
         };
     });
 
-    ipcMain.handle('search-sells-by-date', (e, {fromDate, toDate}) => {
-        const sellsByDate = storeSells.getSellsByDate(fromDate, toDate);
+    ipcMain.handle('search-sells-by-date', async (e, {fromDate, toDate}) => {
+        const sellsByDate = await storeSells.getSellsByDate(fromDate, toDate);
         return sellsByDate;
     });
 
@@ -66,7 +67,7 @@ module.exports = ({
     });
 
     let amountCashPivot = 0;
-    ipcMain.on('sell-cash-confirmation', (e, args) => {
+    ipcMain.on('sell-cash-confirmation', async (e, args) => {
         const paymentWindow = returnPaymentWindow();
         const { totalAmount, amountToBeReturned, howMuchCash, invoicing } = args;
         if(invoicing == 1){
@@ -91,7 +92,7 @@ module.exports = ({
             const branchConfig = configs.getBranchDataFromConfig();
             const boxConfig = configs.getCashRegisterId();
     
-            storeCashRegister.addToBox(boxConfig, branchConfig.id, totalAmount);
+            await storeCashRegister.addToBox(boxConfig, branchConfig.id, totalAmount);
             paymentWindow.close();
             const mainWindow = returnMainWindow();
             amountCashPivot = totalAmount;
@@ -100,12 +101,12 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('get-sells-details', (e, {sessionStorage, priceList}) => {
+    ipcMain.on('get-sells-details', async (e, {sessionStorage, priceList}) => {
         const totalAmount = amountCashPivot;
         delete amountCashPivot;
         const branchConfig = configs.getBranchDataFromConfig();
-        const emplooy = {id: 1, name: 'Administrador'};
-        const sell = storeSells.addSell({
+        const emplooy = await auth.getUserSessionInfo().emplooy;
+        const sell = await storeSells.addSell({
             amount: totalAmount,
             branch: branchConfig.id,
             emplooy, //Modificar cuando se hagan las sesiones.
@@ -119,7 +120,7 @@ module.exports = ({
         mainWindow.webContents.send('clear-product-list');
     });
 
-    ipcMain.on('sell-cash-incompleted', (e, {debt, totalAmount, invoicing}) => {
+    ipcMain.on('sell-cash-incompleted', async  (e, {debt, totalAmount, invoicing}) => {
         const paymentWindow = returnPaymentWindow();
         if(invoicing == 1){
             const response = dialog.showMessageBoxSync(paymentWindow, {
@@ -133,7 +134,7 @@ module.exports = ({
                 return
             };
         } else {
-            const customers = storeCustomers.getAllCustomers();
+            const customers = await storeCustomers.getAllCustomers();
             createCustomerListWindow({ totalAmount: debt, totalAmountPlusDebt: totalAmount, customers, howPaid: 'Contado/Cuenta Corriente' });
             const customerList = returnCustomerListWindow(); 
     
@@ -174,12 +175,12 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('get-sells-details-card', (e, {sessionStorage, priceList}) => {
+    ipcMain.on('get-sells-details-card', async (e, {sessionStorage, priceList}) => {
         const totalAmount = amountPivotCard;
         delete amountPivotCard;
-        const emplooy = {id: 1, name: 'Administrador'};
+        const emplooy = await auth.getUserSessionInfo().emplooy;
         const branch = configs.getBranchDataFromConfig();
-        storeSells.addSell({
+        await storeSells.addSell({
             amount: totalAmount,
             branch: branch.id,
             emplooy, //Modificar cuando se hagan las sesiones.
@@ -202,7 +203,7 @@ module.exports = ({
     });
 
     ipcMain.handle('get-tax-percentage', async  (e, args) => {
-        return await storeMaintenance.getTaxPercentage(configs.returnToken());
+        return await storeMaintenance.getTaxPercentage();
     });
 
     let idSellList;
@@ -220,8 +221,8 @@ module.exports = ({
         return id;
     });
 
-    ipcMain.on('load-customer-list', (e, {totalAmount, operation, invoicing}) => {
-        const customers = storeCustomers.getAllCustomers();
+    ipcMain.on('load-customer-list', async (e, {totalAmount, operation, invoicing}) => {
+        const customers = await storeCustomers.getAllCustomers();
         if(invoicing == 1){
             const response = dialog.showMessageBoxSync(paymentWindow, {
                 title: 'Facturar Venta?',
@@ -246,11 +247,11 @@ module.exports = ({
     });
 
     let customerCreditPivot, amountCreditPivot;
-    ipcMain.on('select-customer-whopays', (e, args) => {
+    ipcMain.on('select-customer-whopays', async (e, args) => {
        
         let customer;
         if(args.id != null && args.id != undefined){
-           customer = storeCustomers.getCustomer(args.id);
+           customer = await storeCustomers.getCustomer(args.id);
         };
 
         const customerList = returnCustomerListWindow();
@@ -275,7 +276,7 @@ module.exports = ({
                 const mainWindow = returnMainWindow();
                 //confirmar venta function, update deuda, update stock, update todo
                 paymentWindow.close();
-                storeCustomers.addToDebt(customer.id, args.totalAmount);
+                await storeCustomers.addToDebt(customer.id, args.totalAmount);
                 mainWindow.webContents.send('get-sells-details-credit');
                 amountCreditPivot = args.totalAmountPlusDebt;
                 customerCreditPivot = customer;
@@ -284,14 +285,14 @@ module.exports = ({
         
     });
 
-    ipcMain.on('get-sells-details-credit', (e, {sessionStorage, priceList}) => {
+    ipcMain.on('get-sells-details-credit', async (e, {sessionStorage, priceList}) => {
         const totalAmount = amountCreditPivot;
         const customer = customerCreditPivot;
         delete amountCreditPivot;
         delete customerCreditPivot;
         const branch = configs.getBranchDataFromConfig();
-        const emplooy = {id: 1, name: 'Administrador'};
-        storeSells.addSell({
+        const emplooy = await auth.getUserSessionInfo().emplooy;
+        await storeSells.addSell({
             amount: totalAmount,
             branch: branch.id, //Modificar cuando se hagan las sesiones.
             emplooy, //Modificar cuando se hagan las sesiones.
@@ -306,13 +307,13 @@ module.exports = ({
         
     });
 
-    ipcMain.on('load-orders-window', (e, args) => {
-        const orders = storeOrders.getAllOrders();
+    ipcMain.on('load-orders-window', async  (e, args) => {
+        const orders = await storeOrders.getAllOrders();
         createOrdersWindow({orders});
     });
 
-    ipcMain.handle('get-order', (e, id) => {
-        const order = storeOrders.getOrder(id);
+    ipcMain.handle('get-order', async (e, id) => {
+        const order = await storeOrders.getOrder(id);
         if(order != undefined && order != null){
             return order;
         }
@@ -321,9 +322,9 @@ module.exports = ({
         }
     });
 
-    ipcMain.handle('get-orders-bydate', (e, { from, to }) => {
+    ipcMain.handle('get-orders-bydate', async (e, { from, to }) => {
         if(from != undefined && from != null && to != undefined && to != null){
-            const orders = storeOrders.getOrdersByDate(from, to);
+            const orders = await storeOrders.getOrdersByDate(from, to);
 
             return orders;
         } else {
@@ -331,16 +332,16 @@ module.exports = ({
         }
     });
     
-    ipcMain.handle('get-orders', () => {
+    ipcMain.handle('get-orders', async () => {
 
-        return storeOrders.getAllOrders();
+        return await storeOrders.getAllOrders();
     });
 
     let customerOrderPivot, amountOrderPivot = 0;
-    ipcMain.on('select-customer-for-order', (e, {id, totalAmount}) => {
+    ipcMain.on('select-customer-for-order', async (e, {id, totalAmount}) => {
         let customer;
         if(id != null && id != undefined){
-           customer = storeCustomers.getCustomer(id);
+           customer = await storeCustomers.getCustomer(id);
         };
 
         const customerList = returnCustomerListWindow();
@@ -374,13 +375,13 @@ module.exports = ({
         
     });
 
-    ipcMain.on('get-sells-details-order', (e, {sessionStorage, priceList}) => {
+    ipcMain.on('get-sells-details-order', async (e, {sessionStorage, priceList}) => {
         const branch = configs.getBranchDataFromConfig();
         const totalAmount = amountOrderPivot;
         delete amountOrderPivot;
         const customer = customerOrderPivot;
         delete customerOrderPivot;
-        storeOrders.addOrder({
+        await storeOrders.addOrder({
             amount: totalAmount,
             branch: branch.id, //Modificar cuando se hagan las sesiones.
             emplooy: {id: 1, name: 'Administrador'}, //Modificar cuando se hagan las sesiones.
@@ -392,10 +393,10 @@ module.exports = ({
         mainWindow.webContents.send('clear-product-list');
     });
 
-    ipcMain.handle('delete-sell', (e, id) => {
+    ipcMain.handle('delete-sell', async (e, id) => {
         if(id){
             const sellsWindow = returnSellsHistoryWindow();
-            const sell = storeSells.getSell(id);
+            const sell = await storeSells.getSell(id);
             const answer = dialog.showMessageBoxSync(sellsWindow, {
                 title: `Eliminar venta N ${sell.id}`,
                 message: `Realmente desea eliminar de forma permanente? Cliente: ${sell.customer}`,
@@ -404,7 +405,7 @@ module.exports = ({
             });
 
             if(answer == 1){
-                storeSells.deleteSell(id);
+                await storeSells.deleteSell(id);
                 return true;
             } else {
                 return false;
@@ -412,10 +413,10 @@ module.exports = ({
         }
     });
 
-    ipcMain.handle('delete-order', (e, id) => {
+    ipcMain.handle('delete-order', async (e, id) => {
         if(id){
             const ordersWindow = returnOrdersWindow();
-            const order = storeOrders.getOrder(id);
+            const order = await storeOrders.getOrder(id);
             const answer = dialog.showMessageBoxSync(ordersWindow, {
                 title: `Eliminar pedido N ${order.id}`,
                 message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer.name}`,
@@ -424,7 +425,7 @@ module.exports = ({
             });
 
             if(answer == 1){
-                storeOrders.deleteOrder(id);
+                await storeOrders.deleteOrder(id);
                 return true;
             } else {
                 return false;
@@ -432,30 +433,30 @@ module.exports = ({
         }
     });
 
-    ipcMain.on('delete-order', (e, id) => {
+    ipcMain.on('delete-order', async (e, id) => {
         if(id){
             const ordersWindow = returnOrdersWindow();
-            const order = storeOrders.getOrder(id);
+            const order = await storeOrders.getOrder(id);
             const answer = dialog.showMessageBoxSync(ordersWindow, {
                 title: `Pedido N ${order.id}`,
                 message: `Pedido concretado como venta. Cliente: ${order.customer.name}`,
                 type: 'info',
                 buttons: ['Cerrar'],
             });
-            storeOrders.deleteOrder(id);
+            await storeOrders.deleteOrder(id);
         }
     });
 
-    ipcMain.handle('get-product-discount', (e, idProduct) => {
+    ipcMain.handle('get-product-discount', async (e, idProduct) => {
         if(idProduct){
-            const discount = storeSales.getSaleByProduct(idProduct).discount;
+            const discount = await storeSales.getSaleByProduct(idProduct).discount;
             if(discount) return discount
             else return 0;
         };
     });
 
-    ipcMain.on('load-sales-page', () => {
-        const sales = storeSales.getAllSalesWithProducts();
+    ipcMain.on('load-sales-page', async () => {
+        const sales = await storeSales.getAllSalesWithProducts();
         createSalesWindow({sales});
     });
 
@@ -470,7 +471,7 @@ module.exports = ({
         fromDate,
         toDate,
     }) => {
-        const newSale = storeSales.addSale({
+        const newSale = await storeSales.addSale({
             idProduct,
             discount,
             fromDate,
@@ -501,14 +502,14 @@ module.exports = ({
         return sale;
     });
 
-    ipcMain.handle('delete-sale', (e, idSale) => {
-        const answer = storeSales.deleteSale(idSale);
+    ipcMain.handle('delete-sale', async (e, idSale) => {
+        const answer = await storeSales.deleteSale(idSale);
         return answer;
     });
 
     let detailsPivot;
     ipcMain.on('add-sell-from-order', async (e, idOrder) => {
-        const order = storeOrders.getOrder(idOrder);
+        const order = await storeOrders.getOrder(idOrder);
         const ordersWindow = returnOrdersWindow();
         const answer = dialog.showMessageBoxSync(ordersWindow, {
             title: `Confirmar Venta por Pedido N ${order.id}`,
@@ -539,10 +540,10 @@ module.exports = ({
         return details;
     });
 
-    ipcMain.on('send-details-order-incompleted', (e, {sessionStorage, priceList, totalAmount, debt, idCustomer, invoicing}) => {
-        const customer = storeCustomers.getCustomer(idCustomer);
+    ipcMain.on('send-details-order-incompleted', async (e, {sessionStorage, priceList, totalAmount, debt, idCustomer, invoicing}) => {
+        const customer = await storeCustomers.getCustomer(idCustomer);
         const branch = configs.getBranchDataFromConfig();
-        const emplooy = {id: 1, name: 'Administrador'};
+        const emplooy = await auth.getUserSessionInfo().emplooy;
         if(invoicing == 1){
 
         } else {
@@ -558,12 +559,12 @@ module.exports = ({
                 buttons: ['Confirmar', 'Cancelar'],
             });
             if(answer == 0){
-                storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
-                storeCustomers.addToDebt(idCustomer, debt);
-                storeSells.addSell({
+                await storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
+                await storeCustomers.addToDebt(idCustomer, debt);
+                await storeSells.addSell({
                     amount: totalAmount,
-                    branch: branch.id, //Modificar cuando se hagan las sesiones.
-                    emplooy, //Modificar cuando se hagan las sesiones.
+                    branch: branch.id, 
+                    emplooy, 
                     customer: {name: customer.name, id: customer.id},
                     howPaid: 'Contado/Cuenta Corriente',
                     howMuchPaid: cash.toFixed(2),
@@ -578,10 +579,10 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('send-details-order-cash', (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing, amountToBeReturned}) => {
-        const customer = storeCustomers.getCustomer(idCustomer);
+    ipcMain.on('send-details-order-cash', async (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing, amountToBeReturned}) => {
+        const customer = await storeCustomers.getCustomer(idCustomer);
         const branch = configs.getBranchDataFromConfig();
-        const emplooy = {id: 1, name: 'Administrador'};
+        const emplooy = await auth.getUserSessionInfo().emplooy;
         if(invoicing == 1){
 
         } else {
@@ -595,11 +596,11 @@ module.exports = ({
                 buttons: ['Confirmar', 'Cancelar'],
             });
             if(answer == 0){
-                storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
-                storeSells.addSell({
+                await storeCashRegister.addToBox(configs.getCashRegisterId(), branch.id, totalAmount);
+                await storeSells.addSell({
                     amount: totalAmount,
-                    branch: branch.id, //Modificar cuando se hagan las sesiones.
-                    emplooy, //Modificar cuando se hagan las sesiones.
+                    branch: branch.id, 
+                    emplooy, 
                     customer: {name: customer.name, id: customer.id},
                     howPaid: 'Efectivo',
                     howMuchPaid: totalAmount,
@@ -615,10 +616,10 @@ module.exports = ({
     });
 
 
-    ipcMain.on('send-details-order-credit', (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing}) => {
-        const customer = storeCustomers.getCustomer(idCustomer);
+    ipcMain.on('send-details-order-credit', async (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing}) => {
+        const customer = await storeCustomers.getCustomer(idCustomer);
         const branch = configs.getBranchDataFromConfig();
-        const emplooy = {id: 1, name: 'Administrador'};
+        const emplooy = await auth.getUserSessionInfo().emplooy;
         if(invoicing == 1){
 
         } else {
@@ -629,10 +630,10 @@ module.exports = ({
                 buttons: ['Confirmar', 'Cancelar'],
             });
             if(answer == 0){
-                storeSells.addSell({
+                await storeSells.addSell({
                     amount: totalAmount,
-                    branch: branch.id, //Modificar cuando se hagan las sesiones.
-                    emplooy, //Modificar cuando se hagan las sesiones.
+                    branch: branch.id,
+                    emplooy,
                     customer: {name: customer.name, id: customer.id},
                     howPaid: 'Cuenta Corriente',
                     howMuchPaid: 0,

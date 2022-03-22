@@ -10,9 +10,9 @@ const getOne = async (id) => {
     };
 };
 
-const getAll = async () => {
+const getAll = async (idBranch) => {
     return await CashRegister.findAll({
-        include: ['branch']
+        include: ['branch'], where: { idBranch },
     });
 };
 
@@ -30,10 +30,20 @@ const remove = async (id) => {
     return await cashRegister.destroy(); 
 };
 
+const getCashFlow = async (id) => {
+    const cashRegister = await CashRegister.findByPk(id, {include: ['branch', 'cashFlow']});
+    if(!cashRegister){
+        throw boom.badRequest();
+    } else {
+        return cashRegister.cashFlow;
+    };
+};
+
 module.exports = {
     getOne,
     getAll,
     create,
     update,
     remove,
+    getCashFlow,
 };

@@ -7,8 +7,9 @@ const checkAllow = require('../../utils/middlewares/chechAllow');
 const validator = require('../../utils/middlewares/validator');
 const { getCashRegisterSchema, createCashRegisterSchema, updateCashRegisterSchema, deleteCashRegisterSchema } = require('../../utils/schemas/cashRegister.schema');
 
-router.get('/', (req, res, next) => {
-    controller.getAll()
+router.get('/', validator(getCashRegisterSchema, 'body'), (req, res, next) => {
+    const idBranch = req.body.id;
+    controller.getAll(idBranch)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
@@ -38,6 +39,13 @@ router.patch('/:id', validator(getCashRegisterSchema, 'paramas'), validator(upda
 router.delete('/:id', validator(deleteCashRegisterSchema, 'params'), (req, res, next) => {
     const { id } = req.params;   
     controller.remove(id)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
+router.get('/cash-flow/:id', validator(getCashRegisterSchema, 'params'), (req, res, next) => {
+    const { id } = req.params;
+    controller.getCashFlow(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });

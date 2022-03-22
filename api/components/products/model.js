@@ -33,7 +33,7 @@ const productSchema = {
             model: SUPPLIER_TABLE,
             key: 'idsupplier',
         },
-        onUpdate: 'CASCADE',
+        onUpdate: 'NO ACTION',
         onDelete: 'NO ACTION',
     },
     idUnitMeasure: {

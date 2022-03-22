@@ -3,6 +3,7 @@ const { ipcMain, dialog } = require('electron');
 const storeCashFlow = require('../components/cashFlow/store');
 const storeCashRegister = require('../components/cashRegister/store');
 const config = require('../config/config');
+const auth = require('../config/auth');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -19,8 +20,8 @@ module.exports = ({
     createCashFlowOutWindow,
 }) => {
 
-    ipcMain.on('load-cashflowhistory-window', () => {
-        const cashFlow = storeCashFlow.getAllRegisters();
+    ipcMain.on('load-cashflowhistory-window', async () => {
+        const cashFlow = await storeCashFlow.getAllRegisters();
         createCashFlowHistoryWindow({cashFlow});
     });
 
@@ -32,11 +33,11 @@ module.exports = ({
         createCashFlowOutWindow();
     });
 
-    ipcMain.on('add-cashflow-in', (e, {amount, observation}) => {
+    ipcMain.on('add-cashflow-in', async (e, {amount, observation}) => {
         if(amount && observation) {
             const cashFlowInWindow = returnCashFlowInWindow();
             const box = config.getCashRegisterId();
-            const emplooy = { id: 1, name: 'Administrador' };
+            const emplooy = await auth.getUserSessionInfo();
             const branch = config.getBranchDataFromConfig();
 
             const response = dialog.showMessageBoxSync(cashFlowInWindow, {
@@ -49,14 +50,14 @@ module.exports = ({
                 let added, update;
                 if(box && emplooy) {
 
-                    added = storeCashFlow.addRegister({
+                    added = await storeCashFlow.addRegister({
                         amount,
                         observation,
                         box,
                         operation: 'IN',
                         emplooy,
                     });
-                    update = storeCashRegister.addToBox(box, branch.id, amount);
+                    update = await storeCashRegister.addToBox(box, branch.id, amount);
                 };
                 if(added && update) {
                     cashFlowInWindow.webContents.send('confirm-cashflow-in');
@@ -67,11 +68,11 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('add-cashflow-out', (e, {amount, observation}) => {
+    ipcMain.on('add-cashflow-out', async (e, {amount, observation}) => {
         if(amount && observation) {
             const cashFlowOutWindow = returnCashFlowOutWindow();
             const box = config.getCashRegisterId();
-            const emplooy = { id: 1, name: 'Administrador' };
+            const emplooy = await auth.getUserSessionInfo();
             const branch = config.getBranchDataFromConfig();
 
             const response = dialog.showMessageBoxSync(cashFlowOutWindow, {
@@ -84,14 +85,14 @@ module.exports = ({
                 let added, update;
                 if(box && emplooy) {
 
-                    added = storeCashFlow.addRegister({
+                    added = await storeCashFlow.addRegister({
                         amount,
                         observation,
                         box,
                         operation: 'OUT',
                         emplooy,
                     });
-                    update = storeCashRegister.substractToBox(box, branch.id, amount);
+                    update = await storeCashRegister.substractToBox(box, branch.id, amount);
                 };
                 if(added && update) {
                     cashFlowOutWindow.webContents.send('confirm-cashflow-out');
@@ -102,16 +103,16 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('get-limit-cashout-amount', () => {
+    ipcMain.handle('get-limit-cashout-amount', async () => {
         const idBox = config.getCashRegisterId();
-        const boxInfo = storeCashRegister.returnBoxInfo(idBox);
+        const boxInfo = await storeCashRegister.returnBoxInfo(idBox);
 
         return boxInfo.moneyAmount;
     });
 
-    ipcMain.handle('get-cash-cashRegister', () => {
+    ipcMain.handle('get-cash-cashRegister', async () => {
         const idBox = config.getCashRegisterId();
-        const box = storeCashRegister.returnBoxInfo(idBox);
+        const box = await storeCashRegister.returnBoxInfo(idBox);
         return box.moneyAmount;
     });
 

@@ -32,22 +32,22 @@ const peopleSchema = {
     },
     idDirDepartment: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         field: 'id_dir_department',
     },
     idDirProvince: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         field: 'id_dir_province',
     },
     idDirCity: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         field: 'id_dir_city',
     },
     dirPostCode: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         field: 'dir_post_code',
     }, 
     dirStreet: {
@@ -66,6 +66,10 @@ const peopleSchema = {
     },
     cbu: {
         allowNull: true,
+        type: DataTypes.BIGINT,
+    },
+    cuit: {
+        allowNull:  true,
         type: DataTypes.BIGINT,
     },
 };

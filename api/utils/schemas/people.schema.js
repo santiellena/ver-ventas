@@ -13,6 +13,7 @@ const phoneNumber = joi.number().integer();
 const email = joi.string().email();
 const cbu = joi.number().integer();
 const debt = joi.number().precision(2);
+const cuit = joi.number().integer();
 
 const getPeopleSchema = joi.object({
     id: id.required(),
@@ -31,6 +32,7 @@ const createPeopleSchema = joi.object({
     email: email.required(),
     cbu: cbu.required(),
     debt,
+    cuit: cuit.required(),
 });
 
 const updatePeopleSchema = joi.object({
@@ -46,6 +48,7 @@ const updatePeopleSchema = joi.object({
     email,
     cbu,
     debt,
+    cuit,
 });
 
 const deletePeopleSchema = joi.object({

@@ -1,10 +1,12 @@
 const { ipcMain, dialog } = require('electron');
+const dates = require('../config/date');
 
 const storeSuppliers = require('../components/suppliers/store');
 const storeBuys = require('../components/buys/store');
 const storeProducts = require('../components/products/store');
 const storeDocTypes = require('../components/docTypes/store');
 const storeDirections = require('../components/directions/store');
+const auth = require('../config/auth');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -25,15 +27,15 @@ module.exports = ({
     createSearchProductsBuysWindow,
 }) => {
 
-    ipcMain.on('load-suppliers-window', () => {
-        const suppliers = storeSuppliers.getAllSuppliers();
+    ipcMain.on('load-suppliers-window', async () => {
+        const suppliers = await storeSuppliers.getAllSuppliers();
         if(suppliers != undefined && suppliers != null){
             createSuppliersWindow({suppliers});
         };
     });
 
-    ipcMain.on('load-editsupplier-window', (e, id) => {
-        const supplier = storeSuppliers.getSupplier(id);
+    ipcMain.on('load-editsupplier-window', async (e, id) => {
+        const supplier = await storeSuppliers.getSupplier(id);
         const docTypes = storeDocTypes.getAllDocTypes();
         const provinces = storeDirections.getAllProvinces();
         const object = JSON.parse(provinces);
@@ -42,53 +44,52 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('load-addsupplier-window', () => {
-        const docTypes = storeDocTypes.getAllDocTypes();
+    ipcMain.on('load-addsupplier-window', async () => {
+        const docTypes = await storeDocTypes.getAllDocTypes();
         const provinces = storeDirections.getAllProvinces();
         const object = JSON.parse(provinces);
         createSuppliersAddWindow({docTypes, provinces: object.provincias});
     });
 
-    ipcMain.on('delete-supplier', (e, id) => {
-        storeSuppliers.deleteSupplier(id);
+    ipcMain.on('delete-supplier', async (e, id) => {
+        await storeSuppliers.deleteSupplier(id);
         const suppliersWindow = returnSuppliersWindow();
         suppliersWindow.webContents.send('delete-supplier-selected');
     });
 
-    ipcMain.handle('get-supplier', (e, id) => {
-        return storeSuppliers.getSupplier(id);
+    ipcMain.handle('get-supplier', async (e, id) => {
+        return await storeSuppliers.getSupplier(id);
     });
 
     let supplierAdded;
-    ipcMain.on('add-supplier', (e, {
-        supplierName,
+    ipcMain.on('add-supplier', async (e, {
+        supplierName,    
         docType,
         numDoc,
-        dirDepto,
-        dirProv,
+        idDirDepartment,
+        idDirProvince,
         dirPostCode,
-        dirCity,
+        idDirCity,
         dirStreet,
         cuit,
         phoneNumber,
         email,
         cbu,
     }) => {
-        supplierAdded = storeSuppliers.addSupplier({
+        supplierAdded = await storeSuppliers.addSupplier({
         supplierName,    
         docType,
         numDoc,
-        dirDepto,
-        dirProv,
+        idDirDepartment,
+        idDirProvince,
         dirPostCode,
-        dirCity,
+        idDirCity,
         dirStreet,
         cuit,
         phoneNumber,
         email,
         cbu,
         });
-
         const suppliersWindow = returnSuppliersWindow();
 
         suppliersWindow.webContents.send('load-new-supplier');
@@ -100,32 +101,32 @@ module.exports = ({
     });
 
     let supplierEdited;
-    ipcMain.on('edit-supplier-info', (e, {
+    ipcMain.on('edit-supplier-info', async (e, {
         id,
         supplierName,
         docType,
         numDoc,
         cuit,
-        dirProv,
-        dirDepto,
-        postCode,
-        dirCity,
+        idDirProvince,
+        idDirDepartment,
+        dirPostCode,
+        idDirCity,
         dirStreet,
         phoneNumber,
         email, 
         cbu,
     }) => {
-        if(id, supplierName, docType, numDoc, cuit, dirProv, dirDepto, postCode, dirCity, dirStreet, phoneNumber, email, cbu){
-            supplierEdited = storeSuppliers.editSupplier({
+        if(id, supplierName, docType, numDoc, cuit, idDirProvince, idDirDepartment, dirPostCode, idDirCity, dirStreet, phoneNumber, email, cbu){
+            supplierEdited = await storeSuppliers.editSupplier({
                 id,
                 supplierName,
                 docType,
                 numDoc,
                 cuit,
-                dirProv,
-                dirDepto,
-                postCode,
-                dirCity,
+                idDirProvince,
+                idDirDepartment,
+                dirPostCode,
+                idDirCity,
                 dirStreet,
                 phoneNumber,
                 email, 
@@ -135,7 +136,7 @@ module.exports = ({
 
                 const suppliersWindow = returnSuppliersWindow();
                 suppliersWindow.webContents.send('load-edited-supplier');
-            }
+            };
             
         };
 
@@ -147,8 +148,8 @@ module.exports = ({
         return edit;
     });
 
-    ipcMain.on('load-buys-window', (e, args) => {
-        const buys = storeBuys.getAllBuys();
+    ipcMain.on('load-buys-window', async (e, args) => {
+        const buys = await storeBuys.getAllBuys();
         if(buys != null){
             createBuysWindow({buys});
         } else {
@@ -156,9 +157,9 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('search-buys-by-date', (e, { from, to }) => { 
+    ipcMain.handle('search-buys-by-date', async (e, { from, to }) => { 
         if(from != undefined && from != null && to != undefined && to != null){
-            const buys = storeBuys.getBuysByDate(from, to);
+            const buys = await storeBuys.getBuysByDate(from, to);
 
             return buys;
         } else {
@@ -166,8 +167,8 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('get-buys-detail', (e, id) => {
-        const details = storeBuys.getBuyDetail(id);
+    ipcMain.handle('get-buys-detail', async (e, id) => {
+        const details = await storeBuys.getBuyDetail(id);
         if(details != null){
             return details;
         } else {
@@ -225,8 +226,8 @@ module.exports = ({
         searchProductsBuySWindow.close();
     });
 
-    ipcMain.handle('get-suppliers', () => {
-        const suppliers = storeSuppliers.getAllSuppliers();
+    ipcMain.handle('get-suppliers', async () => {
+        const suppliers = await storeSuppliers.getAllSuppliers();
 
         if(suppliers){
             return suppliers;
@@ -235,10 +236,10 @@ module.exports = ({
         }
     });
 
-    ipcMain.on('buy-end', (e, { items, supplierId, howPaid }) => {
-        const emplooy = {id: 1, name:'Administrador'};
+    ipcMain.on('buy-end', async (e, { items, supplierId, howPaid }) => {
+        const emplooy = await auth.getUserSessionInfo();
         const branch = 'Principal';
-        const supplier = storeSuppliers.getSupplier(supplierId);
+        const supplier = await storeSuppliers.getSupplier(supplierId);
 
         if(items && supplier && howPaid) {
             const addBuyWindow = returnAddBuyWindow();
@@ -252,8 +253,7 @@ module.exports = ({
 
             if(response == 1){
                 let details = [];
-                const actualDate = new Date();
-                const date = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}`;
+                const date = dates.actualDate();
 
                 items.map(e => {
                     const index1 = e[1].indexOf('-');
@@ -274,9 +274,9 @@ module.exports = ({
                     details.push(detail);
                 });
                 
-                storeProducts.updateStockAndPrices(details);
+                await storeProducts.updateStockAndPrices(details);
 
-                storeBuys.addBuy({
+                await storeBuys.addBuy({
                     branch, 
                     emplooy,
                     supplier,
@@ -292,10 +292,10 @@ module.exports = ({
         }
     });
 
-    ipcMain.handle('delete-buy', (e, id) => {
+    ipcMain.handle('delete-buy', async (e, id) => {
         if(id){
             const buysWindow = returnBuysWindow();
-            const buy = storeBuys.getBuy(id);
+            const buy = await storeBuys.getBuy(id);
             const response = dialog.showMessageBoxSync(buysWindow, {
                 title: `Eliminar compra / ingreso N ${buy.id}`,
                 message: `Una vez eliminado, no se podrá recuperar!`,
@@ -305,7 +305,7 @@ module.exports = ({
 
             if(response == 1) {
 
-                storeBuys.deleteBuy(id);
+                await storeBuys.deleteBuy(id);
                 return true;
             } else{
                 return false;

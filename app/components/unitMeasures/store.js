@@ -1,64 +1,67 @@
-const measures = {
-    1: {
-        id: 1,
-        shortDescription: 'U',
-        longDescription: 'Unidad',
-    },
-    2: {
-        id: 2,
-        shortDescription: 'Gr.',
-        longDescription: 'Gramos',
-    },
-    3: {
-        id: 3,
-        shortDescription: 'Kg.',
-        longDescription: 'Kilogramo',
-    },
-    4: {
-        id: 4,
-        shortDescription: 'Ml.',
-        longDescription: 'Mililitro',
-    },
-    5: {
-        id: 5,
-        shortDescription: 'L.',
-        longDescription: 'Litros',
-    },
+const config = require('../../config/config');
+const axios = require('axios');
+const { getUrl }= config;
+const { getSessionToken } = require('../../config/auth');
+
+async function getMeasure (id) {
+    if(id){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/unit-measure/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            }
+        });
+        if(response.data.message) return null 
+        else return response.data;
+    } else return null;
 };
 
-function getMeasure (id) {
-    return measures[id];
+async function getAllMeasures () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/unit-measure`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        }
+    });
+    if(response.data.message) return null 
+    else return response.data;
 };
 
-function getAllMeasures () {
-    return measures;
-};
-
-function addMeasure ({
+async function addMeasure ({
     shortDescription,
     longDescription,
 }) {
-    const iterable = Object.entries(measures);
-    let newId = 0;
-    for (let i = 1; i < iterable.length + 1; i++) {
-        if(measures[i] == undefined){
-            newId = i;
-            break;
-        } else if(measures[i+1] == undefined){
-            newId = i+1;
-            break;
-        };
-    };
-
-    return measures[newId] = {
-        id: newId,
-        shortDescription,
-        longDescription,
-    };
+if(shortDescription && longDescription){
+    const response = await axios({
+        method: 'POST',
+        url: `${getUrl()}/api/unit-measure`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+        data: {
+            longDescription,
+            shortDescription,
+        },
+    });
+    if(response.data.message) return null 
+    else return response.data;
+} else return null;
 };
 
-function deleteMeasure (id) {
-    if(measures[id] != undefined) delete measures[id];
+async function deleteMeasure (id) {
+    if(id){
+        const response = await axios({
+            method: 'DELETE',
+            url: `${getUrl()}/api/unit-measure/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null 
+        else return response.data;
+    } else return null;
 };
 
 module.exports = {

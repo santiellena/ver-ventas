@@ -32,6 +32,7 @@ const cashRegisterSchema = {
 class CashRegister extends Model {
     static associate(models) {
         this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
+        this.hasMany(models.CashFlow, {as: 'cashFlow', foreignKey: 'idCashRegister'});
     };
   
     static config(sequelize) {

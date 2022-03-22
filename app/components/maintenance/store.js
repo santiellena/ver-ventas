@@ -1,6 +1,6 @@
-const config = require('../../config/config');
+const config = require('../../config/config.js');
 const axios = require('axios');
-const { getUrl }= config;
+const { getUrl } = config;
 const { getSessionToken } = require('../../config/auth');
 
 async function getGeneralInfo () {

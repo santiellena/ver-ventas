@@ -66,7 +66,7 @@ const {
 
 let mainMenu = new Menu();
 
-const { checkInitialConfig } = require('./config/config');
+const { checkInitialConfig } = require('./config/config.js');
 
 if(process.env.NODE_ENV == 'development'){
   devTools();

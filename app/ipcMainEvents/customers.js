@@ -32,17 +32,17 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('load-addcustomer-window', () => {
-        const freeCode = storeCustomers.getFreeFirstIndex();
+    ipcMain.on('load-addcustomer-window', async () => {
+        const freeCode = await storeCustomers.getFreeFirstIndex();
         const provinces = storeDirections.getAllProvinces();
-        const docTypes = storeDocTypes.getAllDocTypes();
+        const docTypes = await storeDocTypes.getAllDocTypes();
         const object = JSON.parse(provinces);
         createAddCustomerWindow({provinces: object.provincias, docTypes, freeCode});
     });
 
-    ipcMain.on('load-editcustomer-window', () => {
+    ipcMain.on('load-editcustomer-window', async () => {
         const provinces = storeDirections.getAllProvinces();
-        const docTypes = storeDocTypes.getAllDocTypes();
+        const docTypes = await storeDocTypes.getAllDocTypes();
         const object = JSON.parse(provinces);
         createEditCustomerWindow({provinces: object.provincias, docTypes});
     });
@@ -63,14 +63,14 @@ module.exports = ({
         return citiesByDepartment;
     });
 
-    ipcMain.handle('check-customer-existance', (e, id) => {
-        const check = storeCustomers.checkExistance(id);
+    ipcMain.handle('check-customer-existance', async (e, id) => {
+        const check = await storeCustomers.checkExistance(id);
 
         return check;
     });
 
     let addedPivot;
-    ipcMain.on('add-customer', (e, {
+    ipcMain.on('add-customer', async (e, {
         id,
         name,
         docType,
@@ -104,10 +104,10 @@ module.exports = ({
             const dirProv = storeDirections.getProvince(province);
             const dirDepto = storeDirections.getDepartment(department);
             const dirCity = storeDirections.getCity(city);
-            const typeDoc = storeDocTypes.getDocType(docType);
+            const typeDoc = await storeDocTypes.getDocType(docType);
 
 
-            const added = storeCustomers.addCustomer({
+            const added = await storeCustomers.addCustomer({
                 id, 
                 name,
                 docType: typeDoc,
@@ -142,7 +142,7 @@ module.exports = ({
     });
 
     let pivotEdited;
-    ipcMain.on('edit-customer', (e, {
+    ipcMain.on('edit-customer', async (e, {
         id,
         name,
         docType,
@@ -161,7 +161,7 @@ module.exports = ({
             const dirProv = storeDirections.getProvince(province);
             const dirDepto = storeDirections.getDepartment(department);
             const dirCity = storeDirections.getCity(city);
-            const typeDoc = storeDocTypes.getDocType(docType);
+            const typeDoc = await storeDocTypes.getDocType(docType);
 
             const editedCustomer = storeCustomers.editCustomer({
                 id,
@@ -197,17 +197,17 @@ module.exports = ({
         return edited;
     });
 
-    ipcMain.handle('get-customer', (e, id) => {
-        const customer = storeCustomers.getCustomer(id);
+    ipcMain.handle('get-customer', async (e, id) => {
+        const customer = await storeCustomers.getCustomer(id);
         if (customer) {
             return customer;
         };
     });
 
     let deletedPivot;
-    ipcMain.on('delete-customer', (e, id) => {
+    ipcMain.on('delete-customer', async (e, id) => {
         const deleteCustomerWindow = returnDeleteCustomerWindow();
-        const customer = storeCustomers.getCustomer(id);
+        const customer = await storeCustomers.getCustomer(id);
         const response = dialog.showMessageBoxSync(deleteCustomerWindow, {
             title: `Eliminar Cliente N${customer.id}, ${customer.name}`,
             message: 'Seguro que desea eliminar permanentemente este cliente?',
@@ -247,9 +247,9 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('get-sells-by-customer', (e, idCustomer) => {
+    ipcMain.handle('get-sells-by-customer', async (e, idCustomer) => {
         if(idCustomer){
-            const sellsByCustomer = storeSells.getSellsByCustomer(idCustomer);
+            const sellsByCustomer = await storeSells.getSellsByCustomer(idCustomer);
 
             if(sellsByCustomer){
                 return sellsByCustomer;
@@ -257,9 +257,9 @@ module.exports = ({
         };
     });
 
-    ipcMain.handle('get-payments-by-customer', (e, idCustomer) => {
+    ipcMain.handle('get-payments-by-customer', async (e, idCustomer) => {
         if(idCustomer){
-            const debtPaymentsByCustomer = storeDebtPayments.getPaymentsByCustomer(idCustomer);
+            const debtPaymentsByCustomer = await storeDebtPayments.getPaymentsByCustomer(idCustomer);
 
             if(debtPaymentsByCustomer){
 
@@ -268,10 +268,10 @@ module.exports = ({
         };
     });
 
-    ipcMain.on('payDebt-cash', (e, {amount, idCustomer, observation}) => {
+    ipcMain.on('payDebt-cash', async (e, {amount, idCustomer, observation}) => {
         if(amount && idCustomer && observation){
             const payDebtsWindow = returnPayDebtsWindow();
-            const customer = storeCustomers.getCustomer(idCustomer);
+            const customer = await storeCustomers.getCustomer(idCustomer);
 
             const answer = dialog.showMessageBoxSync(payDebtsWindow, {
                 title: `Pago Deuda en EFECTIVO`,
@@ -283,7 +283,7 @@ module.exports = ({
                 const emplooy = {id: 1, name:'Administrador'};
                 const infoCustomer = {id: customer.id, name: customer.name};
 
-                const payment = storeDebtPayments.addPay({
+                const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
                     customer: infoCustomer,
@@ -294,17 +294,17 @@ module.exports = ({
                 if(payment) {
                     const listDebtsWindow = returnListDebtsWindow();
                     listDebtsWindow.webContents.send('load-new-payment');
-                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    await storeCustomers.removeFromDebts(idCustomer, amount);
                     payDebtsWindow.close();
                 };
             };
         };
     });
 
-    ipcMain.on('payDebt-card', (e, {amount, idCustomer, observation}) => {
+    ipcMain.on('payDebt-card', async (e, {amount, idCustomer, observation}) => {
         if(amount && idCustomer && observation){
             const payDebtsWindow = returnPayDebtsWindow();
-            const customer = storeCustomers.getCustomer(idCustomer);
+            const customer = await storeCustomers.getCustomer(idCustomer);
 
             const answer = dialog.showMessageBoxSync(payDebtsWindow, {
                 title: `Pago Deuda con TARJETA`,
@@ -318,7 +318,7 @@ module.exports = ({
                 const emplooy = {id: 1, name:'Administrador'};
                 const infoCustomer = {id: customer.id, name: customer.name};
 
-                const payment = storeDebtPayments.addPay({
+                const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
                     customer: infoCustomer,
@@ -329,17 +329,17 @@ module.exports = ({
                 if(payment) {
                     const listDebtsWindow = returnListDebtsWindow();
                     listDebtsWindow.webContents.send('load-new-payment');
-                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    await storeCustomers.removeFromDebts(idCustomer, amount);
                     payDebtsWindow.close();
                 };
             };
         };
     });
 
-    ipcMain.on('payDebt-transference', (e, {amount, idCustomer, observation}) => {
+    ipcMain.on('payDebt-transference', async (e, {amount, idCustomer, observation}) => {
         if(amount && idCustomer && observation){
             const payDebtsWindow = returnPayDebtsWindow();
-            const customer = storeCustomers.getCustomer(idCustomer);
+            const customer = await storeCustomers.getCustomer(idCustomer);
 
             const answer = dialog.showMessageBoxSync(payDebtsWindow, {
                 title: `Pago Deuda con TARJETA`,
@@ -353,7 +353,7 @@ module.exports = ({
                 const emplooy = {id: 1, name:'Administrador'};
                 const infoCustomer = {id: customer.id, name: customer.name};
 
-                const payment = storeDebtPayments.addPay({
+                const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
                     customer: infoCustomer,
@@ -364,7 +364,7 @@ module.exports = ({
                 if(payment) {
                     const listDebtsWindow = returnListDebtsWindow();
                     listDebtsWindow.webContents.send('load-new-payment');
-                    storeCustomers.removeFromDebts(idCustomer, amount);
+                    await storeCustomers.removeFromDebts(idCustomer, amount);
                     payDebtsWindow.close();
                 };
             };

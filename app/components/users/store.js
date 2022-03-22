@@ -1,87 +1,73 @@
-const storeEmployees = require('../employees/store');
+const config = require('../../config/config');
+const axios = require('axios');
+const { getUrl }= config;
+const { getSessionToken } = require('../../config/auth');
+const dates = require('../../config/date');
 
-const userTypes = {
-    1: {
-        id: 1,
-        description: 'Administrador',
-    },
-    2: {
-        id: 2,
-        description: 'Empleado',
-    },
+async function getAllUserTypes () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/user-type`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
-const users = {
-    1: {
-        id: 1,
-        idEmplooy: 1,
-        idUserType: 1,
-        username: 'admin',
-        password: 'admin',
-        branches: [1, 2],
-        registerDate: '',
-        menuStock: 1,
-        menuBuys: 1,
-        menuSells: 1,
-        menuMaintenance: 1,
-        menuQuery: 1,
-        menuAdmin: 1,
-        menuInvoicing: 1,
-    },
-    2: {
-        id: 2,
-        idEmplooy: 2,
-        username: 'pablo',
-        password: 'pablo',
-        idUserType: 2,
-        branches: [1],
-        registerDate: '',
-        menuStock: 1,
-        menuBuys: 1,
-        menuSells: 1,
-        menuMaintenance: 1,
-        menuQuery: 1,
-        menuAdmin: 0,
-        menuInvoicing: 1,
-    },
-};
-
-function getAllUserTypes () {
-    return userTypes;
-};
-
-function getUserType (id) {
+async function getUserType (id) {
     if(id && userTypes[id] != undefined){
-        return userTypes[id];
-    };
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/user-type/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function getEmplooyType () {
-    const userTypes = Object.values(getAllUserTypes());
-    for (const type of userTypes) {
-        if (type.description == 'Empleado') return type;  
-    };
+async function getEmplooyType () {
+    const emplooyType = await getAllUserTypes(2);
+    return emplooyType;
 };
 
-function getAllUsers () {
-    return users;
+async function getAllUsers () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/auth/`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
-function getUser (id) {
-    if(id && users[id] != undefined) {
-        return users[id];
-    };
+async function getUser (id) {
+    if(id) {
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/auth/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
-function checkUserTypeId (id) {
-    if(id){
-        if(userTypes[id] != undefined){
-            return true;
-        } else return false;
-    } else return false;
+async function checkUserTypeId (id) {
+    const type = await getUserType(id);
+    if(type) return true
+    else return false;
 };
 
-function addUser ({
+async function addUser ({
     idEmplooy,
     idUserType,
     username,
@@ -95,46 +81,38 @@ function addUser ({
     menuAdmin,
     menuInvoicing,
 }) {
-    const iterable = Object.entries(users);
-    let newId = 0;
-    for (let i = 1; i < iterable.length + 1; i++) {
-        if(users[i] == undefined){
-            newId = i;
-            break;
-        } else if(users[i+1] == undefined){
-            newId = i+1;
-            break;
-        };
-    };
-
     if(checkUserTypeId(idUserType) == false){
         return null;
     };
-    const actualDate = new Date();
-    const registerDate = `${actualDate.getFullYear()}/${actualDate.getMonth()+1}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+    const registerDate = dates.actualDateAccuracy();
     if(branches && idEmplooy && idUserType && menuStock != null && menuBuys != null && menuSells != null && menuMaintenance != null && menuQuery != null && menuAdmin != null && menuInvoicing != null && password && username){
-        if(users[newId] == undefined){
-            return users[newId] = {
-                id: newId,
+        const response = await axios({
+            method: 'POST',
+            url: `${getUrl()}/api/auth`,
+            data: {
                 idEmplooy,
+                idUserType: 2,
                 username,
                 password,
                 branches,
-                idUserType,
-                registerDate,
                 menuStock,
-                menuBuys,
+                menuBuys, 
                 menuSells,
                 menuMaintenance,
                 menuQuery,
                 menuAdmin,
                 menuInvoicing,
-            };
-        } else return null;
+            },
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
     } else return null;
 };
 
-function updateUser ({
+async function updateUser ({
     id,
     menuStock,
     menuBuys, 
@@ -158,51 +136,59 @@ function updateUser ({
         menuMaintenance != null &&
         menuSells != null &&
         menuInvoicing != null &&
-        menuStats != null){
-        if(users[id] != undefined) {
-            if(menuStock == users[id].menuStock && menuBuys == users[id].menuBuys && menuSells == users[id].menuSells && menuMaintenance == users[id].menuMaintenance && menuQuery == users[id].menuQuery && menuAdmin == users[id].menuAdmin && menuInvoicing == users[id].menuInvoicing && username == users[id].username && password == users[id].password){
-                return false;
-            } else {
-                return users[id] = {
-                    id,
-                    idEmplooy: users[id].idEmplooy,
-                    idUserType: users[id].idUserType,
+        menuStats != null && menuQuery != null){
+            const response = await axios({
+                method: 'PATCH',
+                url: `${getUrl()}/api/auth/${id}`,
+                data: {
+                    username,
+                    password,
                     branches,
                     menuStock,
-                    menuBuys,
+                    menuBuys, 
                     menuSells,
                     menuMaintenance,
                     menuQuery,
                     menuAdmin,
                     menuInvoicing,
-                    username,
-                    password,
-                };
-            };
-        } else return null;
+                },
+                headers: {
+                    authorization: `Bearer ${await getSessionToken()}`,
+                },
+            });
+            if(response.data.message) return null
+            else return response.data;
+                            
     } else return null;
 };
 
-function getPermissions (idUser) {
-    if(users[idUser] != undefined){
+async function getPermissions (idUser) {
+    const response = await getUser(idUser);
+    if(response){
         const permissions = {
-            menuStock: users[idUser].menuStock,
-            menuBuys: users[idUser].menuBuys,
-            menuSells: users[idUser].menuSells,
-            menuMaintenance: users[idUser].menuMaintenance,
-            menuQuery: users[idUser].menuQuery,
-            menuAdmin: users[idUser].menuAdmin,
-            menuInvoicing: users[idUser].menuInvoicing,
+            menuStock: response.menuStock,
+            menuBuys: response.menuBuys, 
+            menuSells: response.menuSells,
+            menuMaintenance: response.menuMaintenance,
+            menuQuery: response.menuQuery,
+            menuAdmin: response.menuAdmin,
+            menuInvoicing: response.menuInvoicing,
         };
-        
+
         return permissions;
-    };
+    } else return null;
 };
 
-function deleteUser (idUser) {
-    if(users[idUser] != undefined){
-        delete users[idUser];
-    };
+async function deleteUser (idUser) {
+    const response = await axios({
+        method: 'DELETE',
+        url: `${getUrl()}/api/auth/${id}`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
 module.exports = {

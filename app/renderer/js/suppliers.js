@@ -39,10 +39,10 @@ ipcRenderer.on('load-new-supplier', async () => {
     thEmail.innerText = newSupplier.email;
     const thNumDoc = document.createElement('th');
     thNumDoc.innerText = newSupplier.numDoc;
-    const thDirProv = document.createElement('th');
-    thDirProv.innerText = newSupplier.dirProv;
-    const thDirDepto = document.createElement('th');
-    thDirDepto.innerText = newSupplier.dirDepto;
+    const thDirProvince = document.createElement('th');
+    thDirProvince.innerText = newSupplier.dirProvince;
+    const thDirDepartment= document.createElement('th');
+    thDirDepartment.innerText = newSupplier.dirDepartment;
     const thDirPostCode = document.createElement('th');
     thDirPostCode.innerText = newSupplier.dirPostCode;
     const thDirCity = document.createElement('th');
@@ -61,8 +61,8 @@ ipcRenderer.on('load-new-supplier', async () => {
     tr.appendChild(thCbu);
     tr.appendChild(thEmail);
     tr.appendChild(thNumDoc);
-    tr.appendChild(thDirProv);
-    tr.appendChild(thDirDepto);
+    tr.appendChild(thDirProvince);
+    tr.appendChild(thDirDepartment);
     tr.appendChild(thDirPostCode);
     tr.appendChild(thDirCity);
     tr.appendChild(thDirStreet);
@@ -77,8 +77,8 @@ ipcRenderer.on('load-edited-supplier', async () => {
         document.getElementById(`name${supplierEdited.id}`).innerText = supplierEdited.name;
         document.getElementById(`numDoc${supplierEdited.id}`).innerText = supplierEdited.numDoc;
         document.getElementById(`cuit${supplierEdited.id}`).innerText = supplierEdited.cuit;
-        document.getElementById(`dirProv${supplierEdited.id}`).innerText = supplierEdited.dirProv;
-        document.getElementById(`dirDepto${supplierEdited.id}`).innerText = supplierEdited.dirDepto;
+        document.getElementById(`dirProvince${supplierEdited.id}`).innerText = supplierEdited.dirProvince;
+        document.getElementById(`dirDepartment${supplierEdited.id}`).innerText = supplierEdited.dirDepartment;
         document.getElementById(`dirPostCode${supplierEdited.id}`).innerText = supplierEdited.dirPostCode;
         document.getElementById(`dirCity${supplierEdited.id}`).innerText = supplierEdited.dirCity;
         document.getElementById(`dirStreet${supplierEdited.id}`).innerText = supplierEdited.dirStreet;

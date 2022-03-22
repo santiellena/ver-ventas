@@ -1,47 +1,63 @@
-const docTypes = {
-    1: {
-        id: 1,
-        description: 'DNI',
-    },
-    2: {
-        id: 2,
-        description: 'RUC'
-    },
+const config = require('../../config/config');
+const axios = require('axios');
+const { getUrl }= config;
+const { getSessionToken } = require('../../config/auth');
+
+async function getAllDocTypes () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/doc-type/`,
+        headers: {
+            authorization:  `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
-function getAllDocTypes () {
-    return docTypes;
-};
-
-function getDocType (id) {
+async function getDocType (id) {
     if(id){
-        return docTypes[id];
-    };
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/doc-type/${id}`,
+            headers: {
+                authorization:  `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
 function addDocType (newName) {
     if(newName){
-        const iterable = Object.entries(docTypes);
-        let newId = 0;
-        for (let i = 1; i < iterable.length + 1; i++) {
-            if(docTypes[i] == undefined){
-                newId = i;
-                break;
-            } else if(docTypes[i+1] == undefined){
-                newId = i+1;
-                break;
-            };
-        };
-
-        return docTypes[newId] = {
-            id: newId,
-            description: newName,
-        };
+        const response = await axios({
+            method: 'POST',
+            url: `${getUrl()}/api/doc-type/`,
+            headers: {
+                authorization:  `Bearer ${await getSessionToken()}`,
+            },
+            data: {
+                description: newName,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
     };
 };
 
 function deleteDocType (id) {
-    if(docTypes[id] != undefined) delete docTypes[id];
+    if(id){
+        const response = await axios({
+            method: 'DELETE',
+            url: `${getUrl()}/api/doc-type/${id}`,
+            headers: {
+                authorization:  `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
 module.exports = {

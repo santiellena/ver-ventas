@@ -5,10 +5,10 @@ function addSupplier() {
     const docType = document.getElementById('docType').value;
     const numDoc = document.getElementById('numDoc').value;
     const cuit = document.getElementById('cuit').value;
-    const dirProv = document.getElementById('dirProv').value;
-    const dirDepto = document.getElementById('dirDepto').value;
-    const postCode = document.getElementById('postCode').value;
-    const dirCity = document.getElementById('city').value;
+    const idDirProvince = document.getElementById('idDirProvince').value;
+    const idDirDepartment = document.getElementById('idDirDepartment').value;
+    const dirPostCode = document.getElementById('dirPostCode').value;
+    const idDirCity = document.getElementById('idDirCity').value;
     const dirStreet = document.getElementById('dirStreet').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const email = document.getElementById('email').value;
@@ -17,10 +17,10 @@ function addSupplier() {
         supplierName,
         docType,
         numDoc,
-        dirDepto,
-        dirProv,
-        dirPostCode: postCode,
-        dirCity,
+        idDirDepartment,
+        idDirProvince,
+        dirPostCode: dirPostCode,
+        idDirCity,
         dirStreet,
         cuit,
         phoneNumber,
@@ -31,11 +31,11 @@ function addSupplier() {
 };
 
 async function loadCities() {
-    const idDepartment = document.getElementById('dirDepto').value;
+    const idDepartment = document.getElementById('idDirDepartment').value;
     if(idDepartment){
         const cities = await ipcRenderer.invoke('get-cities-bydepartment', idDepartment);
 
-        const selectCities = document.getElementById('city');
+        const selectCities = document.getElementById('idDirCity');
         selectCities.innerHTML = '';
         cities.map(e => {
             const option = document.createElement('option');
@@ -49,10 +49,10 @@ async function loadCities() {
 };
 
 async function loadDepartments () {
-    const idProvince = document.getElementById('dirProv').value;
+    const idProvince = document.getElementById('idDirProvince').value;
     const departments = await ipcRenderer.invoke('get-departments-byprovince', idProvince);
 
-    const selectDepartments = document.getElementById('dirDepto');
+    const selectDepartments = document.getElementById('idDirDepartment');
     selectDepartments.innerHTML = '';
     departments.map(e => {
         const option = document.createElement('option');

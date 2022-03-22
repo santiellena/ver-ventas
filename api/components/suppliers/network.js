@@ -21,7 +21,7 @@ router.get('/:id', validator(getPeopleSchema, 'params'), (req, res, next) => {
 router.post('/', validator(createPeopleSchema, 'body'), (req, res, next) => {
     controller.create(req.body)
     .then(data => response.success(req, res, data, 200))
-    .catch(err => console.log(err)); 
+    .catch(err => {next(err); console.log(err)}); 
 });
 
 router.patch('/:id', validator(getPeopleSchema, 'params'), validator(updatePeopleSchema, 'body'), (req, res, next) => {
@@ -35,7 +35,7 @@ router.delete('/:id', validator(deletePeopleSchema, 'params'), (req, res, next) 
     const { id } = req.params;
     controller.remove(id)
     .then(data => response.success(req, res, data, 200))
-    .catch(err => next(err));  
+    .catch(err => {next(err); console.log(err)});  
 });
 
 module.exports = router;

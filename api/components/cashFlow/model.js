@@ -1,6 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { BRANCH_TABLE } = require('../branches/model');
 const { EMPLOOY_TABLE } = require('../employees/model');
+const { CASH_REGISTER_TABLE } = require('../cashRegister/model');
 
 const CASH_FLOW_TABLE = 'cashFlow';
 
@@ -10,7 +11,7 @@ const cashFlowSchema = {
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
-        field: 'idcashFlow'
+        field: 'idcash_flow'
     },
     idEmplooy: {
         allowNull: false,
@@ -47,12 +48,24 @@ const cashFlowSchema = {
         allowNull: false,
         type: DataTypes.DECIMAL(19,2),
     },
+    idCashRegister: {
+        allowNull: false,
+        type: DataTypes.INTEGER,
+        field: 'id_cash_register',
+        reference: {
+            model: CASH_REGISTER_TABLE,
+            key: 'idcash_register',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'NO ACTION',
+    },
 };
 
 class CashFlow extends Model {
     static associate(models) {
         this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
         this.belongsTo(models.Emplooy, {as: 'emplooy', foreignKey: 'idEmplooy'});
+        this.belongsTo(models.CashRegister, {as: 'cashRegister', foreignKey: 'idCashRegister'});
     };
   
     static config(sequelize) {

@@ -18,8 +18,8 @@ const supplierSchema = {
             model: PEOPLE_TABLE,
             key: 'idpeople',
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: 'NO ACTION',
+        onUpdate: 'NO ACTION',
     },
 };
 

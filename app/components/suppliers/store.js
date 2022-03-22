@@ -1,154 +1,193 @@
-const suppliers = {
-    1: {
-        id: 1,
-        name: 'La Campesina S.A.S',
-        docType: 'RUC',
-        numDoc: 32664333,
-        dirDepto: 'San Justo',
-        dirProv: 'Córdoba',
-        dirPostCode: '5145',
-        dirCity: 'Arroyito',
-        dirStreet: 'Alvear 122',
-        cuit: 19326643332,
-        phoneNumber: 351443367,
-        email: 'lacampesina@workmail.com',
-        cbu: 001334255525455,
-    },
-    2: {
-        id: 2,
-        name: 'Perico S.A',
-        docType: 'DNI',
-        numDoc: 24456666,
-        dirDepto: 'Capital',
-        dirProv: 'Córdoba',
-        dirPostCode: '5000',
-        dirCity: 'Córdoba',
-        dirStreet: 'Av. Patricios 331',
-        cuit: 19244566662,
-        phoneNumber: 351413312,
-        email: 'pericoinsumos@proveedor.com',
-        cbu: 000002331422370,
-    },
-    3: {
-        id: 3,
-        name: 'Roberto Carlos',
-        docType: 'DNI',
-        numDoc: 6676654,
-        dirDepto: 'Manzanares',
-        dirProv: 'San Luis',
-        dirPostCode: '6344',
-        dirCity: 'Los Manzanos',
-        dirStreet: 'San Martin 865',
-        cuit: 2166766542,
-        phoneNumber: 563908765,
-        email: 'robertinho@gmail.com.futbol',
-        cbu: 0000143433712212,
-    },
-    4: {
-        id: 4,
-        name: 'KRU United & Co.',
-        docType: 'DNI',
-        numDoc: 23333222,
-        dirDepto: 'Carmen',
-        dirProv: 'Buenos Aires',
-        dirPostCode: '133',
-        dirCity: 'CABA',
-        dirStreet: 'Colonia Arroyos 099',
-        cuit: 21233332223,
-        phoneNumber: 34555667,
-        email: 'kreukun@united.com.ar',
-        cbu: 0002212743142232,
-    },
-};
+const config = require("../../config/config");
+const axios = require("axios");
+const { getUrl } = config;
+const { getSessionToken } = require("../../config/auth");
+const storeDirections = require('../directions/store');
+const storeDocTypes = require('../docTypes/store');
 
-function getAllSuppliers() {
-    return suppliers;
-};
+async function getAllSuppliers() {
+  const response = await axios({
+    method: "GET",
+    url: `${getUrl()}/api/supplier`,
+    headers: {
+      authorization: `Bearer ${await getSessionToken()}`,
+    },
+  });
+  if (response.data.message) {
+    return null;
+  } else {
+      return response.data.map(supplier => {
+        supplier.name = supplier.person.name;
+        supplier.idDirCity = supplier.person.idDirCity;
+        supplier.idDirDepartment = supplier.person.idDirDepartment;
+        supplier.idDirProvince = supplier.person.idDirProvince;
+        supplier.dirPostCode = supplier.person.dirPostCode;
+        supplier.cuit = supplier.person.cuit;
+        supplier.email = supplier.person.email;
+        supplier.numDoc = supplier.person.numDoc;
+        supplier.cbu = supplier.person.cbu;
+        supplier.phoneNumber = supplier.person.phoneNumber;
+        supplier.dirStreet = supplier.person.dirStreet;
+        supplier.dirCity = storeDirections.getCity(supplier.person.idDirCity).nombre;
+        supplier.dirDepartment = storeDirections.getDepartment(supplier.person.idDirDepartment).nombre;
+        supplier.dirProvince = storeDirections.getProvince(supplier.person.idDirProvince).nombre;
+        supplier.docType = storeDocTypes.getDocType(supplier.person.idDocType);
+        return supplier;
+      });
+  }
+}
 
-function getSupplier(id) {
-    return suppliers[id];
-};
-
-function deleteSupplier(id){
-    if(id != null & id!= undefined){
-        delete suppliers[id];
+async function getSupplier(id) {
+  if (id) {
+    const response = await axios({
+      method: "GET",
+      url: `${getUrl()}/api/supplier/${id}`,
+      headers: {
+        authorization: `Bearer ${await getSessionToken()}`,
+      },
+    });
+    if (response.data.message) {
+      return null;
+    } else {
+        const supplier = response.data;
+        supplier.name = supplier.person.name;
+        supplier.idDirCity = supplier.person.idDirCity;
+        supplier.idDirDepartment = supplier.person.idDirDepartment;
+        supplier.idDirProvince = supplier.person.idDirProvince;
+        supplier.dirPostCode = supplier.person.dirPostCode;
+        supplier.dirStreet = supplier.person.dirStreet;
+        supplier.cuit = supplier.person.cuit;
+        supplier.email = supplier.person.email;
+        supplier.numDoc = supplier.person.numDoc;
+        supplier.cbu = supplier.person.cbu;
+        supplier.phoneNumber = supplier.person.phoneNumber;
+        supplier.dirStreet = supplier.person.dirStreet;
+        supplier.dirCity = storeDirections.getCity(supplier.person.idDirCity).nombre;
+        supplier.dirDepartment = storeDirections.getDepartment(supplier.person.idDirDepartment).nombre;
+        supplier.dirProvince = storeDirections.getProvince(supplier.person.idDirProvince).nombre;
+        supplier.docType = storeDocTypes.getDocType(supplier.person.idDocType);
+        return supplier;
     };
-};
+  } else return null;
+}
 
-function addSupplier({
+async function deleteSupplier(id) {
+  if (id) {
+    const response = await axios({
+      method: "DELETE",
+      url: `${getUrl()}/api/supplier/${id}`,
+      headers: {
+        authorization: `Bearer ${await getSessionToken()}`,
+      },
+    });
+    if (response.data.message) {
+      return null;
+    } else return response.data;
+  } else return null;
+}
+
+async function addSupplier({
+  supplierName,
+  docType,
+  numDoc,
+  idDirDepartment,
+  idDirProvince,
+  dirPostCode,
+  idDirCity,
+  dirStreet,
+  cuit,
+  phoneNumber,
+  email,
+  cbu,
+}) {
+  const response = await axios({
+    method: "POST",
+    url: `${getUrl()}/api/supplier`,
+    headers: {
+      authorization: `Bearer ${await getSessionToken()}`,
+    },
+    data: {
+      name: supplierName,
+      idDocType: parseInt(docType),
+      numDoc,
+      phoneNumber,
+      email,
+      cbu,
+      dirStreet,
+      dirPostCode,
+      idDirProvince,
+      idDirDepartment,
+      idDirCity,
+      cuit,
+    },
+  });
+  if (response.data.message) return null
+  else {
+    return await getSupplier(response.data.id);
+  };
+}
+
+async function editSupplier({
+  id,
+  supplierName,
+  docType,
+  numDoc,
+  cuit,
+  idDirProvince,
+  idDirDepartment,
+  dirPostCode,
+  idDirCity,
+  dirStreet,
+  phoneNumber,
+  email,
+  cbu,
+}) {
+  if (
+    id,
     supplierName,
     docType,
     numDoc,
-    dirDepto,
-    dirProv,
-    dirPostCode,
-    dirCity,
-    dirStreet,
     cuit,
+    idDirProvince,
+    idDirDepartment,
+    dirPostCode,
+    idDirCity,
+    dirStreet,
     phoneNumber,
     email,
-    cbu,
-}) {
-    const iterableObject = Object.entries(suppliers);
-    const newId = iterableObject.length + 1;
-    return suppliers[newId] = {
-        id: newId,
+    cbu
+  ) {
+
+    const response = await axios({
+      method: "PATCH",
+      url: `${getUrl()}/api/supplier/${id}`,
+      headers: {
+        authorization: `Bearer ${await getSessionToken()}`,
+      },
+      data: {
         name: supplierName,
-        docType,
+        idDocType: docType,
         numDoc,
-        dirDepto,
-        dirProv,
-        dirPostCode,
-        dirCity,
-        dirStreet,
         cuit,
+        idDirProvince,
+        idDirDepartment,
+        dirPostCode: dirPostCode,
+        idDirCity,
+        dirStreet,
         phoneNumber,
         email,
         cbu,
-    };
-};
-
-function editSupplier({
-        id,
-        supplierName,
-        docType,
-        numDoc,
-        cuit,
-        dirProv,
-        dirDepto,
-        postCode,
-        dirCity,
-        dirStreet,
-        phoneNumber,
-        email, 
-        cbu,
-}) {
-    if(id, supplierName, docType, numDoc, cuit, dirProv, dirDepto, postCode, dirCity, dirStreet, phoneNumber, email, cbu){
-        const edit = {
-            id,
-            name: supplierName,
-            docType,
-            numDoc,
-            cuit,
-            dirProv,
-            dirDepto,
-            dirPostCode: postCode,
-            dirCity,
-            dirStreet,
-            phoneNumber,
-            email, 
-            cbu,
-        };
-       
-        suppliers[id] = edit;
-        return suppliers[id];
-    }
-};
+      },
+    });
+    if (response.data.message) return null;
+    else return await getSupplier(response.data.id);
+  }
+}
 
 module.exports = {
-    getAllSuppliers,
-    getSupplier,
-    deleteSupplier,
-    addSupplier,
-    editSupplier,
-}
+  getAllSuppliers,
+  getSupplier,
+  deleteSupplier,
+  addSupplier,
+  editSupplier,
+};

@@ -1,71 +1,22 @@
-const actualDate = new Date();
-let month = '';
-    if((actualDate.getMonth()+1).toString().length == 1){
-        month = `0${actualDate.getMonth()+1}`;
-    } else {
-        month = actualDate.getMonth()+1;
-    };
-const date = `${actualDate.getFullYear()}/${month}/${actualDate.getDate()}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+const dates = require('../../config/date');
+const config = require('../../config/config');
+const axios = require('axios');
+const { getUrl }= config;
+const { getSessionToken } = require('../../config/auth');
 
-const cashFlow = {
-    1: {
-        id: 1,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 100,
-        operation: 'IN',
-        observation: 'Cambio',
-        box: 2,
-    },
-    2: {
-        id: 2,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 2000,
-        operation: 'OUT',
-        observation: 'NO',
-        box: 1,
-    },
-    3: {
-        id: 3,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 430,
-        operation: 'IN',
-        observation: 'Cambio',
-        box: 1,
-    },
-    4: {
-        id: 4,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 3500,
-        operation: 'OUT',
-        observation: 'Pago proveedor',
-        box: 1,
-    },
-    5: {
-        id: 5,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 270,
-        operation: 'IN',
-        observation: 'Cambio',
-        box: 1,
-    },
-    6: {
-        id: 6,
-        date,
-        emplooy: { id: 1, name: 'Administrador' },
-        amount: 10000,
-        operation: 'OUT',
-        observation: 'Sueldo empleados',
-        box: 2,
-    },
-};
-
-function getAllRegisters () {
-    return cashFlow;
+async function getAllRegisters () {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/cash-flow`,
+        data: {
+            idBranch: config.getBranchDataFromConfig().id,
+        },
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
 };
 
 function addRegister ({
@@ -76,39 +27,24 @@ function addRegister ({
     box,
 }) {
     if(emplooy && amount && operation && box && observation) {
-        const iterable = Object.entries(cashFlow);
-        let id = 0;
-        for (let i = 1; i < iterable.length + 1; i++) {
-            if(cashFlow[i] == undefined){
-                id = i;
-                break;
-            } else if(cashFlow[i+1] == undefined){
-                id = i+1;
-                break;
-            };
-        };
-
-        const nowActualDate = new Date();
-        let month = '';
-        if((nowActualDate.getMonth()+1).toString().length == 1){
-                month = `0${nowActualDate.getMonth()+1}`;
-        } else {
-                month = nowActualDate.getMonth()+1;
-        };
-        const nowDate = `${nowActualDate.getFullYear()}/${month}/${nowActualDate.getDate()}-${nowActualDate.getHours()}:${nowActualDate.getMinutes()}`;
-
-        if(cashFlow[id] == undefined) {
-            return cashFlow[id] = {
-                id,
-                date: nowDate,
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/cash-flow`,
+            data: {
+                date: dates.actualDateAccuracy,
                 emplooy,
                 amount,
                 operation,
                 observation,
-                box,
-            };
-        } else return null;
-    } else return null;
+                idCashRegister: config.getCashRegisterId(),
+            },
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    };
 };
 
 module.exports = {

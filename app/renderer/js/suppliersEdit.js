@@ -12,10 +12,10 @@ function editSupplierInfo(id){
     const docType = document.getElementById('docType').value;
     const numDoc = document.getElementById('numDoc').value;
     const cuit = document.getElementById('cuit').value;
-    const dirProv = document.getElementById('dirProv').value;
-    const dirDepto = document.getElementById('dirDepto').value;
+    const dirProvince = document.getElementById('dirProvince').value;
+    const dirDepartment = document.getElementById('dirDepartment').value;
     const postCode = document.getElementById('postCode').value;
-    const dirCity = document.getElementById('dirCity').value;
+    const idDirCity = document.getElementById('dirCity').value;
     const dirStreet = document.getElementById('dirStreet').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const email = document.getElementById('email').value;
@@ -27,10 +27,10 @@ function editSupplierInfo(id){
         docType,
         numDoc,
         cuit,
-        dirProv,
-        dirDepto,
+        dirProvince,
+        dirDepartment,
         postCode,
-        dirCity,
+        idDirCity,
         dirStreet,
         phoneNumber,
         email, 
@@ -41,12 +41,12 @@ function editSupplierInfo(id){
 };
 
 async function loadCities() {
-    const idDepartment = document.getElementById('dirDepto').value;
+    const idDepartment = document.getElementById('dirDepartment').value;
     const supplier = window.supplier;
     if(idDepartment){
         const cities = await ipcRenderer.invoke('get-cities-bydepartment', idDepartment);
 
-        const selectCities = document.getElementById('city');
+        const selectCities = document.getElementById('dirCity');
         selectCities.innerHTML = '';
         cities.map(e => {
             const option = document.createElement('option');
@@ -54,7 +54,7 @@ async function loadCities() {
             option.value = e.id;
             option.setAttribute('id', e.nombre);
             option.innerText = e.nombre;
-            if(supplier.dirCity == e.nombre){
+            if(supplier.idDirCity == e.nombre){
                 option.setAttribute('selected', true);
             };
 
@@ -67,12 +67,12 @@ async function loadDepartments () {
     
     const supplierId = window.supplier;
     const supplier = await ipcRenderer.invoke('get-supplier', supplierId);
-    document.getElementById(supplier.docType).setAttribute('selected', true);
-    document.getElementById(supplier.dirProv).setAttribute('selected', true);
-    const idProvince = document.getElementById('dirProv').value;
+    document.getElementById(supplier.docType.description).setAttribute('selected', true);
+    document.getElementById(supplier.dirProvince).setAttribute('selected', true);
+    const idProvince = document.getElementById('dirProvince').value;
     const departments = await ipcRenderer.invoke('get-departments-byprovince', idProvince);
 
-    const selectDepartments = document.getElementById('dirDepto');
+    const selectDepartments = document.getElementById('dirDepartment');
     selectDepartments.innerHTML = '';
     departments.map(e => {
         const option = document.createElement('option');
@@ -81,7 +81,7 @@ async function loadDepartments () {
         option.innerText = e.nombre;
         option.setAttribute('id', e.nombre);
 
-        if(supplier.dirDepto == e.nombre){
+        if(supplier.dirDepartment == e.nombre){
             option.setAttribute('selected', true);
         };
 

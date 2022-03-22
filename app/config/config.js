@@ -6,20 +6,25 @@ const {
     createLoginWindow,
 } = require('../createWindows');
 
-const configs = fs.readFileSync(`${__dirname}/config.json`, {encoding: 'utf-8'}, (err, data) => {
-    if(err) {
-        throw new Error(err);
-    } else {
-        return JSON.parse(data);
-    }
-});
-
 const network = fs.readFileSync(`${__dirname}/network.json`, {encoding: 'utf-8'}, (err, data) => {
     if(err) {
         throw new Error(err);
     } else {
         return JSON.parse(data);
     };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
+
+const configs = fs.readFileSync(`${__dirname}/config.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    }
 });
 
 function getConfig () {
@@ -53,11 +58,6 @@ async function checkUrl (url) {
     } else {
         return null;
     };
-};
-
-function getUrl () {
-    const net = JSON.parse(network);
-    return net.url;
 };
 
 async function checkToken (token, idBranch) {

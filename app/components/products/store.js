@@ -1,40 +1,20 @@
-const storeDepartments = require('../departments/store');
-const storeLocations = require('../locations/store');
-const StoreUnitMeasure = require('../unitMeasures/store');
-
 const config = require('../../config/config');
 const axios = require('axios');
-const { getUrl }= config;
 const { getSessionToken } = require('../../config/auth');
+const fs = require('fs');
 
-const products = {
-    1: {
-        id: 1,
-        description: 'Mayonesa 200ml',
-        stock: 22,
-        unitPrice: 120,
-        wholesalerPrice: 100,
-        buyPrice: 75,
-        location: ['Estante 1', 'Pasillo 1'],
-        department: {id: 2, description:'Carniceria'},
-        unitMeasure: 'Unidad',
-        stockMin: 10,
-        onSale: 1,
-    },
-    2: {
-        id: 2,
-        description: 'Ketchup 300ml',
-        stock: 12,
-        unitPrice: 320,
-        wholesalerPrice: 270,
-        buyPrice: 180,
-        location: ['Estante 1', 'Pasillo 2'],
-        department: {id: 1, description:'Varios'},
-        unitMeasure: 'Unidad',
-        stockMin: 15,
-        onSale: 0,
-    },
-}
+const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
+    if(err) {
+        throw new Error(err);
+    } else {
+        return JSON.parse(data);
+    };
+});
+
+function getUrl () {
+    const net = JSON.parse(network);
+    return net.url;
+};
 
 async function getProduct (id) {
     if(id){

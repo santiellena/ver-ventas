@@ -59,9 +59,9 @@
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-											<label class="col-form-label col-md-3 col-sm-3 label-align" for="dirProv">Provincia</label>
+											<label class="col-form-label col-md-3 col-sm-3 label-align" for="idDirProvince">Provincia</label>
 											<div class="col-md-6 col-sm-6 ">
-												<select class="form-control"  id="dirProv"  required="required" onchange="loadDepartments();">
+												<select class="form-control"  id="idDirProvince"  required="required" onchange="loadDepartments();">
 													{{#each provinces}}
                                                         <option value="{{this.id}}">{{this.nombre}}</option>
                                                     {{/each}}
@@ -69,22 +69,22 @@
 											</div>
 									</div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirDepto">Departamento</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="idDirDepartment">Departamento</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        	<select class="form-control"  id="dirDepto"  required="required" onchange="loadCities();">
+			                        	<select class="form-control"  id="idDirDepartment"  required="required" onchange="loadCities();">
 										</select>
 		                            </div>
 	                            </div>
                                 <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="postCode">Código Postal</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="dirPostCode">Código Postal</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        <input type="number" id="postCode" required="required" class="form-control ">
+			                        <input type="number" id="dirPostCode" required="required" class="form-control ">
 		                            </div>
 	                            </div>
                                   <div class="item form-group">
-			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="city">Localidad</label>
+			                        <label class="col-form-label col-md-3 col-sm-3 label-align" for="idDirCity">Localidad</label>
 			                        <div class="col-md-6 col-sm-6 ">
-			                        	<select class="form-control"  id="city"  required="required" >
+			                        	<select class="form-control"  id="idDirCity"  required="required" >
 										</select>
 		                            </div>
 	                            </div>
