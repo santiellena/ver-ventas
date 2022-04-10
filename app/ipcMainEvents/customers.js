@@ -27,19 +27,18 @@ module.exports = ({
     createListDebtsWindow,
 }) => {
 
-    ipcMain.on('load-customers-window', () => {
-        const customers = storeCustomers.getAllCustomers();
+    ipcMain.on('load-customers-window', async () => {
+        const customers = await storeCustomers.getAllCustomers();
         if(customers){
             createCustomersWindow({customers});
         };
     });
 
     ipcMain.on('load-addcustomer-window', async () => {
-        const freeCode = await storeCustomers.getFreeFirstIndex();
         const provinces = storeDirections.getAllProvinces();
         const docTypes = await storeDocTypes.getAllDocTypes();
         const object = JSON.parse(provinces);
-        createAddCustomerWindow({provinces: object.provincias, docTypes, freeCode});
+        createAddCustomerWindow({provinces: object.provincias, docTypes});
     });
 
     ipcMain.on('load-editcustomer-window', async () => {
@@ -73,57 +72,47 @@ module.exports = ({
 
     let addedPivot;
     ipcMain.on('add-customer', async (e, {
-        id,
         name,
-        docType,
+        idDocType,
         numDoc,
         cuit,
         email,
         phoneNumber,
-        province,
-        department,
-        postCode,
-        city,
-        street,
+        idDirProvince,
+        idDirDepartment,
+        dirPostCode,
+        idDirCity,
+        dirStreet,
         initialDebt,
     }) => {
         if(
-            id,
             name,
-            docType,
+            idDocType,
             numDoc,
             cuit,
             email,
             phoneNumber,
-            province,
-            department,
-            postCode,
-            city,
-            street,
+            idDirProvince,
+            idDirDepartment,
+            dirPostCode,
+            idDirCity,
+            dirStreet,
             initialDebt
         ){
-
-            const dirProv = storeDirections.getProvince(province);
-            const dirDepto = storeDirections.getDepartment(department);
-            const dirCity = storeDirections.getCity(city);
-
-
             const added = await storeCustomers.addCustomer({
-                id, 
                 name,
-                docType,
+                idDocType,
                 numDoc,
                 cuit,
                 email,
                 phoneNumber,
-                dirProv,
-                dirDepto,
-                postCode,
-                dirCity,
-                street,
+                idDirProvince,
+                idDirDepartment,
+                dirPostCode,
+                idDirCity,
+                dirStreet,
                 initialDebt,
             });
-
             const customersWindow = returnCustomersWindow();
             customersWindow.webContents.send('update-customer-list-fromadd');
 
@@ -146,37 +135,34 @@ module.exports = ({
     ipcMain.on('edit-customer', async (e, {
         id,
         name,
-        docType,
+        idDocType,
         numDoc,
         cuit,
         email,
         phoneNumber,
-        province,
-        department,
-        postCode,
-        city,
-        street,
-        debts,
+        idDirProvince,
+        idDirDepartment,
+        dirPostCode,
+        idDirCity,
+        dirStreet,
+        debt
     }) => {
-        if(id && name && docType && numDoc && cuit && email && phoneNumber && province && department && postCode && city && street && debts){
-            const dirProv = storeDirections.getProvince(province);
-            const dirDepto = storeDirections.getDepartment(department);
-            const dirCity = storeDirections.getCity(city);
+        if(id && name && idDocType && numDoc && cuit && email && phoneNumber && idDirProvince && idDirDepartment && dirPostCode && idDirCity && dirStreet && debt){
 
-            const editedCustomer = storeCustomers.editCustomer({
+            const editedCustomer = await storeCustomers.editCustomer({
                 id,
                 name,
-                docType,
+                idDocType,
                 numDoc,
                 cuit,
                 email,
-                phoneNumber, 
-                dirProv,
-                dirDepto,
-                dirPostCode: postCode,
-                dirCity,
-                dirStreet: street,
-                debts,
+                phoneNumber,
+                idDirProvince,
+                idDirDepartment,
+                dirPostCode,
+                idDirCity,
+                dirStreet,
+                debt
             });
 
             pivotEdited = editedCustomer;

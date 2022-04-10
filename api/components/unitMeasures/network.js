@@ -24,7 +24,7 @@ router.post('/', validator(createUnitMeasureSchema, 'body'), (req, res, next) =>
     .catch(err => next(err));
 });
 
-router.patch('/:id', validator(getUnitMeasureSchema, 'params'), validator(createUnitMeasureSchema, 'body'), (req, res, next) => {
+router.patch('/:id', validator(getUnitMeasureSchema, 'params'), validator(updateUnitMeasureSchema, 'body'), (req, res, next) => {
     const { id } = req.params;
     controller.update(id, req.body)
     .then(data => response.success(req, res, data, 200))

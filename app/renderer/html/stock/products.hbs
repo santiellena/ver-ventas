@@ -68,8 +68,8 @@
                           <th id="wholesalerPrice{{this.id}}">$ {{this.wholesalerPrice}}</th>
                           <th id="unitPrice{{this.id}}">$ {{this.unitPrice}}</th>
                           <th id="department{{this.id}}">{{this.department.description}}</th>
-                          <th id="location{{this.id}}">{{this.location}}</th>
-                          <th id="unitMeasure{{this.id}}">{{this.unitMeasure}}</th>
+                          <th id="location{{this.id}}">{{this.store.description}}, {{this.exposition.description}}</th>
+                          <th id="unitMeasure{{this.id}}">{{this.unitMeasure.longDescription}} ({{this.unitMeasure.shortDescription}})</th>
                         </tr>
                         {{/each}}
                         {{else}}
@@ -95,6 +95,7 @@
                         <button class="btn btn-danger" id="delete-product-button"><i class="fa fa-trash-o"></i> Eliminar Producto</button>
                         <button class="btn btn-primary" id="add-buy-button"><i class="fa fa-truck"></i> Agregar Inventario</button>
                         <button class="btn btn-secondary" id="departments-button"><i class="fa fa-sitemap"></i> Departamentos</button>
+                        <button class="btn btn-success" id="locations-button"><i class="fa fa-map-marker"></i> Ubicaciones</button>
                     </div>
                     <div class="division-data">
                         <div class="item form-group">

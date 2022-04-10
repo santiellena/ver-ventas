@@ -10,7 +10,7 @@ async function editEmplooy (id) {
     const phoneNumber = document.getElementById('phoneNumber').value;
     const birthDate = document.getElementById('date').value;
     
-    if(name && lastname && docTypeId && numDoc && email && dirStreet && phoneNumber && birthDate && login && password){
+    if(name && lastname && docTypeId && numDoc && email && dirStreet && phoneNumber && birthDate){
         const update = await ipcRenderer.invoke('edit-emplooy', {
             id,
             name,
@@ -21,8 +21,6 @@ async function editEmplooy (id) {
             dirStreet,
             phoneNumber,
             birthDate,
-            login, 
-            password,
         });
         const alertDiv = document.getElementById('alert');
         if(update == null){
@@ -44,8 +42,6 @@ async function editEmplooy (id) {
             document.getElementById('dirStreet').value = update.dirStreet;
             document.getElementById('phoneNumber').value = update.phoneNumber;
             document.getElementById('date').value = update.birthDate;
-            document.getElementById('username').value = update.username;
-            document.getElementById('password').value = update.password;
 
             alertDiv.innerHTML = '';
             alertDiv.innerHTML = '<div class="alert alert-success alert-dismissible " role="alert" style="width:60%"><button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="clearAlert();"><span aria-hidden="true">×</span></button><strong>Éxito!</strong> Modificado Correctamente</div>';

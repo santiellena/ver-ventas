@@ -1,5 +1,6 @@
 const { session } = require('electron');
 const fs = require('fs')
+const auth = require('../components/auth/store');
 
 function getUrl () {
     const network = fs.readFileSync(`${__dirname}/network.json`, {encoding: 'utf-8'}, (err, data) => {

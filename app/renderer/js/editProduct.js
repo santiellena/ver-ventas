@@ -10,6 +10,7 @@ function editProduct () {
     const wholesalerPrice = document.getElementById('wholesalerPrice-product').value;
     const unitPrice = document.getElementById('unitPrice-product').value;
     const stock = document.getElementById('stock-product').value;
+    const stockMin = document.getElementById('stockMin-product').value;
     const departmentId = document.getElementById('department-product').value;
     const locationShowId = document.getElementById('locationShow-product').value;
     const locationStoreId = document.getElementById('locationStore-product').value;
@@ -23,6 +24,7 @@ function editProduct () {
             wholesalerPrice,
             unitPrice,
             stock,
+            stockMin,
             departmentId,
             locationShowId,
             locationStoreId,
@@ -61,17 +63,17 @@ async function checkCodeValue () {
         const id = document.getElementById('id-product').value;
 
         const product = await ipcRenderer.invoke('search-product-byid', id);
-
         if(product != null && product != undefined) {
             document.getElementById('description-product').value = product.description;
             document.getElementById('buyPrice-product').value = product.buyPrice;
             document.getElementById('wholesalerPrice-product').value = product.wholesalerPrice;
             document.getElementById('unitPrice-product').value = product.unitPrice;
             document.getElementById('stock-product').value = product.stock;
-            document.getElementById(`measure${product.unitMeasure}`).setAttribute('selected', true);
-            document.getElementById(`department${product.department.description}`).setAttribute('selected', true);
-            document.getElementById(`locationShow${product.location[1]}`).setAttribute('selected', true);
-            document.getElementById(`locationStore${product.location[0]}`).setAttribute('selected', true);
+            document.getElementById('stockMin-product').value = product.stockMin;
+            document.getElementById(`measure${product.unitMeasure.id}`).setAttribute('selected', true);
+            document.getElementById(`department${product.department.id}`).setAttribute('selected', true);
+            document.getElementById(`locationShow${product.exposition.id}`).setAttribute('selected', true);
+            document.getElementById(`locationStore${product.store.id}`).setAttribute('selected', true);
         };
     }
 };

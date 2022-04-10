@@ -7,6 +7,7 @@ const storeProducts = require('../components/products/store');
 const storeDocTypes = require('../components/docTypes/store');
 const storeDirections = require('../components/directions/store');
 const auth = require('../config/auth');
+const config = require('../config/config');
 
 const { mainHandlebars,
         historyHandlebars,
@@ -36,7 +37,7 @@ module.exports = ({
 
     ipcMain.on('load-editsupplier-window', async (e, id) => {
         const supplier = await storeSuppliers.getSupplier(id);
-        const docTypes = storeDocTypes.getAllDocTypes();
+        const docTypes = await storeDocTypes.getAllDocTypes();
         const provinces = storeDirections.getAllProvinces();
         const object = JSON.parse(provinces);
         if(supplier != undefined && supplier != null){
@@ -76,7 +77,7 @@ module.exports = ({
         email,
         cbu,
     }) => {
-        supplierAdded = await storeSuppliers.addSupplier({
+        const supplierAddedOriginal = await storeSuppliers.addSupplier({
         supplierName,    
         docType,
         numDoc,
@@ -90,11 +91,12 @@ module.exports = ({
         email,
         cbu,
         });
+        supplierAdded = supplierAddedOriginal;
         const suppliersWindow = returnSuppliersWindow();
 
         suppliersWindow.webContents.send('load-new-supplier');
     });
-    ipcMain.handle('get-supplier-added', () => {
+    ipcMain.handle('get-supplier-added', async () => {
         const supplier = supplierAdded;
         delete supplierAdded;
         return supplier;
@@ -104,7 +106,7 @@ module.exports = ({
     ipcMain.on('edit-supplier-info', async (e, {
         id,
         supplierName,
-        docType,
+        idDocType,
         numDoc,
         cuit,
         idDirProvince,
@@ -116,11 +118,11 @@ module.exports = ({
         email, 
         cbu,
     }) => {
-        if(id, supplierName, docType, numDoc, cuit, idDirProvince, idDirDepartment, dirPostCode, idDirCity, dirStreet, phoneNumber, email, cbu){
+        if(id, supplierName, idDocType, numDoc, cuit, idDirProvince, idDirDepartment, dirPostCode, idDirCity, dirStreet, phoneNumber, email, cbu){
             supplierEdited = await storeSuppliers.editSupplier({
                 id,
                 supplierName,
-                docType,
+                idDocType,
                 numDoc,
                 cuit,
                 idDirProvince,
@@ -133,7 +135,6 @@ module.exports = ({
                 cbu,
             });
             if(supplierEdited != undefined && supplierEdited != null){
-
                 const suppliersWindow = returnSuppliersWindow();
                 suppliersWindow.webContents.send('load-edited-supplier');
             };
@@ -228,7 +229,6 @@ module.exports = ({
 
     ipcMain.handle('get-suppliers', async () => {
         const suppliers = await storeSuppliers.getAllSuppliers();
-
         if(suppliers){
             return suppliers;
         } else {
@@ -237,11 +237,10 @@ module.exports = ({
     });
 
     ipcMain.on('buy-end', async (e, { items, supplierId, howPaid }) => {
-        const emplooy = await auth.getUserSessionInfo();
-        const branch = 'Principal';
-        const supplier = await storeSuppliers.getSupplier(supplierId);
+        const user = await auth.getUserSessionInfo();
+        const branch = config.getBranchDataFromConfig();
 
-        if(items && supplier && howPaid) {
+        if(items && supplierId && howPaid) {
             const addBuyWindow = returnAddBuyWindow();
 
             const response = dialog.showMessageBoxSync(addBuyWindow, {
@@ -252,10 +251,9 @@ module.exports = ({
             });
 
             if(response == 1){
-                let details = [];
                 const date = dates.actualDate();
 
-                items.map(e => {
+                let details = items.map(e => {
                     const index1 = e[1].indexOf('-');
                     const index2 = e[1].indexOf('/');
                     const index3 = e[1].indexOf('_');
@@ -271,20 +269,17 @@ module.exports = ({
                         unitPrice,
                     };
 
-                    details.push(detail);
+                    return detail;
                 });
-                
                 await storeProducts.updateStockAndPrices(details);
-
                 await storeBuys.addBuy({
                     branch, 
-                    emplooy,
-                    supplier,
+                    user,
+                    supplier: supplierId,
                     howPaid,
                     details,
-                    date,
+                    date
                 });
-              
                 addBuyWindow.webContents.send('buy-confirmation');
             } else {
 

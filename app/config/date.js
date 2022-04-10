@@ -30,7 +30,19 @@ let day= '';
     } else {
         day = actualDate.getDate();
     };
-const date = `${actualDate.getFullYear()}/${month}/${day}-${actualDate.getHours()}:${actualDate.getMinutes()}`;
+let hour = '';
+    if(actualDate.getHours().toString().length == 1){
+        hour = `0${actualDate.getHours()}`;
+    } else {
+        hour = actualDate.getHours();
+    };
+    let minutes = '';
+    if(actualDate.getMinutes().toString().length == 1){
+        minutes = `0${actualDate.getMinutes()}`;
+    } else {
+        minutes = actualDate.getMinutes();
+    };
+const date = `${actualDate.getFullYear()}/${month}/${day}-${hour}:${minutes}`;
 return date;
 };
 

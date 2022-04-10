@@ -2,11 +2,11 @@ const { Product } = require('../../database/database').sequelize.models;
 const boom = require('@hapi/boom');
 
 const getAll = async () => {
-    return await Product.findAll({include: ['supplier', 'department', 'exposition', 'store','unitMeasure']});
+    return await Product.findAll({include: ['department', 'exposition', 'store','unitMeasure']});
 };
 
 const getOne = async (id) => {
-    const product = await Product.findByPk(id, {include: ['supplier', 'department', 'exposition', 'store', 'unitMeasure']});
+    const product = await Product.findByPk(id, {include: ['department', 'exposition', 'store', 'unitMeasure']});
     if(!product){
         throw boom.notFound();
     } else {

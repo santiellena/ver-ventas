@@ -255,19 +255,14 @@ module.exports = ({
 
   ipcMain.on("load-users-window", async () => {
     const users = await storeUsers.getAllUsers();
-    const iterable = Object.values(users);
-    const withbranch = iterable.map(async (user) => {
+    const withbranch = users.map(user => {
       let branchName = "";
       for (let i = 0; i < user.branches.length; i++) {
-        new Promise(async (resolve, reject) => {
-          const branch = await storeMaintenance.getBranch(user.branches[i]);
-        if (i == 0) branchName += `${branch.name}`;
-        else branchName += `, ${branch.name}`;
-        });
-        
-      }
+        if (i == 0) branchName += `${user.branches[i].name}`
+        else branchName += `, ${user.branches[i].name}`;
+      };
 
-      const emplooy = await storeEmployees.getEmplooy(user.idEmplooy);
+      const emplooy = user.emplooy;
       user.branchName = branchName;
       user.name = emplooy.name;
       user.lastname = emplooy.lastname;
@@ -296,7 +291,7 @@ module.exports = ({
   ipcMain.handle("get-branches-selected-byuser", async (e, idUser) => {
     if (idUser) {
       const user = await storeUsers.getUser(idUser);
-      return await storeMaintenance.getBranches(user.branches);
+      return user.branches;
     }
   });
 
@@ -465,7 +460,7 @@ module.exports = ({
         menuMaintenance,
         menuSells,
         menuInvoicing,
-        menuStats,
+        menuQueries,
       }
     ) => {
       if (
@@ -479,7 +474,7 @@ module.exports = ({
         menuMaintenance != null &&
         menuSells != null &&
         menuInvoicing != null &&
-        menuStats != null
+        menuQueries != null
       ) {
         const edit = await storeUsers.updateUser({
           id,
@@ -492,7 +487,7 @@ module.exports = ({
           menuMaintenance,
           menuSells,
           menuInvoicing,
-          menuStats,
+          menuQueries,
         });
         return edit;
       } else return null;

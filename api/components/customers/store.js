@@ -14,6 +14,15 @@ const getOne = async (id) => {
     };
 };
 
+const getOneWithSells = async (id) => {
+    const customer = await Customer.findByPk(id, { include: ['person', 'sells']});
+    if(!customer){
+        throw boom.badRequest();
+    } else {
+        return customer;
+    };
+};
+
 const create = async (data) => {
     return await Customer.create(data);
 };
@@ -31,6 +40,7 @@ const remove = async (id) => {
 module.exports = {
     getAll,
     getOne,
+    getOneWithSells,
     create,
     update,
     remove,

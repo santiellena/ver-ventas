@@ -58,7 +58,7 @@ async function getSellDetail (id) {
 async function getSellsByDate (from, to) {
     const response = await axios({
         method: 'GET',
-        url: `${getUrl()}/api/sell/date?from=${from}&to=${to}`,
+        url: `${getUrl()}/api/sell/date/go?from=${from}&to=${to}`,
         headers: {
             authorization: `Bearer ${await getSessionToken()}`,
         },
@@ -111,11 +111,11 @@ async function addSell ({
             data: {
                 date: dates.actualDateAccuracy(),
                 amount,
-                branch,
-                customer,
+                idBranch: branch,
+                idCustomer: customer,
                 howPaid,
                 details: detailsForSell,
-                emplooy,
+                idEmplooy: emplooy,
                 howMuchPaid,
             },
         });
@@ -140,7 +140,7 @@ async function deleteSell (id) {
 
 async function getSellsByCustomer (idCustomer) {
     if(idCustomer){
-       const customer = await storeCustomers.getCustomer(idCustomer);
+       const customer = await storeCustomers.getCustomerWithSells(idCustomer);
         if(customer){
             const sellList = customer.sells.map(e => {
                 if(e.howPaid == 'Cuenta Corriente' || e.howPaid == 'Contado/Cuenta Corriente'){
@@ -160,8 +160,8 @@ async function getGainsByDepartment (from, to) {
     const toYear = to.slice(0,4);
     const toMonth = to.slice(5,7);
     const toDay = to.slice(8,10);
-
-    const sellsToday = [];
+    if (sells){
+        const sellsToday = [];
     for (const sell of sells) {
         const sellYear = sell.date.slice(0,4);
         const sellMonth = sell.date.slice(5,7);
@@ -203,6 +203,8 @@ async function getGainsByDepartment (from, to) {
         departments: arrayDepartments,
         amountOfSells: sellsToday.length,
     };
+    } else return null;
+    
     
 };
 

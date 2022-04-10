@@ -59,7 +59,7 @@ const userSchema = {
     defaultValue: 0,
   },
   menuMaintenance: {
-    field: 'menu_manteinance',
+    field: 'menu_maintenance',
     type: DataTypes.TINYINT,
     allowNull: false,
     defaultValue: 0,

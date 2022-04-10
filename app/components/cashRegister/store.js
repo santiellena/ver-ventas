@@ -46,8 +46,8 @@ async function newBox () {
 async function substractToBox (idBox, idBranch, amount) {
     if(idBranch == config.getBranchDataFromConfig().id){
         const amountFloat = parseFloat(amount);
-        const substract = await getCashRegister(idBox).moneyAmount - amountFloat;
-        const updatedAmount = substract.toFixed(2);
+        const box = await getCashRegister(idBox);
+        const substract = parseFloat(box.moneyAmount) - amountFloat;
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/cash-register/${idBox}`,
@@ -55,7 +55,7 @@ async function substractToBox (idBox, idBranch, amount) {
                 authorization: `Bearer ${await getSessionToken()}`,
             },
             data: {
-                moneyAmount: updatedAmount,
+                moneyAmount: parseFloat(substract),
             },
         });
         if(response.data.message) return null
@@ -67,8 +67,8 @@ async function substractToBox (idBox, idBranch, amount) {
 async function addToBox (idBox, idBranch, amount) {
     if(idBranch == config.getBranchDataFromConfig().id){
         const amountFloat = parseFloat(amount);
-        const sum = await getCashRegister(idBox).moneyAmount + amountFloat;
-        const updatedAmount = sum.toFixed(2);
+        const box = await getCashRegister(idBox);
+        const sum = parseFloat(box.moneyAmount) + amountFloat;
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/cash-register/${idBox}`,
@@ -76,7 +76,7 @@ async function addToBox (idBox, idBranch, amount) {
                 authorization: `Bearer ${await getSessionToken()}`,
             },
             data: {
-                moneyAmount: updatedAmount,
+                moneyAmount: parseFloat(sum),
             },
         });
         if(response.data.message) return null

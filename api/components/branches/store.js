@@ -30,10 +30,25 @@ const remove = async (id) => {
     return await branch.destroy();  
 };
 
+const getNextSerieAndNumber = async (idBranch) => {
+    const branch = await getOne(idBranch);
+    const nextNumber = branch.lastNumber + 1;
+    const serie = branch.lastSerie;
+
+    return { nextNumber, serie };
+};
+
+const updateLastNumber = async (idBranch) => {
+    const branch = await getOne(idBranch);
+    return await branch.update({ lastNumber: branch.lastNumber + 1}); 
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    getNextSerieAndNumber,
+    updateLastNumber,
 };

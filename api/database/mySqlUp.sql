@@ -1,5 +1,7 @@
 CREATE SCHEMA `versystem` ;
-
+use `m1990`;
+drop database `m1990`;
+CREATE SCHEMA `m1990` ;
 CREATE TABLE `versystem`.`global` (
   `idglobal` INT NOT NULL AUTO_INCREMENT,
   `empresa` VARCHAR(40) NOT NULL,

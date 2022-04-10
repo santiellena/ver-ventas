@@ -34,14 +34,30 @@ const update = async (id, changes) => {
     return await store.update(id, changes);
 };
 
+const updateByDetail = async (details) => {
+    for (const detail of details) {
+        const { product, unitPrice, price, wholesalerPrice, quantity } = detail;
+        const oldProduct = await store.getOne(product);
+        const newQuantity = parseFloat(quantity) + parseFloat(oldProduct.stock);
+        await store.update(product, {
+            buyPrice: price,
+            unitPrice,
+            wholesalerPrice,
+            stock: parseFloat(newQuantity),
+        });
+    };  
+    return true;
+};
+
 const remove = async (id) => {
     return await store.remove(id);
 };
 
 const updateOnSale = async (id) => {
-    const product = store.getOne(id);
-    if(product.onSale == 0)return await store.update(id, {onSale: 1})
-    else return await store.update(id, {onSale: 0});
+    const product = await store.getOne(id);
+    if(product.onSale == 0){
+        return await store.update(id, {onSale: 1})
+    } else return await store.update(id, {onSale: 0});
 };
 
 const updateFromSell = async (id, minus) => {
@@ -59,5 +75,6 @@ module.exports = {
     update,
     updateOnSale,
     updateFromSell,
+    updateByDetail,
     remove,
 };

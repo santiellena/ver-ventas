@@ -1,0 +1,13 @@
+USE m1990;
+INSERT INTO `doc-type` (`description`) VALUES('DNI');
+INSERT INTO `user-type` (`type`) VALUES('ADMIN');
+INSERT INTO `user-type` (`type`) VALUES('USER');
+INSERT INTO `global` (`fantasy_name`,`business_name`,`tax_name`,`tax_percentage`) VALUES('Mercado 1990','DESCONOCIDO','IVA',0);
+INSERT INTO `unit-measure` (`long_description`,`short_description`) VALUES('Unidad','U');
+INSERT INTO `department` (`description`) VALUES('VARIOS');
+INSERT INTO `branch` (`name`,cuit,`dir_street`,`phone_number`,email,representative) VALUES('Principal','DESCONOCIDO','Moises Quinteros 1163',11111,'email@default.dev','Administrador');
+INSERT INTO `cash-register` (`id_branch`,`money_amount`) VALUES(1,0);
+INSERT INTO `location-exposition` (`description`,`id_branch`) VALUES('Estante 1',1);
+INSERT INTO `location-store` (`description`,`id_branch`) VALUES('Deposito 1',1);
+INSERT INTO `emplooy` (`lastname`,`name`,`id_doc_type`,`num_doc`,`dir_street`,`phone_number`,email,`birth_date`) VALUES('Administrador','Administrador',1,11111111,'Adress Default',111111111,'email@default.dev','2000/02/02');
+INSERT INTO `user` (`id_emplooy`,`id_user_type`,`menu_stock`,`menu_buys`,`menu_sells`,`menu_maintenance`,`menu_queries`,`menu_admin`,`menu_invoicing`,`username`,`password`) VALUES(1,1,1,1,1,1,1,1,1,'admin','$2b$08$auS3xwRSO2ZghXmDQQ2mpOuOgpq2Xjb.asMmreZTh22hClMw.N8.C');

@@ -10,6 +10,7 @@ function addProduct(){
     const wholesalerPrice = document.getElementById('wholesalerPrice-product').value;
     const unitPrice = document.getElementById('unitPrice-product').value;
     const initialStock = document.getElementById('initialStock-product').value;
+    const stockMin = document.getElementById('stockMin-product').value;
     const departmentId = document.getElementById('department-product').value;
     const locationShowId = document.getElementById('locationShow-product').value;
     const locationStoreId = document.getElementById('locationStore-product').value;
@@ -27,6 +28,7 @@ function addProduct(){
             locationShowId,
             locationStoreId,
             unitMeasureId,
+            stockMin,
         });
     
         form.reset();

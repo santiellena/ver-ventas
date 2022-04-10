@@ -10,22 +10,20 @@ async function searchBuyByDate () {
 
     const tbodyBuys = document.getElementById('tbody-buys');
 
-    const arrBuysByDate = Object.entries(buysByDate);
-
     let allBuys = '';
 
-    arrBuysByDate.map(buy => {
+    for(const buy  of buysByDate){
         allBuys = allBuys + `<tr>
-        <th>${buy[1].id}</th> 
-        <th>${buy[1].date}</th>
-        <th>$ ${buy[1].amount}</th>
-        <th>${buy[1].emplooy.name}</th>
-        <th>${buy[1].branch}</th>
-        <th>${buy[1].supplier.name}</th>
-        <th>${buy[1].howPaid}</th>
-        <th><button class="btn btn-info" onclick="seeBuyDetail(${buy[1].id})">Ver</button></th>
+        <th>${buy.id}</th> 
+        <th>${buy.date}</th>
+        <th>$ ${buy.totalAmount}</th>
+        <th>${buy.user.emplooy.name}</th>
+        <th>${buy.branch.name}</th>
+        <th>${buy.supplier.person.name}</th>
+        <th>${buy.howPaid}</th>
+        <th><button class="btn btn-info" onclick="seeBuyDetail(${buy.id})">Ver</button></th>
       </tr>`
-    });
+    };
 
     //Buy: 1-0 ID , 1-1 Date , 1-2 Amount , 1-3 Emplooy , 1-4 Branch , 1-5 Supplier, 1-6 HowPaid, 1-7 Details
 

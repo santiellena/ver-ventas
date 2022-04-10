@@ -20,7 +20,7 @@ router.get('/:id', checkAllow(['menu-buys']), validator(getBuySchema, 'params'),
     .catch(err => next(err));
 });
 
-router.get('/date', checkAllow(['menu-buys']), validator(getBuyByDateSchema, 'query'), (req, res, next) => {
+router.get('/date/when', checkAllow(['menu-buys']), validator(getBuyByDateSchema, 'query'), (req, res, next) => {
     const { from, to } = req.query;
 
     controller.getByDate(from, to)

@@ -91,15 +91,14 @@ async function addUser ({
     menuBuys, 
     menuSells,
     menuMaintenance,
-    menuQuery,
+    menuQueries,
     menuAdmin,
     menuInvoicing,
 }) {
     if(checkUserTypeId(idUserType) == false){
         return null;
     };
-    const registerDate = dates.actualDateAccuracy();
-    if(branches && idEmplooy && idUserType && menuStock != null && menuBuys != null && menuSells != null && menuMaintenance != null && menuQuery != null && menuAdmin != null && menuInvoicing != null && password && username){
+    if(branches && idEmplooy && idUserType && menuStock != null && menuBuys != null && menuSells != null && menuMaintenance != null && menuQueries != null && menuAdmin != null && menuInvoicing != null && password && username){
         const response = await axios({
             method: 'POST',
             url: `${getUrl()}/api/auth`,
@@ -113,7 +112,7 @@ async function addUser ({
                 menuBuys, 
                 menuSells,
                 menuMaintenance,
-                menuQuery,
+                menuQueries,
                 menuAdmin,
                 menuInvoicing,
             },
@@ -132,10 +131,9 @@ async function updateUser ({
     menuBuys, 
     menuSells,
     menuMaintenance,
-    menuQuery,
+    menuQueries,
     menuAdmin,
     menuInvoicing,
-    menuStats,
     username,
     password,
     branches,
@@ -150,7 +148,7 @@ async function updateUser ({
         menuMaintenance != null &&
         menuSells != null &&
         menuInvoicing != null &&
-        menuStats != null && menuQuery != null){
+        menuQueries != null){
             const response = await axios({
                 method: 'PATCH',
                 url: `${getUrl()}/api/auth/${id}`,
@@ -162,7 +160,7 @@ async function updateUser ({
                     menuBuys, 
                     menuSells,
                     menuMaintenance,
-                    menuQuery,
+                    menuQueries,
                     menuAdmin,
                     menuInvoicing,
                 },
@@ -184,7 +182,7 @@ async function getPermissions (idUser) {
             menuBuys: response.menuBuys, 
             menuSells: response.menuSells,
             menuMaintenance: response.menuMaintenance,
-            menuQuery: response.menuQuery,
+            menuQueries: response.menuQueries,
             menuAdmin: response.menuAdmin,
             menuInvoicing: response.menuInvoicing,
         };

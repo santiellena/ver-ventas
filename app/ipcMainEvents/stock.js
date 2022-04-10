@@ -13,6 +13,7 @@ const { mainHandlebars,
         createDeleteProductWindow,
         createDepartmentsWindow,
         createMissingStockWindow,
+        createLocationsWindow,
         returnStockWindow,
         returnDeleteProductWindow,
         returnEditProductWindow,
@@ -25,21 +26,44 @@ module.exports = ({
     ipcMain.on('load-stock-window', async () => {
         const products = await storeProducts.getAllProducts();
         if(products){
-
             createStockWindow({products});
         };
+    });
+
+    ipcMain.on('load-locations-window', async () => {
+        const store = await storeLocations.getAllLocationsStore();
+        const exposition = await storeLocations.getAllLocationsShow();
+
+        if(store && exposition){
+            createLocationsWindow({store, exposition});
+        };
+    });
+
+    ipcMain.handle('new-location-exposition', async (e, description) => {
+        return await storeLocations.createLocationExposition(description);
+    });
+
+    ipcMain.handle('new-location-store', async (e, description) => {
+        return await storeLocations.createLocationStore(description);
+    });
+
+    ipcMain.on('delete-location-exposition', async (e, id) => {
+        await storeLocations.deleteLocationExposition(id);
+    });
+
+    ipcMain.on('delete-location-store', async (e, id) => {
+        await storeLocations.deleteLocationStore(id);
     });
     
     ipcMain.handle('get-buys-profitandinvestment', async () => {
         const products = await storeProducts.getAllProducts();
-        const iterableArray = Object.entries(products);
 
         let investment = 0;
         let posibleProfit = 0;
 
-        for (const product of iterableArray) {
-            investment += product[1].buyPrice * product[1].stock;
-            posibleProfit += product[1].unitPrice * product[1].stock;
+        for (const product of products) {
+            investment += product.buyPrice * product.stock;
+            posibleProfit += product.unitPrice * product.stock;
         };
 
         return { investment, profit: posibleProfit };
@@ -59,9 +83,9 @@ module.exports = ({
 
     ipcMain.on('load-editproduct-window', async () => {
         const departments = await storeDepartments.getAllDepartments();
-        const locationsShow = storeLocations.getAllLocationsShow();
-        const locationsStore = storeLocations.getAllLocationsStore();
-        const measures = storeMeasures.getAllMeasures();
+        const locationsShow = await storeLocations.getAllLocationsShow();
+        const locationsStore = await storeLocations.getAllLocationsStore();
+        const measures = await storeMeasures.getAllMeasures();
 
         if(departments, locationsShow, locationsStore, measures){
             createEditProductWindow({departments, locationsShow, locationsStore, measures});
@@ -136,9 +160,8 @@ module.exports = ({
         locationShowId,
         locationStoreId,
         unitMeasureId,
+        stockMin,
     }) => {
-        const department = await storeDepartments.getDepartment(departmentId);
-        const unitMeasure = await storeMeasures.getMeasure(unitMeasureId);
         const newProduct = await storeProducts.addProduct({
             id,
             description,
@@ -148,8 +171,9 @@ module.exports = ({
             stock: initialStock,
             idStore: locationStoreId,
             idExposition: locationShowId,
-            department,
-            unitMeasure: `${unitMeasure.longDescription}`,
+            department: departmentId,
+            unitMeasure: unitMeasureId,
+            stockMin,
         });
 
         if(newProduct != undefined && newProduct != null){
@@ -161,8 +185,8 @@ module.exports = ({
     });
 
 
-    ipcMain.handle('get-newproduct-tolist', () => {
-        const newProduct = productPivot;
+    ipcMain.handle('get-newproduct-tolist', async () => {
+        const newProduct = await storeProducts.getProduct(productPivot.id);
         delete productPivot;
         return newProduct;
     });
@@ -202,13 +226,14 @@ module.exports = ({
         wholesalerPrice,
         unitPrice,
         stock,
+        stockMin,
         departmentId,
         locationShowId,
         locationStoreId,
         unitMeasureId,
     }) => {
 
-        if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && departmentId && locationShowId && locationStoreId && unitMeasureId) {
+        if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && stockMin && departmentId && locationShowId && locationStoreId && unitMeasureId) {
             const editedProduct = await storeProducts.editProduct({
                 id,
                 description,
@@ -216,19 +241,20 @@ module.exports = ({
                 wholesalerPrice,
                 unitPrice,
                 stock,
+                stockMin,
                 departmentId,
                 locationShowId,
                 locationStoreId,
                 unitMeasureId,
             });
-            
+            const editedProductFull = await storeProducts.getProduct(editedProduct.id);
             const stockWindow = returnStockWindow();
             const editProductWindow = returnEditProductWindow();
 
             editProductWindow.webContents.send('confirm-product-edit');
             stockWindow.webContents.send('update-products-list-byedit');
 
-            modified = editedProduct;
+            modified = editedProductFull;
         }
 
         ipcMain.handle('get-modified-id', () => {

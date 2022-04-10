@@ -27,38 +27,34 @@ async function addSale ({
     discount,
 }) {
     let productChange = 1;
-    const iterable = Object.values(sales);
+    const iterable = await getAllSales();
 
     for (const sale of iterable) {
         if(sale.idProduct == idProduct){
-            deleteSale(sale.id);
+            await deleteSale(sale.id);
             productChange = 0;
         };
     };
-        let newId = 0;
-        for (let i = 1; i < iterable.length + 1; i++) {
-            if(sales[i] == undefined){
-                newId = i;
-                break;
-            } else if(sales[i+1] == undefined){
-                newId = i+1;
-                break;
-            };
-        };
-
         
 
-    if(sales[newId] == undefined && idProduct && fromDate && toDate && discount){
-
-        return sales[newId] = {
-            id: newId,
-            idProduct,
-            fromDate,
-            toDate,
-            discount,
-            productChange,
-        };
-    };
+    if(idProduct && fromDate && toDate && discount){
+        const response = await axios({
+            method: 'POST',
+            url: `${getUrl()}/api/sale`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,
+            },
+            data: {
+                idProduct,
+                fromDate,
+                toDate,
+                discount,
+                productChange,
+            },
+        });
+        if(response.data.message) return null
+        else return response.data;
+    } else return null;
 };
 
 async function getSaleByProduct (idProduct) {
@@ -79,8 +75,7 @@ async function getSaleByProduct (idProduct) {
             if(actualYear >= fromYear && actualYear <= toYear){
                 if(actualMonth >= fromMonth && actualMonth <= toMonth){
                     if(actualDay >= fromDay && actualDay <= toDay){
-                        
-                        return sale;
+                        return parseFloat(sale.discount);
                     } await deleteSale(sale.id);
                 } await deleteSale(sale.id);
             } else await deleteSale(sale.id);
@@ -88,6 +83,19 @@ async function getSaleByProduct (idProduct) {
     };
 
     return 0;
+};
+
+async function getSale (id) {
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/sale/${id}`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+    });
+    if(response.data == undefined) return 1
+    else if (response.data.message) return null
+    else return response.data;
 };
 
 async function deleteSale (id) {

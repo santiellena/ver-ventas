@@ -31,7 +31,6 @@ const createPeopleSchema = joi.object({
     phoneNumber: phoneNumber.required(),
     email: email.required(),
     cbu: cbu.required(),
-    debt,
     cuit: cuit.required(),
 });
 
@@ -55,9 +54,25 @@ const deletePeopleSchema = joi.object({
     id: id.required(),
 });
 
+const createCustomerSchema = joi.object({
+    name: name.required(),
+    idDocType: idDocType.required(),
+    numDoc: numDoc.required(),
+    idDirDepartment: idDirDepartment.required(),
+    idDirProvince: idDirProvince.required(),
+    idDirCity: idDirCity.required(),
+    dirPostCode: dirPostCode.required(),
+    dirStreet: dirStreet.required(),
+    phoneNumber: phoneNumber.required(),
+    email: email.required(),
+    debt,
+    cuit: cuit.required(),
+});
+
 module.exports = {
     getPeopleSchema,
     createPeopleSchema,
     updatePeopleSchema,
     deletePeopleSchema,
+    createCustomerSchema,
 };

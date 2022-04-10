@@ -1,5 +1,7 @@
 const boom = require('@hapi/boom');
+const { People } = require('../../database/database').sequelize.models;
 const { Supplier } = require('../../database/database').sequelize.models;
+const { DocType } = require('../../database/database').sequelize.models;
 
 const getAll = async () => {
     return await Supplier.findAll({include: ['person']});

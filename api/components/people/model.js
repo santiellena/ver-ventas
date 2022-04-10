@@ -76,7 +76,7 @@ const peopleSchema = {
 
 class People extends Model {
     static associate(models) {
-      this.belongsTo(models.Branch, {as: 'docType', foreignKey: 'idDocType'});
+      this.belongsTo(models.DocType, {as: 'docType', foreignKey: 'idDocType'});
     };
   
     static config(sequelize) {

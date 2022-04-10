@@ -1,4 +1,3 @@
-const config = require('../../config/config');
 const axios = require('axios');
 const { getSessionToken } = require('../../config/auth');
 const fs = require('fs');

@@ -61,8 +61,8 @@ ipcRenderer.on('update-customer-list-fromadd', async () => {
         thStreet.innerText = added.dirStreet;
 
         const thInitialDebts = document.createElement('th');
-        thInitialDebts.setAttribute('id', `debts${added.id}`);
-        thInitialDebts.innerText = `$ ${added.debts}`;
+        thInitialDebts.setAttribute('id', `debt${added.id}`);
+        thInitialDebts.innerText = `$ ${added.debt}`;
 
         tr.appendChild(thId);
         tr.appendChild(thName);
@@ -109,8 +109,8 @@ ipcRenderer.on('update-customer-list-fromedit', async () => {
     const thStreet = document.getElementById(`street${customer.id}`);
     thStreet.innerText = customer.street;
 
-    const thDebts = document.getElementById(`debts${customer.id}`);
-    thDebts.innerText = `$ ${customer.debts}`;
+    const thDebts = document.getElementById(`debt${customer.id}`);
+    thDebts.innerText = `$ ${customer.debt}`;
 });
 
 ipcRenderer.on('update-customers-list-bydelete', async () => {

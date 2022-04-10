@@ -8,7 +8,7 @@ const storeCustomers = require('./components/customers/store');
 
 // Declaratios of windows
 let mainWindow, loginWindow, settingsWindow, sellsHistoryWindow, paymentWindow, searchProductsWindow, customerListWindow, ordersWindow, suppliersWindow, suppliersEditWindow, suppliersAddWindow, buysWindow, addBuyWindow, searchProductsBuysWindow, stockWindow, addProductWindow, editProductWindow, deleteProductWindow, departmentsWindow, customersWindow, addCustomerWindow, editCustomerWindow, deleteCustomerWindow, payDebtsWindow, listDebtsWindow, firstTimeWindow, cashFlowHistoryWindow, cashFlowInWindow, cashFlowOutWindow, generalMaintenanceWindow, branchesMaintenanceWindow, employeesWindow, addEmployeesWindow, editEmployeesWindow, usersWindow, addUserWindow, editUserWindow, unitsWindow, docsWindow, salesWindow, addSaleWindow, missingStockWindow, 
-payOrdersWindow;
+payOrdersWindow, locationsWindow;
 let tray;
 
 // initialization Custom handlebars
@@ -689,6 +689,35 @@ function createPaymentWindow ({
     
   };
 
+  function createLocationsWindow ({ store, exposition }) {
+    locationsWindow = new BrowserWindow({
+      icon: `${__dirname}/renderer/images/favicon.png`,
+      width: 1100, height: 600,
+      title: `Mercado 1990 - Ubicaciones`,
+      backgroundColor: 'F7F7F7',
+      webPreferences: { 
+        nodeIntegration: false,
+        preload: `${__dirname}/preload.js`,
+        contextIsolation: true,
+      },
+      parent: stockWindow,
+      modal: true,
+      resizable: false,
+      //frame: false,
+    });
+   
+    // Load index.hbs into the new BrowserWindow
+    locationsWindow.loadFile(historyHandlebars.render('/stock/locations.hbs', {store, exposition}));
+    
+    handleErrors(locationsWindow);
+    
+    // Listen for window being closed
+    locationsWindow.on('closed',  () => {
+      locationsWindow.removeAllListeners();
+      locationsWindow = null;
+    });
+  };
+
   function createCustomersWindow ({
     customers,
   }) {
@@ -726,7 +755,6 @@ function createPaymentWindow ({
   function  createAddCustomerWindow ({
     provinces,
     docTypes,
-    freeCode,
   }) {
     addCustomerWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -745,7 +773,7 @@ function createPaymentWindow ({
     });
    
     // Load index.hbs into the new BrowserWindow
-    addCustomerWindow.loadFile(historyHandlebars.render('/customers/addCustomer.hbs', {docTypes, provinces, freeCode}));
+    addCustomerWindow.loadFile(historyHandlebars.render('/customers/addCustomer.hbs', {docTypes, provinces}));
     
     handleErrors(addCustomerWindow);
     
@@ -1535,6 +1563,10 @@ function returnPayOrdersWindow () {
   return payOrdersWindow;
 };
 
+function returnLocationsWindow () {
+  return locationsWindow;
+};
+
 module.exports = {
     createLoginWindow,
     createMainWindow, 
@@ -1579,6 +1611,7 @@ module.exports = {
     createAddSaleWindow,
     createMissingStockWindow,
     createPayOrderWindow,
+    createLocationsWindow,
     returnMainWindow,
     returnLoginWindow,
     returnSettingsWindow,
@@ -1622,6 +1655,7 @@ module.exports = {
     returnAddSaleWindow,
     returnMissingStockWindow,
     returnPayOrdersWindow,
+    returnLocationsWindow,
     mainHandlebars,
     historyHandlebars,
 };

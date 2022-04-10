@@ -13,6 +13,11 @@ const customers = require('../components/customers/network');
 const suppliers = require('../components/suppliers/network');
 const products = require('../components/products/network');
 const buys = require('../components/buys/network');
+const cashFlows = require('../components/cashFlow/network');
+const debtPaids = require('../components/debtsPaid/network');
+const orders = require('../components/orders/network');
+const sales = require('../components/sales/network');
+const sells = require('../components/sells/network');
 const { notFound } = require('../utils/errors');
 
 module.exports = (app) => {
@@ -31,5 +36,10 @@ module.exports = (app) => {
     app.use('/api/supplier', suppliers);
     app.use('/api/product', products);
     app.use('/api/buy', buys);
+    app.use('/api/cash-flow', cashFlows);
+    app.use('/api/debt-payment', debtPaids);
+    app.use('/api/order', orders);
+    app.use('/api/sale', sales);
+    app.use('/api/sell', sells);
     app.use(notFound);
 };

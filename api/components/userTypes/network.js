@@ -7,13 +7,13 @@ const checkAllow = require('../../utils/middlewares/chechAllow');
 const validator = require('../../utils/middlewares/validator');
 const { getUserTypeSchema, createUserTypeSchema, updateUserTypeSchema } = require('../../utils/schemas/userType.schema');
 
-router.get('/', (req, res, next) => {
+router.get('/', checkAllow(['menu-maintenance']), (req, res, next) => {
     controller.getAll()
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
 
-router.get('/:id', validator(getUserTypeSchema, 'params'), (req, res, next) => {
+router.get('/:id', checkAllow(['menu-maintenance']), validator(getUserTypeSchema, 'params'), (req, res, next) => {
     const { id } = req.params;
 
     controller.getOne(id)
@@ -21,13 +21,13 @@ router.get('/:id', validator(getUserTypeSchema, 'params'), (req, res, next) => {
     .catch(err => next(err));
 });
 
-router.post('/', validator(createUserTypeSchema, 'body'), (req, res, next) => {
+router.post('/', checkAllow(['menu-maintenance']), validator(createUserTypeSchema, 'body'), (req, res, next) => {
     controller.create(req.body)
     .then(data => response.success(req, res, data, 201))
     .catch(err => next(err));
 });
 
-router.patch('/:id', validator(getUserTypeSchema, 'paramas'), validator(updateUserTypeSchema, 'body'), (req, res, next) => {
+router.patch('/:id', checkAllow(['menu-maintenance']), validator(getUserTypeSchema, 'paramas'), validator(updateUserTypeSchema, 'body'), (req, res, next) => {
     const { id } = req.params;
     const changes = req.body;
     controller.update(id, changes)
@@ -35,7 +35,7 @@ router.patch('/:id', validator(getUserTypeSchema, 'paramas'), validator(updateUs
     .catch(err => next(err));
 });
 
-router.delete('/:id', validator(getUserTypeSchema, 'params'), (req, res, next) => {
+router.delete('/:id', checkAllow(['menu-maintenance']), validator(getUserTypeSchema, 'params'), (req, res, next) => {
     const { id } = req.params;   
     controller.remove(id)
     .then(data => response.success(req, res, data, 200))

@@ -20,6 +20,10 @@ document.getElementById('departments-button').addEventListener('click', () => {
     ipcRenderer.send('load-departments-window');
 });
 
+document.getElementById('locations-button').addEventListener('click', () => {
+    ipcRenderer.send('load-locations-window');
+});
+
 async function loadNumberData() {
     const showerInvestment = document.getElementById('investment-amount');
     const showerProfit = document.getElementById('profit-amount');
@@ -101,13 +105,13 @@ ipcRenderer.on('update-newproduct-list', async () => {
     thUnitPrice.innerText = `$ ${newProduct.unitPrice}`;
     const thDepartment = document.createElement('th');
     thDepartment.setAttribute('id', `department${newProduct.id}`);
-    thDepartment.innerText = newProduct.department;
+    thDepartment.innerText = newProduct.department.description;
     const thLocation = document.createElement('th');
     thLocation.setAttribute('id', `location${newProduct.id}`);
-    thLocation.innerText = `${newProduct.location[0]},${newProduct.location[1]}`
+    thLocation.innerText = `${newProduct.store.description}, ${newProduct.exposition.description}`;
     const thUnitMeasure = document.createElement('th');
     thUnitMeasure.setAttribute('id', `unitMeasure${newProduct.id}`);
-    thUnitMeasure.innerText = newProduct.unitMeasure;
+    thUnitMeasure.innerText = `${newProduct.unitMeasure.longDescription} (${newProduct.unitMeasure.shortDescription})`;
 
     tr.appendChild(thId);
     tr.appendChild(thDesc);
@@ -154,7 +158,7 @@ ipcRenderer.on('update-products-list-byedit', async () => {
     document.getElementById(`buyPrice${product.id}`).innerText = `$ ${product.buyPrice}`;
     document.getElementById(`wholesalerPrice${product.id}`).innerText = `$ ${product.wholesalerPrice}`;
     document.getElementById(`unitPrice${product.id}`).innerText = `$ ${product.unitPrice}`;
-    document.getElementById(`department${product.id}`).innerText = product.department;
-    document.getElementById(`location${product.id}`).innerText = `${product.location[0]}, ${product.location[1]}`;
-    document.getElementById(`unitMeasure${product.id}`).innerText = product.unitMeasure;
+    document.getElementById(`department${product.id}`).innerText = product.department.description;
+    document.getElementById(`location${product.id}`).innerText = `${product.store.description}, ${product.exposition.description}`;
+    document.getElementById(`unitMeasure${product.id}`).innerText = `${product.unitMeasure.longDescription} (${product.unitMeasure.shortDescription})`;
 });

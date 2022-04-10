@@ -1,12 +1,13 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const idEmplooy = joi.number().integer();
+const idUser = joi.number().integer();
 const idBranch = joi.number().integer();
 const idSupplier = joi.number().integer();
 const howPaid = joi.string();
 const details = joi.array();
 const date = joi.string();
+const totalAmount = joi.number().precision(2);
 
 const from = joi.string();
 const to = joi.string();
@@ -16,21 +17,23 @@ const getBuySchema = joi.object({
 });
 
 const createBuySchema = joi.object({
-    idEmplooy: idEmplooy.required(),
+    idUser: idUser.required(),
     idBranch: idBranch.required(),
     idSupplier: idSupplier.required(),
     howPaid: howPaid.required(),
     details: details.required(),
     date: date.required(),
+    totalAmount: totalAmount.required(),
 });
 
 const updateBuySchema = joi.object({
-    idEmplooy,
+    idUser,
     idBranch,
     idSupplier,
     howPaid,
     details,
     date,
+    totalAmount,
 });
 
 const deleteBuySchema = joi.object({

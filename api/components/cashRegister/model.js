@@ -1,7 +1,7 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { BRANCH_TABLE } = require('../branches/model');
 
-const CASH_REGISTER_TABLE = 'caja';
+const CASH_REGISTER_TABLE = 'cash-register';
 
 const cashRegisterSchema = {
     id: {
@@ -15,11 +15,12 @@ const cashRegisterSchema = {
         allowNull: false,
         default: 0,
         type: DataTypes.DECIMAL(19,2),
+        field: 'money_amount',
     },
     idBranch: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        field: 'id-branch',
+        field: 'id_branch',
         reference: {
             model: BRANCH_TABLE,
             key: 'idbranch'

@@ -58,6 +58,7 @@ const {
   createAddSaleWindow,
   createMissingStockWindow,
   createPayOrderWindow,
+  createLocationsWindow,
   historyHandlebars,
   mainHandlebars,
 } = require('./createWindows');
@@ -134,6 +135,7 @@ ipcMainEvents.stock({
   createDeleteProductWindow,
   createDepartmentsWindow,
   createMissingStockWindow,
+  createLocationsWindow,
 });
 
 ipcMainEvents.customers({

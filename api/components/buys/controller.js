@@ -1,6 +1,7 @@
 const store = require('./store');
 const boom = require('@hapi/boom');
 const config = require('../../config');
+const storeBuyDetails = require('../detailBuys/store.js');
 
 const getAll = async () => {
     return await store.getAll();
@@ -11,7 +12,16 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
-    return await store.create(data);
+    const buy = await store.create(data);
+    for (const detail of data.details) {
+          await storeBuyDetails.create({
+              idProduct: detail.idProduct,
+              idBuy: buy.id,
+              quantity: detail.quantity,
+              price: detail.price,
+          });
+    };
+    return buy;
 };
 
 const update = async (id, changes) => {
@@ -19,6 +29,7 @@ const update = async (id, changes) => {
 };
 
 const remove = async (id) => {
+    await storeBuyDetails.removeByBuy(id);
     return await store.remove(id);
 };
 
@@ -39,7 +50,7 @@ const getByDate = async (from, to) => {
         if(buyYear >= fromYear && buyYear <= toYear){
             if(buyMonth >= fromMonth && buyMonth <= toMonth){
                 if(buyDay >= fromDay && buyDay <= toDay){
-                    return store.getOne(e.id);
+                    return e;
                 };
             }
        } 

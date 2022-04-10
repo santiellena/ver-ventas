@@ -36,52 +36,32 @@ async function loadDepartments () {
 };
 loadDepartments();
 
-async function checkIdValue () {
-    const id = document.getElementById('id-customer').value;
-
-    const check = await ipcRenderer.invoke('check-customer-existance', id);
-    const feedback = document.getElementById('codeFeedback');
-
-    if(check == true && id != ''){    
-
-        feedback.setAttribute('class', 'fa fa-times-circle-o form-control-feedback right');
-        verifier = true;
-    } else {
-
-        feedback.setAttribute('class', 'fa fa-check-circle-o form-control-feedback right');
-        verifier = false; 
-    };
-};
-checkIdValue();
-
 function addCustomer () {
-    const id = document.getElementById('id-customer').value;
     const name = document.getElementById('name-customer').value;
-    const docType = document.getElementById('docType-customer').value;
+    const idDocType = document.getElementById('docType-customer').value;
     const numDoc = document.getElementById('numDoc-customer').value;
     const cuit = document.getElementById('cuit-customer').value;
     const email = document.getElementById('email-customer').value;
     const phoneNumber = document.getElementById('phoneNumber-customer').value;
-    const province = document.getElementById('province-customer').value;
-    const department = document.getElementById('department-customer').value;
-    const postCode = document.getElementById('postCode-customer').value;
-    const city = document.getElementById('city-customer').value;
-    const street = document.getElementById('street-customer').value;
+    const idDirProvince = document.getElementById('province-customer').value;
+    const idDirDepartment = document.getElementById('department-customer').value;
+    const dirPostCode = document.getElementById('postCode-customer').value;
+    const idDirCity = document.getElementById('city-customer').value;
+    const dirStreet = document.getElementById('street-customer').value;
     const initialDebt = document.getElementById('initialDebt-customer').value;
 
     ipcRenderer.send('add-customer', {
-        id,
         name,
-        docType,
+        idDocType,
         numDoc,
         cuit,
         email,
         phoneNumber,
-        province,
-        department,
-        postCode,
-        city,
-        street,
+        idDirProvince,
+        idDirDepartment,
+        dirPostCode,
+        idDirCity,
+        dirStreet,
         initialDebt,
     });
 

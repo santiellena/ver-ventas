@@ -3,7 +3,7 @@ const { BRANCH_TABLE } = require('../branches/model');
 const { EMPLOOY_TABLE } = require('../employees/model');
 const { CASH_REGISTER_TABLE } = require('../cashRegister/model');
 
-const CASH_FLOW_TABLE = 'cashFlow';
+const CASH_FLOW_TABLE = 'cash-flow';
 
 const cashFlowSchema = {
     id: {
@@ -58,6 +58,10 @@ const cashFlowSchema = {
         },
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
+    },
+    date: {
+        allowNull: false,
+        type: DataTypes.STRING(16),
     },
 };
 

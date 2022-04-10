@@ -143,7 +143,6 @@ async function addProduct(){
                 discount = await ipcRenderer.invoke('get-product-discount', product.id);
             };
         };
-
         if(checkPriceList() == 'public'){   
             loadProduct({ id, description, unitPrice, stock, quantity, discount });
         } else {

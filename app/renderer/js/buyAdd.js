@@ -137,15 +137,13 @@ async function loadSuppliers(){
 
     const suppliers = await ipcRenderer.invoke('get-suppliers');
 
-    const iterableObject = Object.entries(suppliers);
-
-    iterableObject.map(supplier => {
+    for (const supplier of suppliers) {
         const option = document.createElement('option');
-        option.setAttribute('value', supplier[1].id);
-        option.innerText = `${supplier[1].name}`;
+        option.setAttribute('value', supplier.id);
+        option.innerText = `${supplier.name}`;
 
-        select.insertAdjacentElement('beforeend', option);
-    });
+        select.insertAdjacentElement('beforeend', option);  
+    };
 };
 
 loadSuppliers();

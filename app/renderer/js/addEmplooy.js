@@ -9,10 +9,8 @@ function addEmplooy () {
     const dirStreet = document.getElementById('dirStreet').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
     const birthDate = document.getElementById('date').value;
-    const login = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
 
-    if(name && lastname && docTypeId && numDoc && email && dirStreet && phoneNumber && birthDate && login && password){
+    if(name && lastname && docTypeId && numDoc && email && dirStreet && phoneNumber && birthDate){
         ipcRenderer.send('add-emplooy', {
             name,
             lastname,
@@ -22,8 +20,6 @@ function addEmplooy () {
             dirStreet,
             phoneNumber,
             birthDate,
-            login, 
-            password,
         });
     };
 };

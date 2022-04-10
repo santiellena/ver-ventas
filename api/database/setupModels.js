@@ -22,6 +22,7 @@ const { Order, orderSchema } = require('../components/orders/model');
 const { OrderProduct, orderProductSchema } = require('../components/detailOrders/model');
 const { DebtPaid, debtPaidSchema } = require('../components/debtsPaid/model');
 const { CashFlow, cashFlowSchema } = require('../components/cashFlow/model');
+const { Sale, saleSchema } = require('../components/sales/model');
 
 function setupModels(sequelize) {
     Global.init(globalSchema, Global.config(sequelize));
@@ -48,6 +49,7 @@ function setupModels(sequelize) {
     OrderProduct.init(orderProductSchema, OrderProduct.config(sequelize));
     DebtPaid.init(debtPaidSchema, DebtPaid.config(sequelize));
     CashFlow.init(cashFlowSchema, CashFlow.config(sequelize));
+    Sale.init(saleSchema, Sale.config(sequelize));
 
     CashRegister.associate(sequelize.models);
     Branch.associate(sequelize.models);
@@ -66,6 +68,7 @@ function setupModels(sequelize) {
     Sell.associate(sequelize.models);
     Order.associate(sequelize.models);
     CashFlow.associate(sequelize.models);
+    Sale.associate(sequelize.models);
 };
 
 module.exports = setupModels;

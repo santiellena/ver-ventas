@@ -5,12 +5,10 @@ async function seeBuyDetail (id){
 
     const tbodyDetails = document.getElementById('tbody-details');
 
-    const arrDetails = Object.entries(details);
-    console.log(arrDetails);
     let allItems = '';
-    arrDetails.map(detail => {
-        allItems = allItems + `<tr><th>${detail[1].quantity}</th><th>${detail[1].product}</th><th>$ ${detail[1].price}</th></tr>`
-    });
+    for(const detail of details){
+        allItems = allItems + `<tr><th>${detail.BuyProduct.quantity}</th><th>${detail.description}</th><th>$ ${detail.BuyProduct.price}</th></tr>`
+    };
 
     tbodyDetails.innerHTML = allItems;
 };

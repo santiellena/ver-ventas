@@ -41,11 +41,12 @@ async function addRegister ({
 }) {
     if(emplooy && amount && operation && box && observation) {
         const response = await axios({
-            method: 'GET',
+            method: 'POST',
             url: `${getUrl()}/api/cash-flow`,
             data: {
-                date: dates.actualDateAccuracy,
-                emplooy,
+                date: dates.actualDateAccuracy(),
+                idBranch: config.getBranchDataFromConfig().id,
+                idEmplooy: emplooy.id,
                 amount,
                 operation,
                 observation,

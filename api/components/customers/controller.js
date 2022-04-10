@@ -1,6 +1,5 @@
 const storeCustomer = require('./store');
 const storePeople = require('../people/store');
-const boom = require('@hapi/boom');
 
 const getAll = async () => {
     return await storeCustomer.getAll();
@@ -8,6 +7,10 @@ const getAll = async () => {
 
 const getOne = async (id) => {
     return await storeCustomer.getOne(id);
+};
+
+const getOneWithSells = async (id) => {
+    return await storeCustomer.getOneWithSells(id);
 };
 
 const create = async (data) => {
@@ -37,6 +40,7 @@ const remove = async (id) => {
 module.exports = {
     getAll,
     getOne,
+    getOneWithSells,
     create,
     update,
     remove,

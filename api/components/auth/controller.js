@@ -75,6 +75,7 @@ const update = async (id, data) => {
     if(data.password){
         data.password = await bcrypt.hash(data.password, SALT_ROUNDS);
     };
+    await storeBranchUser.updateByNewArray(data.branches, id);
     return await store.update(id, data);
 };
 

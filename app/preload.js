@@ -98,7 +98,9 @@ contextBridge.exposeInMainWorld(
                 'send-details-order-incompleted',
                 'send-details-order-cash',
                 'send-details-order-card',
-                
+                'load-locations-window',
+                'delete-location-exposition',
+                'delete-location-store'
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);
@@ -219,6 +221,8 @@ contextBridge.exposeInMainWorld(
                 'edit-user',
                 'get-branches',
                 'get-order-details',
+                'new-location-exposition',
+                'new-location-store',
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

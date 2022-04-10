@@ -29,10 +29,21 @@ const remove = async (id) => {
     return await branchUser.destroy();
 };
 
+const updateByNewArray = async (branches, idUser) => {
+    const branchesUser = await BranchUser.findAll({where: {idUser}});
+    for (const branchUser of branchesUser) {
+        await branchUser.destroy();  
+    };
+    for (const branch of branches) {
+        await create({idUser, idBranch: branch});
+    };
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    updateByNewArray,
 };

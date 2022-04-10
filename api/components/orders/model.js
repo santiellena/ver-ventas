@@ -1,5 +1,5 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
-const { USER_TABLE } = require('../auth/model');
+const { EMPLOOY_TABLE } = require('../employees/model');
 const { BRANCH_TABLE } = require('../branches/model');
 const { CUSTOMER_TABLE } = require('../customers/model');
 const { DOC_TYPE_TABLE } = require('../docTypes/model');
@@ -14,13 +14,13 @@ const orderSchema = {
         type: DataTypes.INTEGER,
         field: 'idorder'
     },
-    idUser: {  
+    idEmplooy: {  
         allowNull: false,
-        field: 'id_user',
+        field: 'id_emplooy',
         type: DataTypes.INTEGER,
         reference: {
-            model: USER_TABLE,
-            key: 'iduser',
+            model: EMPLOOY_TABLE,
+            key: 'idemplooy',
         },
         onUpdate: 'NO ACTION',
         onDelete: 'NO ACTION',
@@ -58,16 +58,6 @@ const orderSchema = {
         onUpdate: 'NO ACTION',
         onDelete: 'NO ACTION',
     },
-    numberCheck: {
-        type: DataTypes.BIGINT,
-        field: 'number_check',
-        allowNull: false,
-    },
-    serieCheck: {
-        type: DataTypes.INTEGER,
-        field: 'serie_check',
-        allowNull: false,
-    },
     date: {
         allowNull: false,
         type: DataTypes.STRING(16),
@@ -90,7 +80,7 @@ const orderSchema = {
 
 class Order extends Model {
     static associate(models) {
-        this.belongsTo(models.User, {as: 'user', foreignKey: 'idUser'});
+        this.belongsTo(models.Emplooy, {as: 'emplooy', foreignKey: 'idEmplooy'});
         this.belongsTo(models.Customer, {as: 'customer', foreignKey: 'idCustomer'});
         this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
         this.belongsToMany(models.Product, {through: models.OrderProduct, foreignKey: 'idOrder', otherKey: 'idProduct', as: 'detail'});

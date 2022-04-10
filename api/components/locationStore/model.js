@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { BRANCH_TABLE } = require('../branches/model');
-const LOCATION_STORE_TABLE = 'location_store';
+const LOCATION_STORE_TABLE = 'location-store';
 
 const locationStoreSchema = {
     id: {

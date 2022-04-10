@@ -47,27 +47,6 @@ const buySchema = {
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
     },
-    idDocType: {
-        allowNull: false,
-        field: 'id_doc_type',
-        type: DataTypes.INTEGER,
-        reference: {
-            model: DOC_TYPE_TABLE,
-            key: 'iddoc_type',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'NO ACTION',
-    },
-    serieCheck: {
-        allowNull: false,
-        type: DataTypes.STRING(15),
-        field: 'serie_check',
-    },
-    numberCheck: {
-        allowNull: false,
-        type: DataTypes.BIGINT,
-        field: 'number_check',
-    },
     date: {
         allowNull: false,
         type: DataTypes.STRING(16),
@@ -88,12 +67,11 @@ class Buy extends Model {
         this.belongsTo(models.User, {as: 'user', foreignKey: 'idUser'});
         this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
         this.belongsTo(models.Supplier, {as: 'supplier', foreignKey: 'idSupplier'});
-        this.belongsTo(models.DocType, {as: 'docType', foreignKey: 'idDocType'});
         this.belongsToMany(models.Product, {
             through: models.BuyProduct,
             foreignKey: 'idBuy',
             otherKey: 'idProduct',
-            as: 'detail',
+            as: 'details',
         });
     };
   

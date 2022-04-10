@@ -29,7 +29,7 @@ router.get('/:id', checkAllow(['menu-maintenance']), validator(getUserSchema, 'p
     .catch(err => next(err));
 });
 
-router.post('/', /*checkAllow(['menu-maintenance']), descomentar para produccion*/validator(createUserSchema, 'body'), (req, res, next) => {
+router.post('/', checkAllow(['menu-maintenance']) ,validator(createUserSchema, 'body'), (req, res, next) => {
     controller.create(req.body)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));

@@ -72,14 +72,14 @@ async function checkIdValue () {
         document.getElementById('phoneNumber-customer').value = customer.phoneNumber;
         const selectProv = document.getElementById('province-customer');
         const optionProv = document.createElement('option');
-        optionProv.value = customer.dirProv.id;
-        optionProv.innerText = customer.dirProv.nombre;
+        optionProv.value = customer.dirProvince.id;
+        optionProv.innerText = customer.dirProvince.nombre;
         optionProv.setAttribute('selected', true);
         selectProv.appendChild(optionProv);
         const selectDepto = document.getElementById('department-customer');
         const optionDepto = document.createElement('option');
-        optionDepto.value = customer.dirDepto.id;
-        optionDepto.innerText = customer.dirDepto.nombre;
+        optionDepto.value = customer.dirDepartment.id;
+        optionDepto.innerText = customer.dirDepartment.nombre;
         optionDepto.setAttribute('selected', true);
         selectDepto.appendChild(optionDepto);
         document.getElementById('postCode-customer').value = customer.dirPostCode;
@@ -90,7 +90,7 @@ async function checkIdValue () {
         optionCity.setAttribute('selected', true);
         selectCity.appendChild(optionCity);
         document.getElementById('street-customer').value = customer.dirStreet;
-        document.getElementById('debts-customer').value = customer.debts;
+        document.getElementById('debts-customer').value = customer.debt;
     };
 };
 checkIdValue();
@@ -99,35 +99,33 @@ function editCustomer () {
     if(verifier == true){
         const id = document.getElementById('id-customer').value;
         const name = document.getElementById('name-customer').value;
-        const docType = document.getElementById('docType-customer').value;
+        const idDocType = document.getElementById('docType-customer').value;
         const numDoc = document.getElementById('numDoc-customer').value;
         const cuit = document.getElementById('cuit-customer').value;
         const email = document.getElementById('email-customer').value;
         const phoneNumber = document.getElementById('phoneNumber-customer').value;
-        const province = document.getElementById('province-customer').value;
-        const department = document.getElementById('department-customer').value;
-        const postCode = document.getElementById('postCode-customer').value;
-        const city = document.getElementById('city-customer').value;
-        const street = document.getElementById('street-customer').value;
-        const debts = document.getElementById('debts-customer').value;
+        const idDirProvince = document.getElementById('province-customer').value;
+        const idDirDepartment = document.getElementById('department-customer').value;
+        const dirPostCode = document.getElementById('postCode-customer').value;
+        const idDirCity = document.getElementById('city-customer').value;
+        const dirStreet = document.getElementById('street-customer').value;
+        const debt = document.getElementById('debts-customer').value;
 
-        if(id && name && docType && numDoc && cuit && email && phoneNumber && province && department && postCode && city && street && debts){
+        if(id && name && idDocType && numDoc && cuit && email && phoneNumber && idDirProvince && idDirDepartment && dirPostCode && idDirCity && dirStreet && debt){
             ipcRenderer.send('edit-customer', {
                 id,
                 name,
-                docType,
+                idDocType,
                 numDoc,
                 cuit,
                 email,
                 phoneNumber,
-                province,
-                department,
-                postCode,
-                department,
-                postCode,
-                city,
-                street,
-                debts
+                idDirProvince,
+                dirPostCode,
+                idDirDepartment,
+                idDirCity,
+                dirStreet,
+                debt
             });
 
             const form = document.getElementById('form');

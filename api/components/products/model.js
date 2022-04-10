@@ -25,17 +25,6 @@ const productSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
     },
-    idSupplier: {
-        allowNull: false,
-        type: DataTypes.INTEGER,
-        field: 'id_supplier',
-        references: {
-            model: SUPPLIER_TABLE,
-            key: 'idsupplier',
-        },
-        onUpdate: 'NO ACTION',
-        onDelete: 'NO ACTION',
-    },
     idUnitMeasure: {
         allowNull: false,
         type: DataTypes.INTEGER,
@@ -75,13 +64,13 @@ const productSchema = {
     },
     stock: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(19,2),
         defaultValue: 0,
     },
     stockMin: {
         allowNull: false,
         field: 'stock_min',
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(19,2),
     },
     onSale: {
         allowNull: false,
@@ -112,7 +101,6 @@ const productSchema = {
 class Product extends Model {
     static associate(models) {
       this.belongsTo(models.Department, {as: 'department', foreignKey: 'idDepartment'});
-      this.belongsTo(models.Supplier, {as: 'supplier', foreignKey: 'idSupplier'});
       this.belongsTo(models.LocationExposition, {as: 'exposition', foreignKey: 'idExposition'});
       this.belongsTo(models.LocationStore, {as: 'store', foreignKey: 'idStore'});
       this.belongsTo(models.UnitMeasure, {as: 'unitMeasure', foreignKey: 'idUnitMeasure'});

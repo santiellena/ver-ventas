@@ -9,7 +9,7 @@ async function onLoad () {
     const mStock = document.getElementById('stock');
     const mSells = document.getElementById('sells');
     const mBuys = document.getElementById('buys');
-    const mStats = document.getElementById('stats');
+    const mQueries = document.getElementById('queries');
     const mMaintenance = document.getElementById('maintenance');
     const mInvoicing = document.getElementById('invoicing');
     const mAdmin = document.getElementById('admin');
@@ -26,8 +26,8 @@ async function onLoad () {
         mBuys.checked = true;
     };
 
-    if(permissions.menuQuery == 1){
-        mStats.checked = true;
+    if(permissions.menuQueries == 1){
+        mQueries.checked = true;
     };
 
     if(permissions.menuMaintenance == 1){
@@ -56,7 +56,7 @@ async function editUser () {
     const mStock = document.getElementById('stock');
     const mSells = document.getElementById('sells');
     const mBuys = document.getElementById('buys');
-    const mStats = document.getElementById('stats');
+    const mQueries = document.getElementById('queries');
     const mMaintenance = document.getElementById('maintenance');
     const mInvoicing = document.getElementById('invoicing');
     const mAdmin = document.getElementById('admin');
@@ -64,7 +64,7 @@ async function editUser () {
     let menuStock = 0;
     let menuSells = 0;
     let menuBuys = 0;
-    let menuStats = 0;
+    let menuQueries = 0;
     let menuMaintenance = 0;
     let menuInvoicing = 0;
     let menuAdmin = 0;
@@ -81,8 +81,8 @@ async function editUser () {
         menuBuys = 1;
     };
 
-    if(mStats.checked == true){
-        menuStats = 1;
+    if(mQueries.checked == true){
+        menuQueries = 1;
     };
 
     if(mMaintenance.checked == true){
@@ -120,7 +120,7 @@ async function editUser () {
         menuMaintenance,
         menuSells,
         menuInvoicing,
-        menuStats,
+        menuQueries,
     });
 
     const alertDiv = document.getElementById('alert');

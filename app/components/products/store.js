@@ -58,7 +58,7 @@ async function updateStockAndPrices (details) {
     if(details){
         const response = await axios({
             method: 'PATCH',
-            url: `${getUrl()}/api/product`,
+            url: `${getUrl()}/api/product/buy/new`,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,   
             },  
@@ -73,26 +73,31 @@ async function updateStockAndPrices (details) {
 };
 
 async function addProduct ({
-    id,
-    description,
-    stock,
-    unitPrice,
-    wholesalerPrice,
-    buyPrice,
-    location,
-    department,
-    unitMeasure,
+            id,
+            description,
+            buyPrice,
+            wholesalerPrice,
+            unitPrice,
+            stock,
+            stockMin,
+            idStore,
+            idExposition,
+            department,
+            unitMeasure,
 }) {
     if(id,
         description,
-        stock,
-        unitPrice,
-        wholesalerPrice,
         buyPrice,
-        location,
+        wholesalerPrice,
+        unitPrice,
+        stock,
+        stockMin,
+        idStore,
+        idExposition,
         department,
         unitMeasure){
             const quantity = parseFloat(stock);
+            const quantityMin = parseFloat(stockMin);
             const response = await axios({
                 method: 'POST',
                 url: `${getUrl()}/api/product`,
@@ -102,13 +107,15 @@ async function addProduct ({
                 data: {
                     id,
                     description,
-                    unitPrice,
-                    wholesalerPrice,
-                    location,
-                    department,
-                    unitMeasure,
-                    stock: quantity,
                     buyPrice,
+                    wholesalerPrice,
+                    unitPrice,
+                    stock: quantity,
+                    stockMin: quantityMin,
+                    idStore,
+                    idExposition,
+                    idDepartment: department,
+                    idUnitMeasure: unitMeasure,
                     onSale: 0,
                 }
             });
@@ -153,12 +160,13 @@ async function editProduct ({
     wholesalerPrice,
     unitPrice,
     stock,
+    stockMin,
     departmentId,
     locationShowId,
     locationStoreId,
     unitMeasureId,
 }) {
-    if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && departmentId && locationShowId && locationStoreId && unitMeasureId) {
+    if(id && description && buyPrice && wholesalerPrice && unitPrice && stock && stockMin && departmentId && locationShowId && locationStoreId && unitMeasureId) {
         const response = await axios({
             method: 'PATCH',
             url: `${getUrl()}/api/product/${id}`,
@@ -171,6 +179,7 @@ async function editProduct ({
                 wholesalerPrice,
                 unitPrice,
                 stock,
+                stockMin,
                 idDepartment: departmentId,
                 idStore: locationStoreId,
                 idExposition: locationShowId,
@@ -186,7 +195,7 @@ async function editProduct ({
 async function changeSaleStatus (id) {
     if(id){
         const response = await axios({
-            method: 'PATCH',
+            method: 'PUT',
             url: `${getUrl()}/api/product/sale/${id}`,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,   
@@ -198,15 +207,13 @@ async function changeSaleStatus (id) {
 };
 
 async function getProductsMissing () {
-    const response = await axios({
-        method: 'GET',
-        url: `${getUrl()}/api/product/missing/`,
-        headers: {
-                authorization: `Bearer ${await getSessionToken()}`,   
-            },
+    const products = await getAllProducts();
+    const missing = products.map(product => {
+        if(parseFloat(product.stock) < parseFloat(product.stockMin)){
+            return product;
+        };
     });
-    if(response.data.message) return null
-    else return response.data;
+    return missing;
 };
 
 module.exports = {

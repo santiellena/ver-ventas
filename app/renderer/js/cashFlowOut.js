@@ -19,7 +19,7 @@ function addRegister () {
     const observation = document.getElementById('observation').value;
 
     if(amount && observation) {
-        if(amount <= limitAmount){
+        if(parseFloat(amount) <= limitAmount){
             ipcRenderer.send('add-cashflow-out', {amount, observation});
         } else {
             const alertDiv = document.getElementById('alert-div');

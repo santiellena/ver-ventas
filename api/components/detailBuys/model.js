@@ -15,7 +15,7 @@ const buyProductSchema = {
     idProduct: {
         allowNull: false,
         field: 'id_product',
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         reference: {
             model: PRODUCT_TABLE,
             key: 'idproduct',
@@ -36,7 +36,7 @@ const buyProductSchema = {
     },
     quantity: {
         allowNull: false,
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(19,2),
     },
     price: {
         allowNull: false,

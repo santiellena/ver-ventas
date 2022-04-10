@@ -449,7 +449,7 @@ module.exports = ({
 
     ipcMain.handle('get-product-discount', async (e, idProduct) => {
         if(idProduct){
-            const discount = await storeSales.getSaleByProduct(idProduct).discount;
+            const discount = await storeSales.getSaleByProduct(idProduct);
             if(discount) return discount
             else return 0;
         };
@@ -484,7 +484,7 @@ module.exports = ({
             newSalePivot = newSale;
 
             if(newSale.productChange == 1){
-                await storeProducts.changeSaleStatus(newSale.idProduct);
+                await storeProducts.changeSaleStatus(idProduct);
             };
 
             return 1;

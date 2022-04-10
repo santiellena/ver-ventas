@@ -9,12 +9,12 @@ function deleteSupplier(id){
 
 function editSupplierInfo(id){
     const supplierName = document.getElementById('name').value;
-    const docType = document.getElementById('docType').value;
+    const idDocType = document.getElementById('docType').value;
     const numDoc = document.getElementById('numDoc').value;
     const cuit = document.getElementById('cuit').value;
-    const dirProvince = document.getElementById('dirProvince').value;
-    const dirDepartment = document.getElementById('dirDepartment').value;
-    const postCode = document.getElementById('postCode').value;
+    const idDirProvince = document.getElementById('dirProvince').value;
+    const idDirDepartment = document.getElementById('dirDepartment').value;
+    const idDirPostCode = document.getElementById('postCode').value;
     const idDirCity = document.getElementById('dirCity').value;
     const dirStreet = document.getElementById('dirStreet').value;
     const phoneNumber = document.getElementById('phoneNumber').value;
@@ -24,12 +24,12 @@ function editSupplierInfo(id){
     ipcRenderer.send('edit-supplier-info', {
         id,
         supplierName,
-        docType,
+        idDocType,
         numDoc,
         cuit,
-        dirProvince,
-        dirDepartment,
-        postCode,
+        idDirProvince,
+        idDirDepartment,
+        idDirPostCode,
         idDirCity,
         dirStreet,
         phoneNumber,
@@ -74,7 +74,7 @@ async function loadDepartments () {
 
     const selectDepartments = document.getElementById('dirDepartment');
     selectDepartments.innerHTML = '';
-    departments.map(e => {
+    for (const e of departments) {
         const option = document.createElement('option');
 
         option.value = e.id;
@@ -86,7 +86,7 @@ async function loadDepartments () {
         };
 
         selectDepartments.appendChild(option);
-    });
-    loadCities();
+    };
+    await loadCities();
 };
 loadDepartments();

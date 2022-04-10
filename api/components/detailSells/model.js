@@ -15,8 +15,8 @@ const sellProductSchema = {
     idProduct: {
         allowNull: false,
         field: 'id_product',
-        type: DataTypes.INTEGER,
-        reference: {
+        type: DataTypes.BIGINT,
+        references: {
             model: PRODUCT_TABLE,
             key: 'idproduct',
         },

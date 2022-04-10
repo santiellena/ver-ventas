@@ -1,4 +1,3 @@
-const config = require("../../config/config");
 const axios = require("axios");
 const { getSessionToken } = require("../../config/auth");
 const storeDirections = require('../directions/store');
@@ -30,7 +29,8 @@ async function getAllSuppliers() {
   if (response.data.message) {
     return null;
   } else {
-      return response.data.map(supplier => {
+      const suppliers =  response.data;
+      for (const supplier of suppliers) {
         supplier.name = supplier.person.name;
         supplier.idDirCity = supplier.person.idDirCity;
         supplier.idDirDepartment = supplier.person.idDirDepartment;
@@ -45,9 +45,9 @@ async function getAllSuppliers() {
         supplier.dirCity = storeDirections.getCity(supplier.person.idDirCity).nombre;
         supplier.dirDepartment = storeDirections.getDepartment(supplier.person.idDirDepartment).nombre;
         supplier.dirProvince = storeDirections.getProvince(supplier.person.idDirProvince).nombre;
-        supplier.docType = storeDocTypes.getDocType(supplier.person.idDocType);
-        return supplier;
-      });
+        supplier.docType = await storeDocTypes.getDocType(supplier.person.idDocType);
+      };
+      return suppliers;
   }
 }
 
@@ -79,7 +79,7 @@ async function getSupplier(id) {
         supplier.dirCity = storeDirections.getCity(supplier.person.idDirCity).nombre;
         supplier.dirDepartment = storeDirections.getDepartment(supplier.person.idDirDepartment).nombre;
         supplier.dirProvince = storeDirections.getProvince(supplier.person.idDirProvince).nombre;
-        supplier.docType = storeDocTypes.getDocType(supplier.person.idDocType);
+        supplier.docType = await storeDocTypes.getDocType(supplier.person.idDocType);
         return supplier;
     };
   } else return null;
@@ -144,7 +144,7 @@ async function addSupplier({
 async function editSupplier({
   id,
   supplierName,
-  docType,
+  idDocType,
   numDoc,
   cuit,
   idDirProvince,
@@ -159,7 +159,7 @@ async function editSupplier({
   if (
     id,
     supplierName,
-    docType,
+    idDocType,
     numDoc,
     cuit,
     idDirProvince,
@@ -180,12 +180,12 @@ async function editSupplier({
       },
       data: {
         name: supplierName,
-        idDocType: docType,
+        idDocType,
         numDoc,
         cuit,
         idDirProvince,
         idDirDepartment,
-        dirPostCode: dirPostCode,
+        dirPostCode,
         idDirCity,
         dirStreet,
         phoneNumber,

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const response = require('../../network/response');
 const validator = require('../../utils/middlewares/validator');
-const { getProductSchema, createProductSchema, updateProductSchema, deleteProductSchema } = require('../../utils/schemas/product.schema');
+const { getProductSchema, createProductSchema, updateProductSchema, deleteProductSchema, updateByDetailSchema } = require('../../utils/schemas/product.schema');
 const controller = require('./controller');
 const checkAllow = require('../../utils/middlewares/chechAllow');
 
@@ -39,8 +39,15 @@ router.patch('/:id', checkAllow(['menu-stock']), validator(getProductSchema, 'pa
     .catch(err => next(err));
 });
 
+router.patch('/buy/new', checkAllow(['menu-stock']), validator(updateByDetailSchema, 'body'), (req, res, next) => {
+    const { details } = req.body;
+    controller.updateByDetail(details)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
 router.put('/sale/:id', checkAllow(['menu-stock']), validator(getProductSchema, 'params'), (req, res, next) => {
-    const { id } = req.params;
+    const { id } = req.params;      
     controller.updateOnSale(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
@@ -60,5 +67,4 @@ router.delete('/:id', checkAllow(['menu-stock']), validator(deleteProductSchema,
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });
-
 module.exports = router;

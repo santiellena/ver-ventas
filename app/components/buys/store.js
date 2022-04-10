@@ -55,7 +55,7 @@ async function getBuysByDate(from, to){
     if(from && to){
         const response = await axios({
             method: 'GET',
-            url: `${getUrl()}/api/buy/date?from=${from}&to=${to}`  ,
+            url: `${getUrl()}/api/buy/date/when?from=${from}&to=${to}`  ,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,   
             },
@@ -76,20 +76,19 @@ async function getBuyDetail(id) {
 };
 
 async function addBuy({
-    emplooy,
+    user,
     branch,
     supplier,
     howPaid,
     details,
 }){
-    if(emplooy  && branch && supplier && howPaid && details){
-        let amount = 0;
+    if(user  && branch && supplier && howPaid && details){
+        let totalAmount = 0;
         for (const detail of details) {
             const quantityNumber = parseFloat(detail.quantity);
             const priceNumber = parseFloat(detail.price);
-            const product = await storeProducts.getProduct(detail.product);
-            detail.product = product.description;
-            amount =  amount + quantityNumber * priceNumber;
+            detail.idProduct = detail.product;
+            totalAmount =  totalAmount + quantityNumber * priceNumber;
         };
 
         const response = await axios({
@@ -99,11 +98,12 @@ async function addBuy({
                 authorization: `Bearer ${await getSessionToken()}`,   
             },
             data: {
-                idEmplooy: emplooy.id,
+                idUser: user.id,
                 idBranch: branch.id,
-                idSupplier: supplier.id,
+                idSupplier: supplier,
                 howPaid,
                 details,
+                totalAmount,
                 date: actualDateAccuracy(),
             },
         });
@@ -118,7 +118,7 @@ async function deleteBuy(id){
     if(id != undefined && id != null){
         const response = await axios({
             method: 'DELETE',
-            url: `${getUrl()}/api/buy/id`,
+            url: `${getUrl()}/api/buy/${id}`,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,   
             },
