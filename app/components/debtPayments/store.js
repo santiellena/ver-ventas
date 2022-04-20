@@ -5,13 +5,13 @@ const { getSessionToken } = require("../../config/auth");
 const dates = require("../../config/date");
 
 async function addPay ({
-    emplooy,
-    customer,
+    idUser,
+    idCustomer,
     amount,
     observation,
     howPaid,
 }) {
-    if(emplooy && customer && amount && observation && howPaid){
+    if(idUser && idCustomer && amount && observation && howPaid){
         const date = dates.actualDate();
 
         const response = await axios({
@@ -21,8 +21,8 @@ async function addPay ({
                 authorization: `Bearer ${await getSessionToken()}`,
             },
             data: {
-                idEmplooy: emplooy,
-                idCustomer: customer,
+                idUser,
+                idCustomer,
                 amount,
                 observation,  
                 howPaid,
@@ -38,7 +38,7 @@ async function getPaymentsByCustomer (idCustomer) {
     if(idCustomer){
         const response = await axios({
             method: 'GET',
-            url: `${getUrl()}/api/customer/debt-payment/${idCustomer}`,
+            url: `${getUrl()}/api/debt-payment/${idCustomer}`,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,
             },

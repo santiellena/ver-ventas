@@ -32,7 +32,7 @@ const saleSchema = {
     },
     discount: {
         allowNull: false,
-        type: DataTypes.DECIMAL(2),
+        type: DataTypes.DECIMAL(19,2),
     },
     productChange: {
         allowNull: false,

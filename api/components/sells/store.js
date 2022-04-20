@@ -6,7 +6,7 @@ const getAll = async () => {
         as: 'customer', model: Customer, include: [{as: 'person', model: People}]
     }, 
     {as: 'user', model: User, include: [{ as: 'emplooy', model: Emplooy}]},
-        'branch', 'detail']});
+        'branch', 'details']});
 };
 
 const getOne = async (id) => {
@@ -14,7 +14,7 @@ const getOne = async (id) => {
         as: 'customer', model: Customer, include: [{as: 'person', model: People}]
     }, 
     {as: 'user', model: User, include: [{ as: 'emplooy', model: Emplooy}]},
-        'branch', 'detail']});
+        'branch', 'details']});
     if(!sale){
         throw boom.notFound();
     } else {

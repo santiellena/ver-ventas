@@ -39,6 +39,14 @@ const getCashFlow = async (id) => {
     };
 };
 
+const updateFromSellDeleted = async (idCashRegister, sell) => {
+    const cashRegister = await getOne(idCashRegister);
+    const newMoneyAmount = parseFloat(cashRegister.moneyAmount) - parseFloat(sell.howMuchPaid);
+    return await cashRegister.update({
+        moneyAmount: parseFloat(newMoneyAmount),
+    });
+};
+
 module.exports = {
     getOne,
     getAll,
@@ -46,4 +54,5 @@ module.exports = {
     update,
     remove,
     getCashFlow,
+    updateFromSellDeleted,
 };

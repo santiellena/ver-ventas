@@ -12,20 +12,19 @@ async function seeOrderDetails (id) {
             return
         };
         
-        const product = await ipcRenderer.invoke('search-product-byid', detail.idProduct);
         if(order.priceList == 'public'){
-            const amount = product.unitPrice * detail.quantity;
+            const amount = detail.unitPrice * detail.OrderProduct.quantity;
 
-            text = text + `<tr><th>${detail.quantity}</th><th>${product.description}</th><th>$ ${product.unitPrice}</th><th>$ ${amount}</th></tr>`;
+            text = text + `<tr><th>${detail.OrderProduct.quantity}</th><th>${detail.description}</th><th>$ ${detail.unitPrice}</th><th>$ ${amount}</th></tr>`;
 
             counter++;
             if(details.length == counter){
                 textHtml = text;
             }
         } else {
-            const amount = product.wholesalerPrice * detail.quantity;
+            const amount = detail.wholesalerPrice * detail.OrderProduct.quantity;
 
-            text = text + `<tr><th>${detail.quantity}</th><th>${product.description}</th><th>$ ${product.wholesalerPrice}</th><th>$ ${amount}</th></tr>`;
+            text = text + `<tr><th>${detail.OrderProduct.quantity}</th><th>${detail.description}</th><th>$ ${detail.wholesalerPrice}</th><th>$ ${amount}</th></tr>`;
 
             counter++;
             if(details.length == counter){

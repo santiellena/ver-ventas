@@ -43,9 +43,9 @@
                         <button class="btn btn-warning button-method" onclick="payWithCard();">Tarjeta</button>
                         <button class="btn btn-danger button-method" onclick="payWithCredit();">Cuenta Corriente</button>
                         <button class="btn btn-primary button-method" onclick="newOrder();">Nuevo Pedido</i></button>
-                        <ul class="to_do" >
+                        {{!-- <ul class="to_do" >
                             <li><p style="display: block; font-size: 1rem"><input type="checkbox" value="1" class="flat" id="invoicing"> Facturar</p></li>
-                        </ul>
+                        </ul> --}}
                     </div>
                   </div>
                 </div>
@@ -64,6 +64,7 @@
               </div>
         </div>
     </div>
+    <input type="hidden" value="1" class="flat" id="invoicing">
     <script>
         const ipcRenderer = window.app;
     </script>

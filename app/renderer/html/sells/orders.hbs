@@ -67,10 +67,10 @@
                         <tr id="tr{{this.id}}">
                           <th>{{this.id}}</th>
                           <th>{{this.date}}</th>
-                          <th>$ {{this.amount}}</th>
-                          <th>{{this.customer.name}}</th>
-                          <th>{{this.emplooy.name}}</th>
-                          <th>{{this.branch}}</th>
+                          <th>$ {{this.totalAmount}}</th>
+                          <th>{{this.customer.person.name}}</th>
+                          <th>{{this.user.emplooy.name}}</th>
+                          <th>{{this.branch.name}}</th>
                           <th id="priceList{{this.id}}"></th>
                           <th>
                             <button class="btn btn-info" onclick="seeOrderDetails({{this.id}})">Detalles</button>

@@ -5,7 +5,7 @@ const controller = require('./controller');
 const response = require('../../network/response');
 const checkAllow = require('../../utils/middlewares/chechAllow');
 const validator = require('../../utils/middlewares/validator');
-const { getSellSchema, createSellSchema, updateSellSchema, deleteSellSchema, getSellByDateSchema } = require('../../utils/schemas/sell.schema.js');
+const { getSellSchema, createSellSchema, updateSellSchema, deleteSellSchema, getSellByDateSchema, deleteSellBodySchema } = require('../../utils/schemas/sell.schema.js');
 
 router.get('/', checkAllow(['menu-sells']), (req, res, next) => {
     controller.getAll()
@@ -42,9 +42,10 @@ router.patch('/:id', checkAllow(['menu-sells']), validator(getSellSchema, 'param
     .catch(err => next(err));
 });
 
-router.delete('/:id', checkAllow(['menu-sells']), validator(deleteSellSchema, 'params'), (req, res, next) => {
-    const { id } = req.params;   
-    controller.remove(id)
+router.delete('/:id', checkAllow(['menu-sells']), checkAllow(['menu-admin']), validator(deleteSellSchema, 'params'), validator(deleteSellBodySchema, 'body'), (req, res, next) => {
+    const { id } = req.params;
+    const { idCashRegister } = req.body;   
+    controller.remove(id, idCashRegister)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });

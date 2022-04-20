@@ -68,25 +68,22 @@ async function getSellsByDate (from, to) {
 };
 
 async function addSell ({
-    amount,
-    branch,
-    customer,
-    emplooy,
+    totalAmount,
+    idBranch,
+    idUser,
+    idCustomer,
     howPaid,
+    howMuchPaid,
     details,
     priceList,
-    howMuchPaid,
 }) {
-    if(amount, branch, customer, howPaid, details, priceList, emplooy, howMuchPaid) {
+    if(totalAmount, idBranch, idCustomer, howPaid, details, priceList, idUser) {
         const detailsForSell = [];
-
-        details.map(async detail => {
+        for (const detail of details){
             const id = parseInt(detail[0]);
-            const minusStock = parseInt(detail[1]);
-            await storeProducts.updateStockFromSell(id, minusStock);
-            const product = await storeProducts.getProduct(id);
+            const minusStock = parseFloat(detail[1]);
+            const product = await storeProducts.updateStockFromSell(id, minusStock);
             let price = 0;
-
 
             if(priceList == 'public') {
                 price = product.unitPrice;
@@ -100,8 +97,7 @@ async function addSell ({
                 price,
             };
             detailsForSell.push(newDetail);
-        });
-
+        };
         const response = await axios({
             method: 'POST',
             url: `${getUrl()}/api/sell`,
@@ -110,13 +106,14 @@ async function addSell ({
             },
             data: {
                 date: dates.actualDateAccuracy(),
-                amount,
-                idBranch: branch,
-                idCustomer: customer,
+                totalAmount,
+                idBranch,
+                idUser,
+                idCustomer,
                 howPaid,
-                details: detailsForSell,
-                idEmplooy: emplooy,
                 howMuchPaid,
+                details: detailsForSell,
+                priceList,
             },
         });
         if(response.data.message) return null
@@ -127,10 +124,13 @@ async function addSell ({
 async function deleteSell (id) {
     if(id != undefined && id != null){
         const response = await axios({
-            method: 'DELETE ',
+            method: 'DELETE',
             url: `${getUrl()}/api/sell/${id}`,
             headers: {
                 authorization: `Bearer ${await getSessionToken()}`,
+            },
+            data: {
+                idCashRegister: config.getCashRegisterId(),
             },
         });
         if(response.data.message) return null
@@ -143,7 +143,7 @@ async function getSellsByCustomer (idCustomer) {
        const customer = await storeCustomers.getCustomerWithSells(idCustomer);
         if(customer){
             const sellList = customer.sells.map(e => {
-                if(e.howPaid == 'Cuenta Corriente' || e.howPaid == 'Contado/Cuenta Corriente'){
+                if(e.totalAmount != e.howMuchPaid){
                     return e;
                 };
             });

@@ -69,6 +69,7 @@ function setupModels(sequelize) {
     Order.associate(sequelize.models);
     CashFlow.associate(sequelize.models);
     Sale.associate(sequelize.models);
+    DebtPaid.associate(sequelize.models);
 };
 
 module.exports = setupModels;

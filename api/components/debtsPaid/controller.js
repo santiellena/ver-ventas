@@ -4,6 +4,10 @@ const getAll = async () => {
     return await store.getAll();
 };
 
+const getAllByCustomer = async (idCustomer) => {
+    return await store.getAllByCustomer(idCustomer);
+};
+
 const getOne = async (id) => {
     return await store.getOne(id);
 };
@@ -25,6 +29,7 @@ const remove = async (id) => {
 module.exports = {
     getAll,
     getOne,
+    getAllByCustomer,
     create,
     update,
     remove,

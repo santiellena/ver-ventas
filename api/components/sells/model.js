@@ -47,17 +47,6 @@ const sellSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
     },
-    idDocType: {   
-        allowNull: false,
-        field: 'id_doc_type',
-        type: DataTypes.INTEGER,
-        reference: {
-            model: DOC_TYPE_TABLE,
-            key: 'iddoc_type',
-        },
-        onUpdate: 'NO ACTION',
-        onDelete: 'NO ACTION',
-    },
     numberCheck: {
         type: DataTypes.BIGINT,
         field: 'number_check',
@@ -86,15 +75,24 @@ const sellSchema = {
         defaultValue: 0,
         type: DataTypes.TINYINT,
     },
+    howPaid: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        field: 'how_paid'
+    },
+    howMuchPaid: {
+        allowNull: false,
+        type: DataTypes.DECIMAL(19,2),
+        field: 'how_much_paid',
+    },
 };
 
 class Sell extends Model {
     static associate(models) {
         this.belongsTo(models.User, {as: 'user', foreignKey: 'idUser'});
         this.belongsTo(models.Customer, {as: 'customer', foreignKey: 'idCustomer'});
-        this.belongsTo(models.DocType, {as: 'docType', foreignKey: 'idDocType'});
         this.belongsTo(models.Branch, {as: 'branch', foreignKey: 'idBranch'});
-        this.belongsToMany(models.Product, {through: models.SellProduct, foreignKey: 'idSell', otherKey: 'idProduct', as: 'detail'});
+        this.belongsToMany(models.Product, {through: models.SellProduct, foreignKey: 'idSell', otherKey: 'idProduct', as: 'details'});
     };
   
     static config(sequelize) {

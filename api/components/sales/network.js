@@ -24,7 +24,7 @@ router.get('/:id', checkAllow(['menu-sells']), validator(getSaleSchema, 'params'
 router.post('/', checkAllow(['menu-sells']), validator(createSaleSchema, 'body'), (req, res, next) => {
     controller.create(req.body)
     .then(data => response.success(req, res, data, 201))
-    .catch(err => next(err));
+    .catch(err => console.log(err));
 });
 
 router.patch('/:id', checkAllow(['menu-sells']), validator(getSaleSchema, 'paramas'), validator(updateSaleSchema, 'body'), (req, res, next) => {

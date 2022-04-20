@@ -13,7 +13,7 @@ router.get('/', checkAllow(['menu-stock']), (req, res, next) => {
 
 router.get('/:id', validator(getDebtPaidSchema, 'params'), checkAllow(['menu-stock']), (req, res, next) => {
     const { id } = req.params;
-    controller.getOne(id)
+    controller.getAllByCustomer(id)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });

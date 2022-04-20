@@ -15,7 +15,7 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
-    const orderProduct = await BuyProductProduct.create(data);
+    const orderProduct = await OrderProduct.create(data);
     return orderProduct;
 };
 

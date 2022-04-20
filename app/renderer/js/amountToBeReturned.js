@@ -27,7 +27,7 @@ function getMoney () {
         if(amountToBeReturned < 0 && howMuchCash != ''){
             const debt = amountToBeReturned * (-1);
             const debtFixed = debt.toFixed(2);
-            ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed, invoicing: iValue});
+            ipcRenderer.send('sell-cash-incompleted', {debt: debtFixed, invoicing: iValue, totalAmount});
         } else if( howMuchCash == '' || howMuchCash == 0){
             ipcRenderer.send('sell-cash-confirmation', {totalAmount, amountToBeReturned: 0, howMuchCash: totalAmount, invoicing: iValue});
         } else {

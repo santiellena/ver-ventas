@@ -1,12 +1,28 @@
 const boom = require('@hapi/boom');
-const { Order } = require('../../database/database').sequelize.models;
+const { Order, User, Emplooy, Customer, People } = require('../../database/database').sequelize.models;
 
 const getAll = async () => {
-    return await Order.findAll({include: ['customer', 'emplooy']});
+    return await Order.findAll({include: [{
+        as: 'customer',
+        model: Customer,
+        include: [{ as: 'person', model: People }],
+    }, 'branch', {
+        as: 'user',
+        model: User,
+        include: [{ as: 'emplooy', model: Emplooy }],
+    }]});
 };
 
 const getOne = async (id) => {
-    const order = await Order.findByPk(id, { include: ['customer', 'emplooy']});
+    const order = await Order.findByPk(id, {include: [ 'details', {
+        as: 'customer',
+        model: Customer,
+        include: [{ as: 'person', model: People }],
+    }, 'branch', {
+        as: 'user',
+        model: User,
+        include: [{ as: 'emplooy', model: Emplooy }],
+    }]});
     if(!order){
         throw boom.badRequest();
     } else {

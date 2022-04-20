@@ -246,12 +246,11 @@ module.exports = ({
     ipcMain.handle('get-payments-by-customer', async (e, idCustomer) => {
         if(idCustomer){
             const debtPaymentsByCustomer = await storeDebtPayments.getPaymentsByCustomer(idCustomer);
-
             if(debtPaymentsByCustomer){
 
                 return debtPaymentsByCustomer;
-            };
-        };
+            } else return [];
+        } else return [];
     });
 
     ipcMain.on('payDebt-cash', async (e, {amount, idCustomer, observation}) => {
@@ -266,14 +265,14 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = await auth.getUserSessionInfo();
+                const user = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: customer.id,
-                    emplooy: emplooy.idEmplooy,
-                    howPaid: 'Contado',
+                    idCustomer: customer.id,
+                    idUser: user.id,
+                    howPaid: 'Efectivo',
                 });
 
                 if(payment) {
@@ -300,13 +299,13 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = await auth.getUserSessionInfo();
+                const user = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: customer.id,
-                    emplooy: emplooy.idEmplooy,
+                    idCustomer: customer.id,
+                    idUser: user.id,
                     howPaid: 'Tarjeta',
                 });
 
@@ -326,7 +325,7 @@ module.exports = ({
             const customer = await storeCustomers.getCustomer(idCustomer);
 
             const answer = dialog.showMessageBoxSync(payDebtsWindow, {
-                title: `Pago Deuda con TARJETA`,
+                title: `Pago Deuda con TRASNFERENCIA`,
                 message: `Monto: $${amount}, Cliente: N${customer.id} ${customer.name}.
                 Oprima "Confirmar" si el comprobante de la transferencia es válido.`,
                 buttons: ['Cancelar', 'Confirmar'],
@@ -334,13 +333,13 @@ module.exports = ({
             });
 
             if(answer == 1){
-                const emplooy = await auth.getUserSessionInfo();
+                const user = await auth.getUserSessionInfo();
 
                 const payment = await storeDebtPayments.addPay({
                     amount,
                     observation,
-                    customer: customer.id,
-                    emplooy: emplooy.idEmplooy,
+                    idCustomer: customer.id,
+                    idUser: user.id,
                     howPaid: 'Transferencia Bancaria',
                 });
 

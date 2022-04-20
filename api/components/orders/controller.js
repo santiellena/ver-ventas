@@ -1,5 +1,6 @@
 const store = require('./store');
 const storeOrderDetails = require('../detailOrders/store');
+const storeGlobal = require('../global/store');
 
 const getAll = async () => {
     return await store.getAll();
@@ -10,6 +11,8 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
+    const global = await storeGlobal.getOne(1);
+    data.tax = global.taxPercentage;
     const order = await store.create(data);
     for (const detail of data.details) {
           await storeOrderDetails.create({

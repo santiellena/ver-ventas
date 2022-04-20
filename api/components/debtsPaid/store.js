@@ -1,12 +1,28 @@
 const boom = require('@hapi/boom');
-const { DebtPaid } = require('../../database/database').sequelize.models;
+const { DebtPaid, User, Emplooy } = require('../../database/database').sequelize.models;
 
 const getAll = async () => {
-    return await DebtPaid.findAll({include: ['customer', 'emplooy']});
+    return await DebtPaid.findAll({include: ['customer', {
+        as: 'user',
+        model: User,
+        include: [{ as: 'emplooy', model: Emplooy}],
+    }]});
+};
+
+const getAllByCustomer = async (idCustomer) => {
+    return await DebtPaid.findAll({include: ['customer', {
+        as: 'user',
+        model: User,
+        include: [{ as: 'emplooy', model: Emplooy}],
+    }]}, { where: {idCustomer}});
 };
 
 const getOne = async (id) => {
-    const debtPaid = await DebtPaid.findByPk(id, { include: ['customer', 'emplooy']});
+    const debtPaid = await DebtPaid.findByPk(id, {include: ['customer', {
+        as: 'user',
+        model: User,
+        include: [{ as: 'emplooy', model: Emplooy}],
+    }]});
     if(!debtPaid){
         throw boom.badRequest();
     } else {
@@ -31,6 +47,7 @@ const remove = async (id) => {
 module.exports = {
     getAll,
     getOne,
+    getAllByCustomer,
     create,
     update,
     remove,

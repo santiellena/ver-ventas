@@ -29,10 +29,21 @@ const remove = async (id) => {
     return await product.destroy();
 };
 
+const updateFromSellDeleted = async (sell) => {
+    for (const detail of sell.details) {
+        const product = await getOne(detail.id);
+        const newStockAmount = parseFloat(product.stock) + parseFloat(detail.SellProduct.quantity);
+        await product.update({
+            stock: newStockAmount,
+        });
+    };
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    updateFromSellDeleted,
 };

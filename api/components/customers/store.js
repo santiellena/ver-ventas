@@ -1,5 +1,5 @@
 const boom = require('@hapi/boom');
-const { Customer } = require('../../database/database').sequelize.models;
+const { Customer, Sell, User, Emplooy } = require('../../database/database').sequelize.models;
 
 const getAll = async () => {
     return await Customer.findAll({include: ['person']});
@@ -15,7 +15,15 @@ const getOne = async (id) => {
 };
 
 const getOneWithSells = async (id) => {
-    const customer = await Customer.findByPk(id, { include: ['person', 'sells']});
+    const customer = await Customer.findByPk(id, { include: ['person', {
+        as: 'sells',
+        model: Sell,
+        include: [{
+           as: 'user',
+           model: User,
+           include: [{ as: 'emplooy', model: Emplooy}], 
+        }],
+    }]});
     if(!customer){
         throw boom.badRequest();
     } else {

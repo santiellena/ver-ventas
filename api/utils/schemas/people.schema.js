@@ -1,6 +1,7 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
+const idCustomer = joi.number().integer();
 const name = joi.string().max(30);
 const idDocType = joi.number().integer();
 const numDoc = joi.string().max(15);
@@ -55,6 +56,7 @@ const deletePeopleSchema = joi.object({
 });
 
 const createCustomerSchema = joi.object({
+    idCustomer,
     name: name.required(),
     idDocType: idDocType.required(),
     numDoc: numDoc.required(),

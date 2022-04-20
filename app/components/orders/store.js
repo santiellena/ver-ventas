@@ -79,14 +79,14 @@ async function getOrdersByDate(from, to){ // yyyy-mm-dd
 };
 
 async function addOrder ({
-    amount,
-    branch,
-    customer,
+    totalAmount,
+    idBranch,
+    idCustomer,
     priceList,
     details,
-    emplooy,
+    idUser,
 }) {
-    if(amount && branch && customer && priceList && details){
+    if(totalAmount && idBranch && idCustomer && priceList && details && idUser){
         const date = dates.actualDateAccuracy();
 
         const detailsForOrder = details.map(detail => {
@@ -109,12 +109,13 @@ async function addOrder ({
             },
             data: {
                 date,
-                amount,
-                idBranch: branch.id,
-                idCustomer: customer.id,
+                totalAmount,
+                idUser,
+                idBranch,
+                idCustomer,
                 priceList,
-                idEmplooy: emplooy.id,
                 details: detailsForOrder,
+                invoicing: 0,
             },
         });
         if(response.data.message) return null

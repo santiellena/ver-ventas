@@ -15,13 +15,13 @@ const getOne = async (id) => {
 };
 
 const create = async (data) => {
-    const sellProduct = await BuyProductProduct.create(data);
+    const sellProduct = await SellProduct.create(data);
     return sellProduct;
 };
 
 const update = async (id, changes) => {
-    const buyProductOne = await getOne(id);
-    return await buyProductOne.update(changes);
+    const sellProductOne = await getOne(id);
+    return await sellProductOne.update(changes);
 };
 
 const remove = async (id) => {

@@ -15,9 +15,10 @@ async function checkCustomerExistense () {
     if(idCustomer){
         const customer = await ipcRenderer.invoke('get-customer', idCustomer);
         const shower = document.getElementById('name-customer');
+        const debt = document.getElementById('debt-customer');
         if(customer){
             verifier = true;
-           
+            debt.value = `$ ${customer.debt}`;
             shower.value = customer.name;
         } else {
             shower.value = 'Cliente no encontrado...';
@@ -25,7 +26,9 @@ async function checkCustomerExistense () {
         };
     } else {
         const shower = document.getElementById('name-customer');
+        const debt = document.getElementById('debt-customer');
         shower.value = 'Cliente';
+        debt.value = '$ Deuda';
         verifier = false;
     }
 };
@@ -49,9 +52,9 @@ async function searchSellsAndPayments () {
                 const thDate = document.createElement('th');
                 thDate.innerText = sell.date;
                 const thEmplooy = document.createElement('th');
-                thEmplooy.innerText = sell.emplooy.name;
+                thEmplooy.innerText = sell.user.emplooy.name;
                 const thAmount = document.createElement('th');
-                thAmount.innerText = `$ ${sell.amount}`;
+                thAmount.innerText = `$ ${sell.totalAmount}`;
                 const thHowMuchPaid = document.createElement('th');
                 thHowMuchPaid.innerText = `$ ${ sell.howMuchPaid}`;
 
@@ -74,7 +77,7 @@ async function searchSellsAndPayments () {
                     const thDate = document.createElement('th');
                     thDate.innerText = payment.date;
                     const thEmplooy = document.createElement('th');
-                    thEmplooy.innerText = payment.emplooy.name;
+                    thEmplooy.innerText = payment.user.emplooy.name;
                     const thAmount = document.createElement('th');
                     thAmount.innerText = `$ ${payment.amount}`;
                     const thHowPaid = document.createElement('th');

@@ -1,24 +1,26 @@
 const joi = require('joi');
 
 const id = joi.number().integer();
-const amount = joi.number().precision(2);
+const totalAmount = joi.number().precision(2);
 const idBranch = joi.number().integer();
 const idCustomer = joi.number().integer();
-const idEmplooy = joi.number().integer();
+const idUser = joi.number().integer();
 const howMuchPaid = joi.number().precision(2);
 const howPaid = joi.string();
 const details = joi.array();
 const priceList = joi.string();
 const from = joi.string();
 const to = joi.string();
+const date = joi.string();
 
 const getSellSchema = joi.object({ id: id.required(), });
 
 const createSellSchema = joi.object({
-    amount: amount.required(),
+    date: date.required(),
+    totalAmount: totalAmount.required(),
     idBranch: idBranch.required(),
     idCustomer: idCustomer.required(),
-    idEmplooy: idEmplooy.required(),
+    idUser: idUser.required(),
     howMuchPaid: howMuchPaid.required(),
     howPaid: howPaid.required(),
     details: details.required(),
@@ -26,10 +28,10 @@ const createSellSchema = joi.object({
 });
 
 const updateSellSchema = joi.object({
-    amount,
+    totalAmount,
     idBranch,
     idCustomer,
-    idEmplooy,
+    idUser,
     howPaid,
     details,
     priceList,
@@ -37,6 +39,10 @@ const updateSellSchema = joi.object({
 });
 
 const deleteSellSchema = joi.object({ id: id.required(), });
+
+const deleteSellBodySchema = joi.object({
+    idCashRegister: id.required(),
+});
 
 const getSellByDateSchema = joi.object({
     from: from.required(),
@@ -49,4 +55,5 @@ module.exports = {
     createSellSchema,
     deleteSellSchema,
     getSellByDateSchema,
+    deleteSellBodySchema,
 };

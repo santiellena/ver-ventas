@@ -1,5 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 const { CUSTOMER_TABLE } = require('../customers/model');
+const { USER_TABLE } = require('../auth/model');
 
 const DEBT_PAID_TABLE = 'debt_paid';
 
@@ -22,6 +23,17 @@ const debtPaidSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'NO ACTION',
     },
+    idUser: {
+        type: DataTypes.INTEGER,
+        field: 'id_user',
+        allowNull: false,
+        reference: {
+            model: USER_TABLE,
+            key: 'iduser',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'NO ACTION',
+    },
     amount: {
         allowNull: false,
         type: DataTypes.DECIMAL(19,2),
@@ -36,10 +48,21 @@ const debtPaidSchema = {
         defaultValue: Sequelize.NOW,
         field: 'register_date',
     },
+    howPaid: {
+        field: 'how_paid',
+        allowNull: false, 
+        type: DataTypes.STRING,
+    },
+    observation: {
+        allowNull: false,
+        type: DataTypes.STRING,
+    },
 };
 
 class DebtPaid extends Model {
     static associate(models) {
+        this.belongsTo(models.User, { as: 'user', foreignKey: 'idUser'});
+        this.belongsTo(models.Customer, { as: 'customer', foreignKey: 'idCustomer'});
     };
   
     static config(sequelize) {

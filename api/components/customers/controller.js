@@ -15,10 +15,18 @@ const getOneWithSells = async (id) => {
 
 const create = async (data) => {
     const person = await storePeople.create(data);
-    return await storeCustomer.create({
-        idPeople: person.id,
-        debt: data.debt,
-    });
+    if(data.idCustomer){
+        return await storeCustomer.create({
+            id: data.idCustomer,
+            idPeople: person.id,
+            debt: data.debt,
+        });
+    } else {
+        return await storeCustomer.create({
+            idPeople: person.id,
+            debt: data.debt,
+        });
+    };
 };
 
 const update = async (id, changes) => {

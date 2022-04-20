@@ -8,7 +8,7 @@ async function onLoad () {
     const customer = await ipcRenderer.invoke('get-customer', idCustomer);
 
     showCustomer.innerText = `Cliente: ${customer.name}`;
-    showDebt.innerText = `Deuda total: $ ${customer.debts}`;
+    showDebt.innerText = `Deuda total: $ ${customer.debt}`;
 };
 onLoad();
 
@@ -32,7 +32,7 @@ function payWithCard () {
     };
 };
 
-function payWithTranseference () {
+function payWithTransference () {
     const amount = document.getElementById('money').value;
     const idCustomer = document.getElementById('idCustomer').value;
     const observation = document.getElementById('observation').value;

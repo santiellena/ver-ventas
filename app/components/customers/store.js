@@ -108,7 +108,7 @@ async function addToDebt (id, debt) {
     if(id && debt){
         const customer = await getCustomer(id);
         if(customer){
-            const resultNewDebts = parseFloat(customer.debts) + parseFloat(debt);
+            const resultNewDebts = parseFloat(customer.debt) + parseFloat(debt);
             const toParseNumber = resultNewDebts.toFixed(2);
             const readyNumber = parseFloat(toParseNumber);
 
@@ -185,6 +185,7 @@ async function editCustomer ({
     dirStreet,
     debt
 }) {
+    if(id != 1){
     const response = await axios({
         method: 'PATCH',
         url: `${getUrl()}/api/customer/${id}`,
@@ -208,11 +209,11 @@ async function editCustomer ({
     });
     if(response.data.message) return null
     else return await getCustomer(response.data.id);
-        
+    } 
 };
 
 async function deleteCustomer (id) {
-    if(id){
+    if(id && id != 1){
         const response = await axios({
             method: 'DELETE',
             url: `${getUrl()}/api/customer/${id}`,
@@ -229,11 +230,11 @@ async function removeFromDebts (idCustomer, amount) {
     const amountToFloat = parseFloat(amount);
     const customer = await getCustomer(idCustomer);
     if(customer){
-        customer.debt = customer.debt - amountToFloat;
+        customer.debt = parseFloat(customer.debt) - amountToFloat;
 
         const response = await axios({
                     method: 'PATCH',
-                    url: `${getUrl()}/api/customer/${id}`,
+                    url: `${getUrl()}/api/customer/${idCustomer}`,
                     headers: {
                         authorization: `Bearer ${await getSessionToken()}`,
                     },

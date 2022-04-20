@@ -1,6 +1,9 @@
 const store = require('./store');
 const storeSellDetails = require('../detailSells/store');
-const storeBranch = require('../branches/store')
+const storeBranch = require('../branches/store');
+const storeGlobal = require('../global/store');
+const storeProducts = require('../products/store');
+const storeCashRegister = require('../cashRegister/store');
 
 const getAll = async () => {
     return await store.getAll();
@@ -38,8 +41,10 @@ const getByDate = async (from, to) => {
 
 const create = async (data) => {
     const { nextNumber, serie } = await storeBranch.getNextSerieAndNumber(data.idBranch);
+    const global = await storeGlobal.getOne(1);
     data.numberCheck = nextNumber;
     data.serieCheck = serie;
+    data.tax = global.taxPercentage;
     const sell = await store.create(data);
     for (const detail of data.details) {
           await storeSellDetails.create({
@@ -57,7 +62,10 @@ const update = async (id, changes) => {
     return await store.update(id, changes);
 };
 
-const remove = async (id) => {
+const remove = async (id, idCashRegister) => {
+    const sell = await store.getOne(id);
+    await storeProducts.updateFromSellDeleted(sell);
+    await storeCashRegister.updateFromSellDeleted(idCashRegister, sell);
     await storeSellDetails.removeBySell(id);
     return await store.remove(id);
 };

@@ -4,7 +4,7 @@ const id = joi.number().integer();
 const howPaid = joi.string();
 const observation = joi.string();
 const idCustomer = joi.number().integer();
-const idEmplooy = joi.number().integer();
+const idUser = joi.number().integer();
 const amount = joi.number();
 const date = joi.string();
 
@@ -16,7 +16,7 @@ const updateDebtPaidSchema = joi.object({
     howPaid,
     observation,
     idCustomer,
-    idEmplooy,
+    idUser,
     amount,
     date,
 });
@@ -25,7 +25,7 @@ const createDebtPaidSchema = joi.object({
     howPaid: howPaid.required(),
     observation: observation.required(),
     idCustomer: idCustomer.required(),
-    idEmplooy: idEmplooy.required(),
+    idUser: idUser.required(),
     amount: amount.required(),
     date: date.required(),
 });
