@@ -1,10 +1,6 @@
 let totalAmount = document.getElementById('total-amount').innerText;
 //Enviar update a la caja mediante un ipcRenderer.send()
 
-function updateBoxBOSell (amount) { //Update box because of sell
-    ipcRenderer.send('update-box-bo-sell', amount);
-};
-
 //Print the amount to be returned when the customer pays with cash
 function amountToReturn () {
     const spanReturn = document.getElementById('return-amount');
@@ -23,7 +19,6 @@ function getMoney () {
         const priceList = document.getElementById('priceList').value;
         const idCustomer = document.getElementById('idCustomer').value;
         const invoicing = document.getElementById('invoicing');
-        const idOrder = document.getElementById('idOrder').value;
     let iValue = 0;
     if(invoicing.checked == true){
         iValue = 1;
@@ -31,11 +26,11 @@ function getMoney () {
     if(amountToBeReturned < 0 && howMuchCash != ''){
         const debt = amountToBeReturned * (-1);
         const debtFixed = debt.toFixed(2);
-        ipcRenderer.send('send-details-order-incompleted', {debt: debtFixed, invoicing: iValue, sessionStorage, priceList, idCustomer, totalAmount, idOrder});
+        ipcRenderer.send('send-details-order-incompleted', {debt: debtFixed, invoicing: iValue, sessionStorage, priceList, idCustomer, totalAmount});
     } else if( howMuchCash == '' || howMuchCash == 0){
-        ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned: 0, sessionStorage, howMuchCash: totalAmount, idCustomer,invoicing: iValue, priceList, idOrder});
+        ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned: 0, sessionStorage, howMuchCash: totalAmount, idCustomer,invoicing: iValue, priceList});
     } else {
-        ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned, howMuchCash, invoicing: iValue, sessionStorage, idCustomer, priceList, idOrder});
+        ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned, howMuchCash, invoicing: iValue, sessionStorage, idCustomer, priceList});
     };
 
     } else {
@@ -52,7 +47,6 @@ document.getElementById('cash').addEventListener('keydown',  e => {
             const priceList = document.getElementById('priceList').value;
             const idCustomer = document.getElementById('idCustomer').value;
             const invoicing = document.getElementById('invoicing');
-            const idOrder = document.getElementById('idOrder').value;
         let iValue = 0;
         if(invoicing.checked == true){
             iValue = 1;
@@ -60,11 +54,11 @@ document.getElementById('cash').addEventListener('keydown',  e => {
         if(amountToBeReturned < 0 && howMuchCash != ''){
             const debt = amountToBeReturned * (-1);
             const debtFixed = debt.toFixed(2);
-            ipcRenderer.send('send-details-order-incompleted', {debt: debtFixed, invoicing: iValue, sessionStorage, priceList, idCustomer, totalAmount, idOrder});
+            ipcRenderer.send('send-details-order-incompleted', {debt: debtFixed, invoicing: iValue, sessionStorage, priceList, idCustomer, totalAmount});
         } else if( howMuchCash == '' || howMuchCash == 0){
-            ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned: 0, sessionStorage, howMuchCash: totalAmount, idCustomer,invoicing: iValue, idOrder});
+            ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned: 0, sessionStorage, howMuchCash: totalAmount, idCustomer,invoicing: iValue, priceList});
         } else {
-            ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned, howMuchCash, invoicing: iValue, sessionStorage, idCustomer, idOrder});
+            ipcRenderer.send('send-details-order-cash', {totalAmount, amountToBeReturned, howMuchCash, invoicing: iValue, sessionStorage, idCustomer, priceList});
         };
         } else {
             alert('EL MONTO DEBE SER MAYOR A $0');
@@ -77,8 +71,7 @@ function payWithCard () {
         const sessionStorage = getAllItemSession();
         const priceList = document.getElementById('priceList').value;
         const idCustomer = document.getElementById('idCustomer').value;
-        const idOrder = document.getElementById('idOrder').value;
-        ipcRenderer.send('send-details-order-card', {sessionStorage, priceList, totalAmount, idCustomer, idOrder});
+        ipcRenderer.send('send-details-order-card', {sessionStorage, priceList, totalAmount, idCustomer});
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     };
@@ -94,8 +87,7 @@ function payWithCredit () {
         const sessionStorage = getAllItemSession();
         const priceList = document.getElementById('priceList').value;
         const idCustomer = document.getElementById('idCustomer').value;
-        const idOrder = document.getElementById('idOrder').value;
-        ipcRenderer.send('send-details-order-credit', {sessionStorage, priceList, invoicing: iValue, totalAmount, idCustomer, idOrder});
+        ipcRenderer.send('send-details-order-credit', {sessionStorage, priceList, invoicing: iValue, totalAmount, idCustomer});
     } else {
         alert('EL MONTO DEBE SER MAYOR A $0');
     }
@@ -104,7 +96,7 @@ function payWithCredit () {
 async function onLoadSetItems () {
     const details = await ipcRenderer.invoke('get-order-details');
     for (const det of details) {
-        setItemSession(det.idProduct, det.quantity); 
+        setItemSession(det.id, det.OrderProduct.quantity); 
     };
 };
 onLoadSetItems();

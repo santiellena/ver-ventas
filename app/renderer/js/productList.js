@@ -7,7 +7,8 @@ async function loadTaxPercentage() {
 loadTaxPercentage();
 
 async function checkProductExistense(){
-    const idProduct = document.getElementById('id-product').value;
+    const idProductWithoutTreatment = document.getElementById('id-product').value;
+    const idProduct = Number(idProductWithoutTreatment);
     //const existence = await ipcRenderer.invoke('check-product-incookies', idProduct);
     const product = getItemSession(idProduct);
 
@@ -154,7 +155,25 @@ async function addProduct(){
 document.getElementById('id-product').addEventListener('keydown', e => { 
     if(e.key == 'Enter'){
         checkProductExistense();
-    }
+    };
+    let interval;
+    if(interval){
+        clearInterval(interval);
+    };
+    const input = document.getElementById('id-product');
+    let length;
+        
+    interval = setInterval(() => {
+        if(input.value.length != length){
+
+            length = input.value.length;
+        } else {
+            checkProductExistense();
+            input.value = '';
+            clearInterval(interval);
+        };
+        
+    }, 20);
 });
 
 async function searchProduct(){

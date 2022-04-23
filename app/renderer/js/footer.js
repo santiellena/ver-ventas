@@ -1,7 +1,3 @@
-document.getElementById('settings-button-footer').addEventListener('click', () => {
-    ipcRenderer.send('load-settings', ''); 
-});
-
 document.getElementById('fullscreen-button').addEventListener('click', () => {
     ipcRenderer.send('fullscreen-mainwindow', ''); 
 });

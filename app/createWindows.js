@@ -142,7 +142,6 @@ function createPaymentWindow ({
     articlesQuantity,
     priceList,
     idCustomer,
-    idOrder,
   }){
     payOrdersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -160,7 +159,7 @@ function createPaymentWindow ({
       //frame: false,
     });
     // Load index.hbs into the new BrowserWindow
-    payOrdersWindow.loadFile(historyHandlebars.render(`sells/payOrders.hbs`, { totalAmount, articlesQuantity, priceList, idCustomer, idOrder }));
+    payOrdersWindow.loadFile(historyHandlebars.render(`sells/payOrders.hbs`, { totalAmount, articlesQuantity, priceList, idCustomer }));
 
     handleErrors(payOrdersWindow);
     

@@ -252,7 +252,7 @@ module.exports = ({
 
         const customerList = returnCustomerListWindow();
         const customerConfirmation = dialog.showMessageBoxSync(customerList, {
-            title: `Cliente Seleccionado: ${customer.id} ${customer.name}`,
+            title: `Cliente Seleccionado: ${customer.id} ${customer.person.name}`,
             message: 'Confirmar cuenta corriente',
             type: 'info',
             buttons: ['Cancelar', 'Confirmar'],
@@ -269,7 +269,7 @@ module.exports = ({
                 customerList.close();
                 const paymentWindow = returnPaymentWindow();
                 const sellConfirmation = dialog.showMessageBoxSync(paymentWindow, {
-                    title: `Cliente: ${customer.id} ${customer.name}`,
+                    title: `Cliente: ${customer.id} ${customer.person.name}`,
                     message: `Monto: $ ${args.totalAmount}. 
                     Agregar a cuenta corriente.`,
                     type: 'info',
@@ -361,7 +361,7 @@ module.exports = ({
 
         const customerList = returnCustomerListWindow();
         const customerConfirmation = dialog.showMessageBoxSync(customerList, {
-            title: `Cliente Seleccionado: ${customer.id} ${customer.name}`,
+            title: `Cliente Seleccionado: ${customer.id} ${customer.person.name}`,
             message: 'Confirmar Cliente',
             type: 'info',
             buttons: ['Cancelar', 'Confirmar'],
@@ -372,7 +372,7 @@ module.exports = ({
             const paymentWindow = returnPaymentWindow();
 
             const sellConfirmation = dialog.showMessageBoxSync(paymentWindow, {
-                title: `Cliente: ${customer.id} ${customer.name}`,
+                title: `Cliente: ${customer.id} ${customer.person.name}`,
                 message: `Monto: $ ${totalAmount}. 
                 Agregar Pedido.`,
                 type: 'info',
@@ -435,7 +435,7 @@ module.exports = ({
             const order = await storeOrders.getOrder(id);
             const answer = dialog.showMessageBoxSync(ordersWindow, {
                 title: `Eliminar pedido N ${order.id}`,
-                message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer.name}`,
+                message: `Realmente desea eliminar de forma permanente? Cliente: ${order.customer.person.name}`,
                 type: 'question',
                 buttons: ['Cancelar', 'Confirmar'],
             });
@@ -455,7 +455,7 @@ module.exports = ({
             const order = await storeOrders.getOrder(id);
             const answer = dialog.showMessageBoxSync(ordersWindow, {
                 title: `Pedido N ${order.id}`,
-                message: `Pedido concretado como venta. Cliente: ${order.customer.name}`,
+                message: `Pedido concretado como venta. Cliente: ${order.customer.person.name}`,
                 type: 'info',
                 buttons: ['Cerrar'],
             });
@@ -543,7 +543,7 @@ module.exports = ({
                 };
             };
             detailsPivot = order.details;
-            createPayOrderWindow({totalAmount, articlesQuantity, priceList: order.priceList, idCustomer: order.customer.id, idOrder: order.id});
+            createPayOrderWindow({totalAmount, articlesQuantity, priceList: order.priceList, idCustomer: order.customer.id});
         };
     });
 
@@ -633,12 +633,43 @@ module.exports = ({
                 buttons: ['Confirmar', 'Cancelar'],
             });
             if(answer == 0){
+                await storeCustomers.addToDebt(idCustomer, totalAmount);
                 await storeSells.addSell({
                     totalAmount,
                     idBranch: branch.id,
                     idUser: user.id,
                     idCustomer,
                     howPaid: 'Cuenta Corriente',
+                    howMuchPaid: 0,
+                    details: sessionStorage,
+                    priceList,
+                });
+                
+                payOrderWindow.close();
+                const ordersWindow = returnOrdersWindow();
+                ordersWindow.webContents.send('confirm-order-sell');
+            };
+    });
+
+
+    ipcMain.on('send-details-order-card', async (e, {sessionStorage, priceList, totalAmount, idCustomer, invoicing}) => {
+        const customer = await storeCustomers.getCustomer(idCustomer);
+        const branch = configs.getBranchDataFromConfig();
+        const user = await auth.getUserSessionInfo();
+            const payOrderWindow = returnPayOrdersWindow();
+            const answer = dialog.showMessageBoxSync(payOrderWindow, {
+                title: `Pago con tarjeta de CRÉDITO/DÉBITO.`,
+                message: `Cliente: ${customer.person.name}. 
+                Ingrese "CONFIRMAR" solo si la tarjeta fue aceptada.`,
+                buttons: ['Confirmar', 'Cancelar'],
+            });
+            if(answer == 0){
+                await storeSells.addSell({
+                    totalAmount,
+                    idBranch: branch.id,
+                    idUser: user.id,
+                    idCustomer,
+                    howPaid: 'Tarjeta',
                     howMuchPaid: 0,
                     details: sessionStorage,
                     priceList,

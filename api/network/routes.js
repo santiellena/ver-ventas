@@ -18,6 +18,7 @@ const debtPaids = require('../components/debtsPaid/network');
 const orders = require('../components/orders/network');
 const sales = require('../components/sales/network');
 const sells = require('../components/sells/network');
+const dumps = require('../components/dumps/network');
 const { notFound } = require('../utils/errors');
 
 module.exports = (app) => {
@@ -41,5 +42,6 @@ module.exports = (app) => {
     app.use('/api/order', orders);
     app.use('/api/sale', sales);
     app.use('/api/sell', sells);
+    app.use('/api/dump', dumps);
     app.use(notFound);
 };
