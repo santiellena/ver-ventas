@@ -9,7 +9,8 @@
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
-    "migrations:delete": "sequelize-cli db:migrate:undo:all"
+    "migrations:delete": "sequelize-cli db:migrate:undo:all",
+    "production": "pm2 index.js"
   },
   "repository": "https://github.com/santiellena/ver-ventas.git",
   "author": "ESanti",

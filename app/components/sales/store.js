@@ -98,6 +98,7 @@ async function getSale (id) {
     else return response.data;
 };
 
+
 async function deleteSale (id) {
     const sale = await getSale(id);
     if(id && sale) {

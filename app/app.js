@@ -77,7 +77,7 @@ if(process.env.NODE_ENV == 'development'){
 //app.on('ready', checkInitialConfig); //Production
 app.on('ready', () =>{
   checkInitialConfig();
-  //Menu.setApplicationMenu(mainMenu);
+  Menu.setApplicationMenu(mainMenu);
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)

@@ -3,6 +3,8 @@ const axios = require('axios');
 const { getUrl } = config;
 const { getSessionToken } = require('../../config/auth');
 
+const storeUsers = require('../users/store');
+
 async function getGeneralInfo () {
     const  generalInfo = await axios({
         method: 'GET',
@@ -87,24 +89,16 @@ async function getBranch(id) {
     };
 };
 
-async function getBranches (branchesIds) {
-    if(branchesIds){
-        const response = await axios({
-            method: 'GET',
-            url: `${getUrl()}/api/branch/list/`,
-            data: {
-                branches: branchesIds,
-            },
-            headers: {
-                authorization: `Bearer ${await getSessionToken()}`,   
-            },
-        });
-        if(response.data.message){
-            return null;
-        } else {
-            return response.data;
+async function getBranches (idUser) {
+    if(idUser){
+        let user = await storeUsers.getUser(idUser);
+        let branchName = "";
+        for (let i = 0; i < user.branches.length; i++) {
+            if (i == 0) branchName += `${user.branches[i].name}`
+            else branchName += `, ${user.branches[i].name}`;
         };
-    };
+        return branchName;
+    } else return null;
 };
 
 async function updateBranchInfo ({

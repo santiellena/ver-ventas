@@ -61,6 +61,7 @@
                 </thead>
                 <tbody id="tbody-missing">
                   {{#each missing}}
+                  {{#if this}}
                     <tr>
                       <th>{{this.id}}</th>
                       <th>{{this.description}}</th>
@@ -69,6 +70,7 @@
                       <th>{{this.stockMin}}</th>
                       <th>{{this.unitMeasure.longDescription}} ({{this.unitMeasure.shortDescription}})</th>
                     </tr>
+                    {{/if}}
                   {{/each}}
                 </tbody>
               </table>

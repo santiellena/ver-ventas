@@ -189,7 +189,7 @@ module.exports = ({
 
       if (emplooy) {
         const editEmplooyWindow = returnEditEmployeesWindow();
-
+        
         const response = dialog.showMessageBoxSync(editEmplooyWindow, {
           title: `ELIMINAR EMPLEADO`,
           message: `Eliminar EMPLEADO: ${emplooy.lastname}, ${emplooy.name}`,
@@ -309,7 +309,7 @@ module.exports = ({
       const user = await storeUsers.getUser(idUser);
       const editUserWindow = returnEditUserWindow();
 
-      const actualUserSession = await auth.getUserSessionInfo(); // Modificar cuando se implementen sesiones
+      const actualUserSession = await auth.getUserSessionInfo();
 
       if (actualUserSession.id == idUser) {
         dialog.showMessageBoxSync(editUserWindow, {
@@ -318,8 +318,8 @@ module.exports = ({
         });
       } else {
         const response = dialog.showMessageBoxSync(editUserWindow, {
-          title: `ELIMINAR USUARIO ${user.name}`,
-          message: `Seguro que desea eliminar este usuario? ${user.name}, ${user.lastname}`,
+          title: `ELIMINAR USUARIO ${user.emplooy.name}`,
+          message: `Seguro que desea eliminar este usuario? ${user.emplooy.name}, ${user.emplooy.lastname}`,
           buttons: ["Confirmar", "Cancelar"],
         });
 
@@ -345,10 +345,10 @@ module.exports = ({
     "add-user",
     async (e, { permissions, idEmplooy, branches, username, password }) => {
       if (permissions && idEmplooy && branches && username && password) {
-        const idUserType = await storeUsers.getEmplooyType().id;
+        const userType = await storeUsers.getEmplooyType();
         const added = await storeUsers.addUser({
           idEmplooy,
-          idUserType,
+          idUserType: userType.id,
           branches,
           password,
           username,
@@ -356,7 +356,7 @@ module.exports = ({
           menuBuys: permissions.menuBuys,
           menuSells: permissions.menuSells,
           menuMaintenance: permissions.menuMaintenance,
-          menuQuery: permissions.menuQuery,
+          menuQueries: permissions.menuQuery,
           menuAdmin: permissions.menuAdmin,
           menuInvoicing: permissions.menuInvoicing,
         });
@@ -365,13 +365,7 @@ module.exports = ({
           addUserWindow.close();
 
           const emplooy = await storeEmployees.getEmplooy(added.idEmplooy);
-          const allowedBranches = await storeMaintenance.getBranches(added.branches);
-
-          let branchName = "";
-
-          for (const branch of allowedBranches) {
-            branchName += `${branch.name}, `;
-          }
+          const branchName = await storeMaintenance.getBranches(added.id);
 
           const shower = {
             id: added.id,

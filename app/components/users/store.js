@@ -31,7 +31,7 @@ async function getAllUserTypes () {
 };
 
 async function getUserType (id) {
-    if(id && userTypes[id] != undefined){
+    if(id){
         const response = await axios({
             method: 'GET',
             url: `${getUrl()}/api/user-type/${id}`,
@@ -39,13 +39,13 @@ async function getUserType (id) {
                 authorization: `Bearer ${await getSessionToken()}`,
             },
         });
-        if(response.data.message) return null
+        if(response.data.message) return null;
         else return response.data;
     } else return null;
 };
 
 async function getEmplooyType () {
-    const emplooyType = await getAllUserTypes(2);
+    const emplooyType = await getUserType(2);
     return emplooyType;
 };
 
@@ -191,7 +191,7 @@ async function getPermissions (idUser) {
     } else return null;
 };
 
-async function deleteUser (idUser) {
+async function deleteUser (id) {
     const response = await axios({
         method: 'DELETE',
         url: `${getUrl()}/api/auth/${id}`,

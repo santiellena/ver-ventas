@@ -5,7 +5,9 @@ const storeDirections = require('../components/directions/store');
 const storeDocTypes = require('../components/docTypes/store');
 const storeSells = require('../components/sells/store');
 const storeDebtPayments = require('../components/debtPayments/store');
+const storeCashRegister = require('../components/cashRegister/store');
 
+const config = require('../config/config');
 const auth = require('../config/auth');
 
 const { mainHandlebars,
@@ -279,6 +281,8 @@ module.exports = ({
                     const listDebtsWindow = returnListDebtsWindow();
                     listDebtsWindow.webContents.send('load-new-payment');
                     await storeCustomers.removeFromDebts(idCustomer, amount);
+                    const branch = config.getBranchDataFromConfig();
+                    await storeCashRegister.addToBox(config.getCashRegisterId(), branch.id, amount);
                     payDebtsWindow.close();
                 };
             };

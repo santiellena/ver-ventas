@@ -46,25 +46,27 @@ async function searchSellsAndPayments () {
            tbodySells.innerHTML = '';
             
             for (const sell of sells) {
-                const tr = document.createElement('tr');
-                const thId = document.createElement('th');
-                thId.innerText = sell.id;
-                const thDate = document.createElement('th');
-                thDate.innerText = sell.date;
-                const thEmplooy = document.createElement('th');
-                thEmplooy.innerText = sell.user.emplooy.name;
-                const thAmount = document.createElement('th');
-                thAmount.innerText = `$ ${sell.totalAmount}`;
-                const thHowMuchPaid = document.createElement('th');
-                thHowMuchPaid.innerText = `$ ${ sell.howMuchPaid}`;
-
-                tr.appendChild(thId);
-                tr.appendChild(thDate);
-                tr.appendChild(thEmplooy);
-                tr.appendChild(thAmount);
-                tr.appendChild(thHowMuchPaid);
-
-                tbodySells.insertAdjacentElement('beforeend', tr);
+                if(sell){
+                    const tr = document.createElement('tr');
+                    const thId = document.createElement('th');
+                    thId.innerText = sell.id;
+                    const thDate = document.createElement('th');
+                    thDate.innerText = sell.date;
+                    const thEmplooy = document.createElement('th');
+                    thEmplooy.innerText = sell.user.emplooy.name;
+                    const thAmount = document.createElement('th');
+                    thAmount.innerText = `$ ${sell.totalAmount}`;
+                    const thHowMuchPaid = document.createElement('th');
+                    thHowMuchPaid.innerText = `$ ${ sell.howMuchPaid}`;
+    
+                    tr.appendChild(thId);
+                    tr.appendChild(thDate);
+                    tr.appendChild(thEmplooy);
+                    tr.appendChild(thAmount);
+                    tr.appendChild(thHowMuchPaid);
+    
+                    tbodySells.insertAdjacentElement('beforeend', tr);
+                };
             };
 
             if (payments.length > 0) {
@@ -108,6 +110,6 @@ function addPayment () {
     };
 };
 
-ipcRenderer.on('load-new-payment', () => {
+ipcRenderer.on('load-new-payment', async () => {
     searchSellsAndPayments(); 
 });

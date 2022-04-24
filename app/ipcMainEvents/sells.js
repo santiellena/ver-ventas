@@ -415,13 +415,17 @@ module.exports = ({
             const sell = await storeSells.getSell(id);
             const answer = dialog.showMessageBoxSync(sellsWindow, {
                 title: `Eliminar venta N ${sell.id}`,
-                message: `Realmente desea eliminar de forma permanente? Cliente: ${sell.customer}`,
+                message: `Realmente desea eliminar de forma permanente? Cliente: ${sell.customer.person.name}`,
                 type: 'question',
                 buttons: ['Cancelar', 'Confirmar'],
             });
 
             if(answer == 1){
                 await storeSells.deleteSell(id);
+                const substract = parseFloat(sell.totalAmount) - parseFloat(sell.howMuchPaid);
+                await storeCustomers.removeFromDebts(sell.customer.id, substract);
+                const branch = configs.getBranchDataFromConfig();
+                await storeCashRegister.substractToBox(configs.getCashRegisterId(), branch.id, sell.howMuchPaid);
                 return true;
             } else {
                 return false;

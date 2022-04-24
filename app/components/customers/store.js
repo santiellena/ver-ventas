@@ -230,8 +230,7 @@ async function removeFromDebts (idCustomer, amount) {
     const amountToFloat = parseFloat(amount);
     const customer = await getCustomer(idCustomer);
     if(customer){
-        customer.debt = parseFloat(customer.debt) - amountToFloat;
-
+        const debt = parseFloat(customer.debt) - amountToFloat;
         const response = await axios({
                     method: 'PATCH',
                     url: `${getUrl()}/api/customer/${idCustomer}`,
@@ -239,7 +238,7 @@ async function removeFromDebts (idCustomer, amount) {
                         authorization: `Bearer ${await getSessionToken()}`,
                     },
                     data: {
-                        debt: customer.debt,
+                        debt,
                     },
                 });
                 if(response.data.message) return null

@@ -51,7 +51,7 @@ async function loadDepartments() {
         select.appendChild(option);
     };
 };
-loadDepartments();
+//loadDepartments();
 
 ipcRenderer.on('update-departments-list', async () => {
     const newDepartment = await ipcRenderer.invoke('get-department-update');

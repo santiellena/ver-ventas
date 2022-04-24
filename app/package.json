@@ -8,13 +8,15 @@
     "watch": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/evm .",
     "start": "electron . ",
     "debug": "electron . --trace-deprecation",
-    "inspect": "electron --inspect=5858 ."
+    "inspect": "electron --inspect=5858 .",
+    "build": "electron-packager ./ --platform=win32 --asar=false"
   },
   "build": {
     "electronDownload": {
       "version": "7.1.2",
       "mirror": "https://npm.taobao.org/mirrors/electron/"
-    }
+    },
+    "asar": false
   },
   "keywords": [
     "System",
@@ -31,6 +33,7 @@
     "axios": "^0.26.0",
     "cross-env": "^7.0.3",
     "electron-debug": "^3.2.0",
+    "electron-packager": "^15.5.1",
     "esanti-electron-hbs": "https://github.com/santiellena/electron-hbs.git"
   }
 }

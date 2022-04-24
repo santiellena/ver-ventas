@@ -33,7 +33,7 @@ const update = async (id, changes) => {
     const customer = await storeCustomer.getOne(id);
     const person = await storePeople.getOne(customer.idPeople);
     await person.update(changes);
-    if(changes.debt){
+    if(changes.debt != null && changes.debt != undefined){
          await customer.update({debt: changes.debt});
     };
     return await storeCustomer.getOne(id);
