@@ -1,3 +1,6 @@
 /node_modules
 /renderer/html/temp
 /app-win32-x64
+/app-win32-x64.zip
+/dist
+/renderer/preset

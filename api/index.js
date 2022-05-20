@@ -2,6 +2,7 @@ const express = require('express');
 const router = require('./network/routes.js');
 const controllerGlobal = require('./components/global/controller');
 const response = require('./network/response');
+const schedule = require('./database/schedule');
 
 const db = require('./database/database.js');
 
@@ -17,6 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 db.connect();
+schedule();
 
 app.get('/api', (req, res, next) => {
     controllerGlobal.getFirstTimeInfo()

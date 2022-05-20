@@ -35,7 +35,7 @@ const historyHandlebars = new handlebarsHbs(
 );
 
 function createTray () {
-    tray = new Tray('./renderer/images/favicon.png');
+    tray = new Tray(`${__dirname}/renderer/images/favicon.png`);
   
     const contextMenu = Menu.buildFromTemplate([
       { role: 'quit' },
