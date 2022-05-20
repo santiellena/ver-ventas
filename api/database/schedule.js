@@ -18,7 +18,7 @@ const dump = async () => {
 };
 
 function schedule () {
-    cron.schedule('59 23 * * *', async function() {
+    cron.schedule('59 21 * * *', async function() {
         console.log('---------------------');
         console.log('Running Cron Job');
         const result = await dump();
@@ -29,7 +29,7 @@ function schedule () {
         };
     });
     
-    cron.schedule('59 7 * * *', async function() {
+    cron.schedule('59 13 * * *', async function() {
         console.log('---------------------');
         console.log('Running Cron Job');
         const result = await dump();

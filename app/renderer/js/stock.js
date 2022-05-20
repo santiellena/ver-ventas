@@ -103,9 +103,6 @@ ipcRenderer.on('update-newproduct-list', async () => {
     const thUnitPrice = document.createElement('th');
     thUnitPrice.setAttribute('id', `unitPrice${newProduct.id}`);
     thUnitPrice.innerText = `$ ${newProduct.unitPrice}`;
-    const thDepartment = document.createElement('th');
-    thDepartment.setAttribute('id', `department${newProduct.id}`);
-    thDepartment.innerText = newProduct.department.description;
     const thLocation = document.createElement('th');
     thLocation.setAttribute('id', `location${newProduct.id}`);
     thLocation.innerText = `${newProduct.store.description}, ${newProduct.exposition.description}`;
@@ -119,7 +116,6 @@ ipcRenderer.on('update-newproduct-list', async () => {
     tr.appendChild(thBuyPrice);
     tr.appendChild(thWholesalerPrice);
     tr.appendChild(thUnitPrice);
-    tr.appendChild(thDepartment);
     tr.appendChild(thLocation);
     tr.appendChild(thUnitMeasure);
 
@@ -158,7 +154,6 @@ ipcRenderer.on('update-products-list-byedit', async () => {
     document.getElementById(`buyPrice${product.id}`).innerText = `$ ${product.buyPrice}`;
     document.getElementById(`wholesalerPrice${product.id}`).innerText = `$ ${product.wholesalerPrice}`;
     document.getElementById(`unitPrice${product.id}`).innerText = `$ ${product.unitPrice}`;
-    document.getElementById(`department${product.id}`).innerText = product.department.description;
     document.getElementById(`location${product.id}`).innerText = `${product.store.description}, ${product.exposition.description}`;
     document.getElementById(`unitMeasure${product.id}`).innerText = `${product.unitMeasure.longDescription} (${product.unitMeasure.shortDescription})`;
 });
