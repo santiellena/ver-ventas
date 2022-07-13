@@ -1,5 +1,6 @@
 const { Sell, User, Emplooy, People, Customer } = require('../../database/database').sequelize.models;
 const boom = require('@hapi/boom');
+const { sequelize } = require('../../database/database');
 
 const getAll = async () => {
     return await Sell.findAll({include: [{
@@ -37,10 +38,17 @@ const remove = async (id) => {
     return await sale.destroy();
 };
 
+const getTodaySells = async (date) => {
+    const dateRegex = `${date}-[0-9][0-9]:[0-9][0-9]`;
+    const todaySells = await sequelize.query(`SELECT * FROM sell WHERE date REGEXP '${dateRegex}'`);
+    return todaySells
+};
+
 module.exports = {
     getAll,
     getOne,
     create,
     update,
     remove,
+    getTodaySells,
 };
