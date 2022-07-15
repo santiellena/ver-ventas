@@ -35,7 +35,7 @@ const generateReport = async (date, dateToPath) => {
     await convertToPDF(file, dateToPath);
 };
 
-//generateReport('2022/05/10', '2022-05-10').then(e => {})
+//generateReport('2022/07/12', '2022-07-12').then(e => {})
 
 module.exports = {
     convertToPDF,
