@@ -57,4 +57,8 @@ module.exports = ({
         };
     });
 
+    ipcMain.on('add-to-deposit', async () =>{
+        
+    });
+
 };

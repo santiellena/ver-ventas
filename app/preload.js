@@ -100,7 +100,9 @@ contextBridge.exposeInMainWorld(
                 'send-details-order-card',
                 'load-locations-window',
                 'delete-location-exposition',
-                'delete-location-store'
+                'delete-location-store',
+                'safe-deposit',
+                'add-to-deposit'
             ];
             if(validChannels.includes(channel)) {
                 ipcRenderer.send(channel, data);

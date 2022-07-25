@@ -21,11 +21,22 @@ function addRegister () {
     if(amount && observation) {
         if(parseFloat(amount) <= limitAmount){
             ipcRenderer.send('add-cashflow-out', {amount, observation});
+            return 1;
         } else {
             const alertDiv = document.getElementById('alert-div');
             alertDiv.innerHTML ='<div class="alert alert-warning alert-dismissible col-md-9 col-sm-9" role="alert" style="margin-left: 2rem"><button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="clearAlert();"><span aria-hidden="true">×</span></button><strong>Atención!</strong> Limite de retiro superado.</div>';
+            return null;
         };
         
+    } else return null;
+};
+
+function addToDeposit () {
+    const amount = document.getElementById('amount').value;
+    const observation = document.getElementById('observation').value;
+    const boolean = addRegister();
+    if(boolean) {
+
     };
 };
 

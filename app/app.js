@@ -74,10 +74,13 @@ if(process.env.NODE_ENV == 'development'){
 };
 
 // Login window
-//app.on('ready', checkInitialConfig); //Production
-app.on('ready', () =>{
-  checkInitialConfig();
-  Menu.setApplicationMenu(mainMenu);
+// app.on('ready', () =>{
+//   checkInitialConfig();
+//   Menu.setApplicationMenu(mainMenu);
+// }); //Production
+
+app.on('ready', () => {
+  createMainWindow();
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)

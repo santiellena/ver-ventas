@@ -78,6 +78,7 @@
                   </li>
                   <li id="security-menu"><a><i class="fa fa-server"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <li><a id="safe-deposit" onclick="ipcRenderer.send('safe-deposit');">Depósito</a></li>
                       <li><a id="dump-page" onclick="ipcRenderer.send('dump-database');">Copia de seguridad</a></li>
                     </ul>
                   </li>
