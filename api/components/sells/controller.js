@@ -4,6 +4,8 @@ const storeBranch = require('../branches/store');
 const storeGlobal = require('../global/store');
 const storeProducts = require('../products/store');
 const storeCashRegister = require('../cashRegister/store');
+const controllerUser = require('../auth/controller');
+const storeCustomer = require('../customers/store');
 
 const getAll = async () => {
     return await store.getAll();
@@ -70,6 +72,23 @@ const remove = async (id, idCashRegister) => {
     return await store.remove(id);
 };
 
+const getDailyReport = async (date) => {
+    let moneyAmount = 0; 
+    let howMuchPaid = 0;
+    const todaySells = await store.getTodaySells(date);
+    for(const e of todaySells[0]){
+        const user = await controllerUser.getOne(e.id_user);
+        e.user = user;
+        e.user.emplooy.fullname = e.user.emplooy.name;
+        const customer = await storeCustomer.getOne(e.id_customer);
+        e.customer = customer;
+        e.customer.person.fullname = e.customer.person.name;
+        moneyAmount += parseFloat(e.total_amount);
+        howMuchPaid += parseFloat(e.how_much_paid);
+    };
+    return { todaySells: todaySells[0], moneyAmount, howMuchPaid }
+};
+
 module.exports = {
     getAll,
     getOne,
@@ -77,4 +96,5 @@ module.exports = {
     update,
     remove,
     getByDate,
+    getDailyReport
 };

@@ -1365,7 +1365,7 @@ function createPaymentWindow ({
   function createMissingStockWindow ({missing}) {
     missingStockWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1000, height: 700,
+      width: 1200, height: 700,
       title: `Mercado 1990 - Flujo de Efectivo / Historial`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 

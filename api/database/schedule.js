@@ -1,7 +1,8 @@
 const cron = require('node-cron');
 const config = require('../config.schedule.js');
-const date = require('../utils/date');
+const { actualDateAccuracy, actualDate, actualDatePath } = require('../utils/date');
 const mysqldump = require('mysqldump');
+const { generateReport } = require('./reports/reports');
 
 const dump = async () => {
     mysqldump({
@@ -11,14 +12,14 @@ const dump = async () => {
             password: config.dbPassword,
             database: config.dbName,
         },
-        dumpToFile: `./database/dumps/dump-${date()}.sql`,
+        dumpToFile: `./database/dumps/dump-${actualDateAccuracy()}.sql`,
         compressFile: false,
     });
     return 1;
 };
 
 function schedule () {
-    cron.schedule('59 23 * * *', async function() {
+    cron.schedule('59 21 * * *', async function() {
         console.log('---------------------');
         console.log('Running Cron Job');
         const result = await dump();
@@ -27,9 +28,10 @@ function schedule () {
         } else {
             console.log('Error running cron job');
         };
+        await generateReport(actualDate(), actualDatePath());
     });
     
-    cron.schedule('59 7 * * *', async function() {
+    cron.schedule('59 13 * * *', async function() {
         console.log('---------------------');
         console.log('Running Cron Job');
         const result = await dump();

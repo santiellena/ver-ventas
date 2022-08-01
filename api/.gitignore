@@ -1,5 +1,5 @@
 /node_modules
 /config.schedule.js
 .env
-/database/dumps
-/database/reports/store
+/database/dumps/*
+/database/reports/store/*
