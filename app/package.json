@@ -9,7 +9,7 @@
     "start": "electron . ",
     "debug": "electron . --trace-deprecation",
     "inspect": "electron --inspect=5858 .",
-    "build": "electron-packager ./ --platform=win32 --asar=false",
+    "build": "electron-packager ./ --platform=win32 --asar=false --overwrite",
     "builder": "electron-builder --win"
   },
   "build": {
