@@ -37,6 +37,7 @@ module.exports = ({
 
     ipcMain.on('open-sells-history', async () => {
         const sells = await storeSells.getAllSells();
+        sells.reverse();
         createSellsHistoryWindow({sells});
     });
 
