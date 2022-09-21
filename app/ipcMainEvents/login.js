@@ -1,17 +1,12 @@
-const { ipcMain, dialog, session } = require('electron');
+const { ipcMain, session } = require('electron');
 
 const auth = require('../components/auth/store');
 
 const { 
-    mainHandlebars,
-    historyHandlebars,
-    returnMainWindow,
-    returnLoginWindow,
     returnFirstTimeWindow,
 } = require('../createWindows');
 
 const {
-  checkInitialConfig,
   checkUrl,
   checkToken,
   getUrl,

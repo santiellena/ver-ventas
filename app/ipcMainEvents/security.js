@@ -1,6 +1,5 @@
-const { ipcMain, dialog, app } = require('electron');
+const { ipcMain, dialog } = require('electron');
 const axios = require('axios');
-const config = require('../config/config');
 const auth = require('../config/auth');
 
 const fs = require('fs');
@@ -19,8 +18,7 @@ function getUrl () {
 };
 
 
-const { mainHandlebars,
-        historyHandlebars,
+const {
         returnMainWindow,
 } = require('../createWindows');
 

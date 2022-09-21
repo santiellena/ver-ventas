@@ -6,8 +6,8 @@ function relaunchApp (win) {
     title: 'VerSystem',
     message: 'Ocurrió un error inesperado, se reiniciará el sistema'
   }, () => {
-    app.relaunch()
-    app.exit(0)
+    app.relaunch(1)
+    app.exit(1)
   })
 }
 

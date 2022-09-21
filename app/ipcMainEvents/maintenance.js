@@ -1,19 +1,12 @@
 const { ipcMain, dialog } = require("electron");
 
 const {
-  mainHandlebars,
-  historyHandlebars,
-  returnMainWindow,
-  returnGeneralMaintenanceWindow,
-  returnBrancesMaintenanceWindow,
   returnEmployeesWindow,
   returnAddEmployeesWindow,
   returnEditEmployeesWindow,
   returnEditUserWindow,
   returnUsersWindow,
   returnAddUserWindow,
-  returnDocsWindow,
-  returnUnitsWindow,
 } = require("../createWindows");
 
 const storeMaintenance = require("../components/maintenance/store");

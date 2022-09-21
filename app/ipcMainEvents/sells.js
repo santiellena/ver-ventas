@@ -10,17 +10,13 @@ const storeSales = require('../components/sales/store');
 const auth = require('../config/auth');
 const configs = require('../config/config.js');
 
-const { mainHandlebars,
-        historyHandlebars,
+const {
         returnSellsHistoryWindow,
         returnPaymentWindow,
         returnMainWindow,
-        returnSearchProductsWindow,
         returnCustomerListWindow,
         returnOrdersWindow,
         returnSalesWindow,
-        returnAddSaleWindow,
-        returnPayDebtsWindow,
         returnPayOrdersWindow,
 } = require('../createWindows');
 
@@ -64,7 +60,16 @@ module.exports = ({
 
     ipcMain.on('load-search-products-window', async () => {
         const products = await storeProducts.getAllProducts();
-        createSearchProductsWindow({products});
+        let lessData = products.map(e => {
+            return {
+                id: e.id,
+                description: e.description,
+                stock: e.stock,
+                unitPrice: e.unitPrice,
+                wholesalerPrice: e.wholesalerPrice,
+            };
+        });
+        createSearchProductsWindow({products: lessData});
     });
 
     let amountCashPivot = 0;
