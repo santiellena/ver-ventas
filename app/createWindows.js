@@ -35,6 +35,7 @@ const historyHandlebars = new handlebarsHbs(
 );
 
 function createTray () {
+  if(!tray){
     tray = new Tray(`${__dirname}/renderer/images/favicon.png`);
   
     const contextMenu = Menu.buildFromTemplate([
@@ -50,9 +51,11 @@ function createTray () {
           loginWindow.isVisible() ? loginWindow.hide() : loginWindow.show();
       }
     })
-  }
+  } else return null;
+}
  
 function createLoginWindow () {
+  if(!loginWindow){
   createTray();
   loginWindow = new BrowserWindow({
     icon: `${__dirname}/renderer/images/favicon.png`,
@@ -75,10 +78,13 @@ function createLoginWindow () {
     loginWindow.removeAllListeners();
     loginWindow = null;
   });
+
+} else return null;
 }
 
 // Create a new BrowserWindow when `app` is ready
 function createMainWindow  () {
+  if(!mainWindow){
   createTray();
     mainWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -102,13 +108,14 @@ function createMainWindow  () {
     mainWindow.removeAllListeners();
     mainWindow = null;
   });
-  
+} else return null;
 }
 
 function createPaymentWindow ({
   totalAmount,
   articlesQuantity,
 }) {
+  if(!paymentWindow){
     paymentWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
@@ -134,7 +141,7 @@ function createPaymentWindow ({
     paymentWindow.removeAllListeners();
     paymentWindow = null;
     });
-    
+  } else return null;
   }
 
   function createPayOrderWindow ({
@@ -143,6 +150,7 @@ function createPaymentWindow ({
     priceList,
     idCustomer,
   }){
+    if(!payOrdersWindow){
     payOrdersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
@@ -168,6 +176,7 @@ function createPaymentWindow ({
       payOrdersWindow.removeAllListeners();
       payOrdersWindow = null;
     });
+  }else return null;
   };
 
   function createSettingsWindow () {
@@ -202,6 +211,7 @@ function createPaymentWindow ({
   function createSellsHistoryWindow ({
     sells,
   }) {
+    if(!sellsHistoryWindow){
     const actualDate = new Date();
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
@@ -231,15 +241,14 @@ function createPaymentWindow ({
       sellsHistoryWindow.removeAllListeners();
       sellsHistoryWindow = null;
     });
-    
+  }else return null;
   }
 
-  function createSearchProductsWindow ({
-    products
-  }) {
+  function createSearchProductsWindow () {
+    if(!searchProductsWindow){
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1000, height: 700,
+      width: 1150, height: 700,
       title: `Mercado 1990 - Buscar Productos`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -253,7 +262,7 @@ function createPaymentWindow ({
       frame: false,
     });
   
-    searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
+    searchProductsWindow.loadFile(__dirname + '/renderer/html/sells/searchProducts.html');
     
     handleErrors(searchProductsWindow);
     
@@ -262,7 +271,7 @@ function createPaymentWindow ({
       searchProductsWindow.removeAllListeners();
       searchProductsWindow = null;
     });
-    
+  } else return null;
   };
 
   function createCustomerListWindow ({
@@ -272,6 +281,7 @@ function createPaymentWindow ({
     howPaid,
     operation,
   }) {
+    if(!customerListWindow){
     customerListWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
@@ -297,12 +307,13 @@ function createPaymentWindow ({
       customerListWindow.removeAllListeners();
       customerListWindow = null;
     });
-    
+  } else return null;
   };
 
   function createOrdersWindow({
     orders,
   }) {
+    if(!ordersWindow){
     ordersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
@@ -330,11 +341,13 @@ function createPaymentWindow ({
       ordersWindow.removeAllListeners();
       ordersWindow = null;
     });
+  } else return null;
   };
 
   function createSuppliersWindow({
     suppliers,
   }) {
+    if(!suppliersWindow) {
     suppliersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
@@ -361,6 +374,7 @@ function createPaymentWindow ({
       suppliersWindow.removeAllListeners();
       suppliersWindow = null;
     });
+  } else return null;
   };
 
   function createSuppliersEditWindow({
@@ -369,6 +383,7 @@ function createPaymentWindow ({
     provinces,
     
   }) {
+    if(!suppliersEditWindow){
     suppliersEditWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -395,12 +410,14 @@ function createPaymentWindow ({
       suppliersEditWindow.removeAllListeners();
       suppliersEditWindow = null;
     });
+  } else return null;
   };
 
   function createSuppliersAddWindow({
     docTypes,
     provinces,
   }) {
+    if(!suppliersAddWindow){
     suppliersAddWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -427,11 +444,13 @@ function createPaymentWindow ({
       suppliersAddWindow.removeAllListeners();
       suppliersAddWindow = null;
     });
+  } else return null;
   };
 
   function createBuysWindow({
     buys,
   }) {
+    if(!buysWindow){
     buysWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1200, height: 700,
@@ -458,9 +477,11 @@ function createPaymentWindow ({
       buysWindow.removeAllListeners();
       buysWindow = null;
     });
+  } else return null;
   };
 
   function createAddBuyWindow() {
+    if(!addBuyWindow){
     addBuyWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1300, height: 1000,
@@ -487,9 +508,11 @@ function createPaymentWindow ({
       addBuyWindow.removeAllListeners();
       addBuyWindow = null;
     });
+  } else return null;
   };
 
   function createSearchProductsBuysWindow () {
+    if(!searchProductsBuysWindow){
     searchProductsBuysWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
@@ -517,12 +540,13 @@ function createPaymentWindow ({
       searchProductsBuysWindow.removeAllListeners();
       searchProductsBuysWindow = null;
     });
-    
+  } else return null;
   };
 
   function createStockWindow ({
     products,
   }) {
+    if(!stockWindow){
     const actualDate = new Date();
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
@@ -552,7 +576,7 @@ function createPaymentWindow ({
       stockWindow.removeAllListeners();
       stockWindow = null;
     });
-    
+  } else return null;
   }
 
   function createAddProductWindow ({
@@ -561,6 +585,7 @@ function createPaymentWindow ({
     locationsStore, 
     measures,
   }) {
+    if(!addProductWindow){
     addProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 705,
@@ -588,7 +613,7 @@ function createPaymentWindow ({
       addProductWindow.removeAllListeners();
       addProductWindow = null;
     });
-    
+  } else return null;
   };
 
   function createEditProductWindow ({
@@ -597,6 +622,7 @@ function createPaymentWindow ({
     locationsStore, 
     measures,
   }) {
+    if(!editProductWindow){
     editProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 705,
@@ -624,10 +650,11 @@ function createPaymentWindow ({
       editProductWindow.removeAllListeners();
       editProductWindow = null;
     });
-    
+  } else return null;
   };
 
   function createDeleteProductWindow () {
+    if(!deleteProductWindow){
     deleteProductWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 400, height: 358,
@@ -654,12 +681,13 @@ function createPaymentWindow ({
       deleteProductWindow.removeAllListeners();
       deleteProductWindow = null;
     });
-    
+  } else return null;
   };
 
   function createDepartmentsWindow ({
     departments,
   }) {
+    if(!departmentsWindow){
     departmentsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1000, height: 600,
@@ -686,10 +714,11 @@ function createPaymentWindow ({
       departmentsWindow.removeAllListeners();
       departmentsWindow = null;
     });
-    
+  } else return null;
   };
 
   function createLocationsWindow ({ store, exposition }) {
+    if(!locationsWindow){
     locationsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1100, height: 600,
@@ -716,11 +745,13 @@ function createPaymentWindow ({
       locationsWindow.removeAllListeners();
       locationsWindow = null;
     });
+  } else return null;
   };
 
   function createCustomersWindow ({
     customers,
   }) {
+    if(!customersWindow){
     const actualDate = new Date();
     const date = `${actualDate.getDate()}/${actualDate.getMonth()+1}/${actualDate.getFullYear()}`;
   
@@ -750,12 +781,14 @@ function createPaymentWindow ({
       customersWindow.removeAllListeners();
       customersWindow = null;
     });
+  } else return null;
   };
 
   function  createAddCustomerWindow ({
     provinces,
     docTypes,
   }) {
+    if(!addCustomerWindow){
     addCustomerWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 705,
@@ -782,12 +815,14 @@ function createPaymentWindow ({
       addCustomerWindow.removeAllListeners();
       addCustomerWindow = null;
     });
+  } else return null;
   };
 
   function createEditCustomerWindow ({
     provinces,
     docTypes,
   }) {
+    if(!editCustomerWindow){
     editCustomerWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 705,
@@ -814,9 +849,11 @@ function createPaymentWindow ({
       editCustomerWindow.removeAllListeners();
       editCustomerWindow = null;
     });
+  } else return null;
   };
 
   function createDeleteCustomerWindow () {
+    if(!deleteCustomerWindow){
     deleteCustomerWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 400, height: 358,
@@ -844,11 +881,13 @@ function createPaymentWindow ({
       deleteCustomerWindow.removeAllListeners();
       deleteCustomerWindow = null;
     });
+  } else return null;
   };
 
   function createPayDebtsWindow ({
     idCustomer
   }) {
+    if(!payDebtsWindow){
     payDebtsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 600,
@@ -875,9 +914,11 @@ function createPaymentWindow ({
     payDebtsWindow = null;
     });
     
+  } else return null;
   };
 
   function createListDebtsWindow () {
+    if(!listDebtsWindow){
     listDebtsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1300, height: 1000,
@@ -904,9 +945,11 @@ function createPaymentWindow ({
       listDebtsWindow.removeAllListeners();
       listDebtsWindow = null;
     });
+  } else return null;
   };
 
   function createFirstTimeWindow () {
+    if(!firstTimeWindow){
     firstTimeWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 400,
@@ -929,10 +972,11 @@ function createPaymentWindow ({
       firstTimeWindow.removeAllListeners();
       firstTimeWindow = null;
     });
-    
+  } else return null;
   };
 
   function createCashFlowHistoryWindow ({cashFlow}) {
+    if(!cashFlowHistoryWindow){
     cashFlowHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 700,
@@ -958,10 +1002,11 @@ function createPaymentWindow ({
       cashFlowHistoryWindow.removeAllListeners();
       cashFlowHistoryWindow = null;
     });
-    
+  } else return null;
   };
 
   function createCashFlowInWindow () {
+    if(!cashFlowInWindow){
     cashFlowInWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 400,
@@ -987,9 +1032,11 @@ function createPaymentWindow ({
       cashFlowInWindow.removeAllListeners();
       cashFlowInWindow = null;
     });
+  } else return null;
   };
 
   function createCashFlowOutWindow () {
+    if(!cashFlowOutWindow){
     cashFlowOutWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 800, height: 400,
@@ -1015,9 +1062,11 @@ function createPaymentWindow ({
       cashFlowOutWindow.removeAllListeners();
       cashFlowOutWindow = null;
     });
+  } else return null;
   };
 
   function createGeneralMaintenanceWindow ({general}) {
+    if(!generalMaintenanceWindow){
     generalMaintenanceWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 600, height: 550,
@@ -1043,9 +1092,11 @@ function createPaymentWindow ({
       generalMaintenanceWindow.removeAllListeners();
       generalMaintenanceWindow = null;
     });
+  } else return null;
   };
 
   function createBranchesMaintenanceWindow ({branches, branch}) {
+    if(!branchesMaintenanceWindow){
     branchesMaintenanceWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 650, height: 750,
@@ -1070,9 +1121,11 @@ function createPaymentWindow ({
       branchesMaintenanceWindow.removeAllListeners();
       branchesMaintenanceWindow = null;
     });
+  } else return null;
   };
 
   function createEmployeesWindow ({employees}) {
+    if(employeesWindow){
     employeesWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1100, height: 900,
@@ -1099,9 +1152,11 @@ function createPaymentWindow ({
       employeesWindow.removeAllListeners();
       employeesWindow = null;
     });
+  } else return null;
   };
 
   function createAddEmplooyWindow ({docTypes}) {
+    if(!addEmployeesWindow){
     addEmployeesWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -1128,9 +1183,11 @@ function createPaymentWindow ({
       addEmployeesWindow.removeAllListeners();
       addEmployeesWindow = null;
     });
+  } else return null;
   };
 
   function  createEditEmplooyWindow ({emplooy, docTypes}) {
+    if(!editEmployeesWindow){
     editEmployeesWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 700, height: 1000,
@@ -1157,9 +1214,11 @@ function createPaymentWindow ({
       editEmployeesWindow.removeAllListeners();
       editEmployeesWindow = null;
     });
+  } else return null;
   };
 
   function createUsersWindow ({users}) {
+    if(!usersWindow){
     usersWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1100, height: 900,
@@ -1186,9 +1245,11 @@ function createPaymentWindow ({
       usersWindow.removeAllListeners();
       usersWindow = null;
     });
+  } else return null;
   };
 
   function createAddUserWindow ({employees, branches}) {
+    if(!addUserWindow){
     addUserWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 750, height: 900,
@@ -1215,9 +1276,11 @@ function createPaymentWindow ({
       addUserWindow.removeAllListeners();
       addUserWindow = null;
     });
+  } else return null;
   };
 
   function createEditUserWindow ({user, emplooy, branches}) {
+    if(!editUserWindow){
     editUserWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 750, height: 900,
@@ -1244,9 +1307,11 @@ function createPaymentWindow ({
       editUserWindow.removeAllListeners();
       editUserWindow = null;
     });
+  } else return null;
   };
 
   function createDocsWindow ({docTypes}) {
+    if(!docsWindow){
     docsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1000, height: 600,
@@ -1273,9 +1338,11 @@ function createPaymentWindow ({
       docsWindow.removeAllListeners();
       docsWindow = null;
     });
+  } else return null;
   };
 
   function createUnitsWindow ({measures}) {
+    if(!unitsWindow){
     unitsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1000, height: 600,
@@ -1302,9 +1369,11 @@ function createPaymentWindow ({
       unitsWindow.removeAllListeners();
       unitsWindow = null;
     });
+  } else return null;
   };
 
   function createSalesWindow ({sales}) {
+    if(!salesWindow){
     salesWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1500, height: 1000,
@@ -1331,9 +1400,11 @@ function createPaymentWindow ({
       salesWindow.removeAllListeners();
       salesWindow = null;
     });
+  } else return null;
   };
 
   function createAddSaleWindow () {
+    if(!addSaleWindow){
     addSaleWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
       width: 1150, height: 450,
@@ -1360,35 +1431,37 @@ function createPaymentWindow ({
       addSaleWindow.removeAllListeners();
       addSaleWindow = null;
     });
+  } else return null;
   };
 
   function createMissingStockWindow ({missing}) {
-    missingStockWindow = new BrowserWindow({
-      icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1200, height: 700,
-      title: `Mercado 1990 - Flujo de Efectivo / Historial`,
-      backgroundColor: 'F7F7F7',
-      webPreferences: { 
-        nodeIntegration: false,
-        preload: `${__dirname}/preload.js`,
-        contextIsolation: true,
-      },
-      parent: mainWindow,
-      modal: false,
-      resizable: false,
-      frame: false,
-    });
-  
-    missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));
+    if(!missingStockWindow){
+      missingStockWindow = new BrowserWindow({
+        icon: `${__dirname}/renderer/images/favicon.png`,
+        width: 1200, height: 700,
+        title: `Mercado 1990 - Flujo de Efectivo / Historial`,
+        backgroundColor: 'F7F7F7',
+        webPreferences: { 
+          nodeIntegration: false,
+          preload: `${__dirname}/preload.js`,
+          contextIsolation: true,
+        },
+        parent: mainWindow,
+        modal: false,
+        resizable: false,
+        frame: false,
+      });
     
-    handleErrors(missingStockWindow);
-    
-    // Listen for window being closed
-    missingStockWindow.on('closed',  () => {
-      missingStockWindow.removeAllListeners();
-      missingStockWindow = null;
-    });
-    
+      missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));
+      
+      handleErrors(missingStockWindow);
+      
+      // Listen for window being closed
+      missingStockWindow.on('closed',  () => {
+        missingStockWindow.removeAllListeners();
+        missingStockWindow = null;
+      });
+    } else return null;
   };
 
   function returnMainWindow () {

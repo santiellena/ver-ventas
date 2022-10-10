@@ -9,9 +9,7 @@ const storeDirections = require('../components/directions/store');
 const auth = require('../config/auth');
 const config = require('../config/config');
 
-const { mainHandlebars,
-        historyHandlebars,
-        returnMainWindow,
+const {
         returnSuppliersWindow,
         returnBuysWindow,
         returnAddBuyWindow,

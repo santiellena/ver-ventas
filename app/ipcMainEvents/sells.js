@@ -10,17 +10,13 @@ const storeSales = require('../components/sales/store');
 const auth = require('../config/auth');
 const configs = require('../config/config.js');
 
-const { mainHandlebars,
-        historyHandlebars,
+const {
         returnSellsHistoryWindow,
         returnPaymentWindow,
         returnMainWindow,
-        returnSearchProductsWindow,
         returnCustomerListWindow,
         returnOrdersWindow,
         returnSalesWindow,
-        returnAddSaleWindow,
-        returnPayDebtsWindow,
         returnPayOrdersWindow,
 } = require('../createWindows');
 
@@ -63,8 +59,7 @@ module.exports = ({
     });
 
     ipcMain.on('load-search-products-window', async () => {
-        const products = await storeProducts.getAllProducts();
-        createSearchProductsWindow({products});
+        createSearchProductsWindow();
     });
 
     let amountCashPivot = 0;
@@ -198,6 +193,11 @@ module.exports = ({
             return 'Producto no encontrado. F10-Buscar'
         }
         return product;
+    });
+
+    ipcMain.handle('search-products-bydescription', async (e, description) => {
+        const products = await storeProducts.getProductsByDescription(description);
+        return products;
     });
 
     ipcMain.handle('get-tax-percentage', async  (e, args) => {

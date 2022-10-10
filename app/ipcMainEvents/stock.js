@@ -1,12 +1,11 @@
-const { ipcMain, dialog } = require('electron');
+const { ipcMain } = require('electron');
 
 const storeProducts = require('../components/products/store');
 const storeDepartments = require('../components/departments/store');
 const storeMeasures = require('../components/unitMeasures/store');
 const storeLocations = require('../components/locations/store');
 
-const { mainHandlebars,
-        historyHandlebars,
+const { 
         createStockWindow,
         createAddProductWindow,
         createEditProductWindow,

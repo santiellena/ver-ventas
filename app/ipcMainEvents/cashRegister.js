@@ -5,10 +5,7 @@ const storeCashRegister = require('../components/cashRegister/store');
 const config = require('../config/config');
 const auth = require('../config/auth');
 
-const { mainHandlebars,
-        historyHandlebars,
-        returnMainWindow,
-        returnCashFlowHistoryWindow,
+const {
         returnCashFlowInWindow,
         returnCashFlowOutWindow,
         

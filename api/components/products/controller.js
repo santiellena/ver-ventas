@@ -67,6 +67,20 @@ const updateFromSell = async (id, minus) => {
     return await store.update(id, {stock: newStock});
 };
 
+const getByDescription = async (description) => {
+    let products = await store.getAll();
+    let descriptionUpper = description.toUpperCase();
+    const matches = []
+    for (const product of products) {
+        let productUpper = product.description.toUpperCase();
+        let match = productUpper.search(descriptionUpper);
+        if(match == 0){
+            matches.push(product);
+        };
+    }
+    return matches;
+};
+
 module.exports = {
     getAll,
     getOne,
@@ -77,4 +91,5 @@ module.exports = {
     updateFromSell,
     updateByDetail,
     remove,
+    getByDescription,
 };

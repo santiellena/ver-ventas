@@ -1,18 +1,13 @@
-const { ipcMain, dialog } = require('electron');
+const { ipcMain } = require('electron');
 
 const storeSells = require('../components/sells/store');
 
-const { mainHandlebars,
-        historyHandlebars,
+const { 
         returnMainWindow,
-        returnLoginWindow,
-        returnSettingsWindow,
         
 } = require('../createWindows');
 
 module.exports = ({
-    createMainWindow,
-    createLoginWindow,
     createSettingsWindow,
 }) => {
     
