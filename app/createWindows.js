@@ -96,7 +96,7 @@ function createMainWindow  () {
         contextIsolation: true,
       },
       fullscreen: true,
-      frame: false,
+      //////frame: false,
     });
   // Load index.hbs into the new BrowserWindow
   mainWindow.loadFile(mainHandlebars.render('/sells/index.hbs'), {});
@@ -129,7 +129,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     paymentWindow.loadFile(historyHandlebars.render(`sells/payment.hbs`, { totalAmount, articlesQuantity }));
@@ -164,7 +164,7 @@ function createPaymentWindow ({
       parent: ordersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     payOrdersWindow.loadFile(historyHandlebars.render(`sells/payOrders.hbs`, { totalAmount, articlesQuantity, priceList, idCustomer }));
@@ -193,7 +193,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     settingsWindow.loadFile(`${__dirname}/renderer/html/settings.html`);
@@ -228,7 +228,7 @@ function createPaymentWindow ({
       resizable: false,
       parent: mainWindow,
       modal: true,
-      frame: false,
+      //////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -244,9 +244,7 @@ function createPaymentWindow ({
   }else return null;
   }
 
-  function createSearchProductsWindow ({
-    products
-  }) {
+  function createSearchProductsWindow () {
     if(!searchProductsWindow){
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -261,10 +259,10 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
   
-    searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
+    searchProductsWindow.loadFile(__dirname + '/renderer/html/sells/searchProducts.html');
     
     handleErrors(searchProductsWindow);
     
@@ -297,7 +295,7 @@ function createPaymentWindow ({
       parent: paymentWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     customerListWindow.loadFile(historyHandlebars.render('/sells/customerList.hbs', { customers, totalAmount, totalAmountPlusDebt, howPaid, operation }));
@@ -329,7 +327,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
 
    
@@ -363,7 +361,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -399,7 +397,7 @@ function createPaymentWindow ({
       parent: suppliersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -433,7 +431,7 @@ function createPaymentWindow ({
       parent: suppliersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -466,7 +464,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -497,7 +495,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -528,7 +526,7 @@ function createPaymentWindow ({
       parent: addBuyWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
 
     const products = storeProducts.getAllProducts();
@@ -563,7 +561,7 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: mainWindow,
-      frame: false,
+      ////////frame: false,
       modal: true,
       resizable: false,
     });
@@ -599,7 +597,7 @@ function createPaymentWindow ({
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
       },
-      frame: false,
+      ////////frame: false,
       parent: stockWindow,
       modal: true,
       resizable: false,
@@ -637,7 +635,7 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: stockWindow,
-      frame: false,
+      ////////frame: false,
       modal: true,
       resizable: false,
     });
@@ -670,7 +668,7 @@ function createPaymentWindow ({
       },
       parent: stockWindow,
       modal: true,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -703,7 +701,7 @@ function createPaymentWindow ({
       parent: stockWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -734,7 +732,7 @@ function createPaymentWindow ({
       parent: stockWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -770,7 +768,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       resizable: false,
       modal: true,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -804,7 +802,7 @@ function createPaymentWindow ({
       parent: customersWindow,
       resizable: false,
       modal: true,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -838,7 +836,7 @@ function createPaymentWindow ({
       parent: customersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -870,7 +868,7 @@ function createPaymentWindow ({
       parent: customersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -903,7 +901,7 @@ function createPaymentWindow ({
       parent: listDebtsWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     payDebtsWindow.loadFile(historyHandlebars.render(`customers/payDebt.hbs`, {idCustomer}));
@@ -934,7 +932,7 @@ function createPaymentWindow ({
       parent: customersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -992,7 +990,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     cashFlowHistoryWindow.loadFile(historyHandlebars.render(`cashRegister/history.hbs`, {cashFlow}));
@@ -1022,7 +1020,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     cashFlowInWindow.loadFile(`${__dirname}/renderer/html/cashRegister/in.html`);
@@ -1052,7 +1050,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     cashFlowOutWindow.loadFile(`${__dirname}/renderer/html/cashRegister/out.html`);
@@ -1082,7 +1080,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     generalMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/maintenance.hbs`, {general}));
@@ -1112,7 +1110,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
   
     branchesMaintenanceWindow.loadFile(historyHandlebars.render(`maintenance/branch.hbs`, {branches, branchName: branch.name, branchId: branch.id}));
@@ -1141,7 +1139,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1172,7 +1170,7 @@ function createPaymentWindow ({
       parent: employeesWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -1203,7 +1201,7 @@ function createPaymentWindow ({
       parent: employeesWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
     
     // Load index.hbs into the new BrowserWindow
@@ -1234,7 +1232,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1265,7 +1263,7 @@ function createPaymentWindow ({
       parent: usersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1296,7 +1294,7 @@ function createPaymentWindow ({
       parent: usersWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1327,7 +1325,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1358,7 +1356,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      ////////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1389,7 +1387,7 @@ function createPaymentWindow ({
       parent: mainWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1420,7 +1418,7 @@ function createPaymentWindow ({
       parent: salesWindow,
       modal: true,
       resizable: false,
-      frame: false,
+      //////frame: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -1451,7 +1449,7 @@ function createPaymentWindow ({
         parent: mainWindow,
         modal: false,
         resizable: false,
-        frame: false,
+        //////frame: false,
       });
     
       missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));

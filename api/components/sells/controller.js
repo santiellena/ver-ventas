@@ -41,6 +41,7 @@ const getByDate = async (from, to) => {
     return sellsByDate;
 };
 
+
 const create = async (data) => {
     const { nextNumber, serie } = await storeBranch.getNextSerieAndNumber(data.idBranch);
     const global = await storeGlobal.getOne(1);
@@ -96,5 +97,5 @@ module.exports = {
     update,
     remove,
     getByDate,
-    getDailyReport
+    getDailyReport,
 };

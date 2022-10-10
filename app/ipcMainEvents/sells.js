@@ -59,17 +59,7 @@ module.exports = ({
     });
 
     ipcMain.on('load-search-products-window', async () => {
-        const products = await storeProducts.getAllProducts();
-        let lessData = products.map(e => {
-            return {
-                id: e.id,
-                description: e.description,
-                stock: e.stock,
-                unitPrice: e.unitPrice,
-                wholesalerPrice: e.wholesalerPrice,
-            };
-        });
-        createSearchProductsWindow({products: lessData});
+        createSearchProductsWindow();
     });
 
     let amountCashPivot = 0;
@@ -203,6 +193,11 @@ module.exports = ({
             return 'Producto no encontrado. F10-Buscar'
         }
         return product;
+    });
+
+    ipcMain.handle('search-products-bydescription', async (e, description) => {
+        const products = await storeProducts.getProductsByDescription(description);
+        return products;
     });
 
     ipcMain.handle('get-tax-percentage', async  (e, args) => {

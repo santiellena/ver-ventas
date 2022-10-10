@@ -3,7 +3,6 @@ const axios = require('axios');
 const { getSessionToken } = require('../../config/auth');
 const fs = require('fs');
 
-const storeSales = require('../sales/store');
 
 const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
     if(err) {
@@ -218,6 +217,21 @@ async function getProductsMissing () {
     return missing;
 };
 
+async function getProductsByDescription (description) {
+    if(description){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/product/description/${description}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
+};
+
 module.exports = {
     getProduct,
     getAllProducts,
@@ -229,4 +243,5 @@ module.exports = {
     deleteProduct,
     editProduct,
     changeSaleStatus,
+    getProductsByDescription,
 };
