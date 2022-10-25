@@ -195,6 +195,14 @@ module.exports = ({
         return product;
     });
 
+    ipcMain.handle('search-products-bypartid', async (e, id) => {
+        const product = await storeProducts.getAllProductsById(id);
+        if(product == null){
+            return 'Producto no encontrado. F10-Buscar'
+        }
+        return product;
+    });
+
     ipcMain.handle('search-products-bydescription', async (e, description) => {
         const products = await storeProducts.getProductsByDescription(description);
         return products;

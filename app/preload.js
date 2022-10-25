@@ -224,6 +224,7 @@ contextBridge.exposeInMainWorld(
                 'new-location-exposition',
                 'new-location-store',
                 'search-products-bydescription',
+                'search-products-bypartid'
             ];
             if(validChannels.includes(channel)) {
                 return await ipcRenderer.invoke(channel, args);

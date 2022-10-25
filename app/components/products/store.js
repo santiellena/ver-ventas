@@ -232,6 +232,23 @@ async function getProductsByDescription (description) {
     } else return null;
 };
 
+async function getAllProductsById (id) {
+    if(id){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/product/ids/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
+};
+
+
+
 module.exports = {
     getProduct,
     getAllProducts,
@@ -244,4 +261,5 @@ module.exports = {
     editProduct,
     changeSaleStatus,
     getProductsByDescription,
+    getAllProductsById,
 };

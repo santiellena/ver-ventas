@@ -32,6 +32,14 @@ router.get('/description/:description', checkAllow(['menu-sells']), (req, res, n
     .catch(err => next(err));
 });
 
+router.get('/ids/:id', checkAllow(['menu-sells']), (req, res, next) => {
+    const { id } = req.params;
+
+    controller.getById(id)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
 
 router.post('/', validator(createProductSchema, 'body'), checkAllow(['menu-stock']), (req, res, next) => {
     controller.create(req.body)

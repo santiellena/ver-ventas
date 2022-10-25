@@ -69,12 +69,24 @@ const updateFromSell = async (id, minus) => {
 
 const getByDescription = async (description) => {
     let products = await store.getAll();
-    let descriptionUpper = description.toUpperCase();
     const matches = []
     for (const product of products) {
-        let productUpper = product.description.toUpperCase();
-        let match = productUpper.search(descriptionUpper);
-        if(match == 0){
+        let regex = RegExp(description, 'i');
+        let match = product.description.search(regex);
+        if(match != -1){
+            matches.push(product);
+        };
+    }
+    return matches;
+};
+
+const getById = async (id) => {
+    let products = await store.getAll();
+    const matches = []
+    for (const product of products) {
+        let regex = RegExp(id, 'i');
+        let match = product.id.toString().search(regex);
+        if(match != -1){
             matches.push(product);
         };
     }
@@ -92,4 +104,5 @@ module.exports = {
     updateByDetail,
     remove,
     getByDescription,
+    getById
 };

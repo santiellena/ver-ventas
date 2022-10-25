@@ -13,12 +13,14 @@ function noMatchError() {
 
 async function searchProductById () {
     let id = document.getElementById('id-product').value;
-    let product = await ipcRenderer.invoke('search-product-byid', id);
+    let products = await ipcRenderer.invoke('search-products-bypartid', id);
     let tbody = document.getElementById('tbody-sells');
     tbody.innerHTML = '';
-    if(product != 'Producto no encontrado. F10-Buscar') {
+    if(products) {
         //add product to the html
-        addProductToTable(product);
+        for (const product of products) {
+            addProductToTable(product);
+        };
         id.value = '';
     } else {
         noMatchError();
