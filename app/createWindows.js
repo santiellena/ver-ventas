@@ -561,9 +561,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: mainWindow,
-      frame: false,
-      modal: true,
-      resizable: false,
+      // frame: false,
+      // modal: true,
+      // resizable: false,
     });
    
     // Load index.hbs into the new BrowserWindow

@@ -78,7 +78,7 @@ ipcRenderer.on('update-newproduct-list', async () => {
     const newProduct = await ipcRenderer.invoke('get-newproduct-tolist');
     const trAlert = document.getElementById('tr-alert');
     const tbody = document.getElementById('tbody-products');
-    
+
     if(trAlert){
         trAlert.remove();
     };
@@ -119,7 +119,18 @@ ipcRenderer.on('update-newproduct-list', async () => {
     tr.appendChild(thLocation);
     tr.appendChild(thUnitMeasure);
 
-    tbody.insertAdjacentElement('beforeend', tr);
+    
+    let table = $('#datatable-buttons').DataTable();
+ 
+    let rowNode = table
+        .row.add(tr)
+        .draw()
+        .node();
+     
+    $( rowNode )
+        .css( 'color', 'red' )
+        .animate( { color: 'black' } );
+   
 });
 
 ipcRenderer.on('update-products-list-bydelete', async () => {

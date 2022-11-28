@@ -76,7 +76,7 @@ if(process.env.NODE_ENV == 'development'){
 // Login window
 app.on('ready', () =>{
   checkInitialConfig();
-  Menu.setApplicationMenu(mainMenu); //Comment for development
+  // Menu.setApplicationMenu(mainMenu); //Comment for development
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)
