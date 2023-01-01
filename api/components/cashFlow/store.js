@@ -7,6 +7,15 @@ const getAll = async (idBranch) => {
     return await CashFlow.findAll({where: {idBranch}, include: ['emplooy','branch','cashRegister']});
 };
 
+const getLast10 = async (idBranch, offset) => {
+    return await CashFlow.findAll({
+        where: {idBranch}, 
+        include: ['emplooy','branch','cashRegister'],
+        limit: 10,
+        offset: parseInt(offset),
+    });
+};
+
 const getOne = async (id) => {
     const cashFlow = await CashFlow.findByPk(id);
     if(!cashFlow){
@@ -33,6 +42,7 @@ const remove = async (id) => {
 
 module.exports = {
     getAll,
+    getLast10,
     getOne,
     create,
     update,

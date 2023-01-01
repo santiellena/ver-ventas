@@ -8,9 +8,14 @@ const amount = joi.number().precision(2);
 const idCashRegister = joi.number().integer();
 const operation = joi.string().max(3);
 const idEmplooy = joi.number().integer();
+const offset = joi.number().integer();
 
 const getCashFlowSchema = joi.object({
     id: id.required(),
+});
+
+const get10CashFlowSchema = joi.object({
+    offset: offset.required(),
 });
 
 const getAllCashFlowSchema = joi.object({
@@ -44,6 +49,7 @@ const createCashFlowSchema = joi.object({
 module.exports = {
     getAllCashFlowSchema,
     getCashFlowSchema,
+    get10CashFlowSchema,
     createCashFlowSchema,
     updateCashFlowSchema,
     deleteCashFlowSchema,

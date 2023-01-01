@@ -561,9 +561,9 @@ function createPaymentWindow ({
         contextIsolation: true,
       },
       parent: mainWindow,
-      // frame: false,
-      // modal: true,
-      // resizable: false,
+      frame: false,
+      modal: true,
+      resizable: false,
     });
    
     // Load index.hbs into the new BrowserWindow
@@ -979,7 +979,7 @@ function createPaymentWindow ({
     if(!cashFlowHistoryWindow){
     cashFlowHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 800, height: 700,
+      width: 1000, height: 700,
       title: `Mercado 1990 - Flujo de Efectivo / Historial`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -1447,9 +1447,9 @@ function createPaymentWindow ({
           contextIsolation: true,
         },
         parent: mainWindow,
-        // modal: false,
-        // resizable: false,
-        // frame: false,
+        modal: false,
+        resizable: false,
+        frame: false,
       });
     
       missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));
