@@ -18,8 +18,12 @@ module.exports = ({
 }) => {
 
     ipcMain.on('load-cashflowhistory-window', async () => {
-        const cashFlow = await storeCashFlow.getAllRegisters();
+        const cashFlow = await storeCashFlow.getLast10Registers(0);
         createCashFlowHistoryWindow({cashFlow});
+    });
+
+    ipcMain.handle('movements-history-change', async (e, state) => {
+        return await storeCashFlow.getLast10Registers(state);
     });
 
     ipcMain.on('load-cashflowin-window', () => {

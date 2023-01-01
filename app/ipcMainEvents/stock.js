@@ -23,10 +23,14 @@ module.exports = ({
 }) => {
     
     ipcMain.on('load-stock-window', async () => {
-        const products = await storeProducts.getAllProducts();
+        const products = await storeProducts.getLast7(0);
         if(products){
             createStockWindow({products});
         };
+    });
+
+    ipcMain.handle('products-history-change', async (e, state) => {
+        return await storeProducts.getLast7(state);
     });
 
     ipcMain.on('load-locations-window', async () => {
@@ -264,7 +268,11 @@ module.exports = ({
     });
 
     ipcMain.on('load-missing-stock-window', async () => {
-        const missing = await storeProducts.getProductsMissing();
+        const missing = await storeProducts.getProductsMissing(0);
         createMissingStockWindow({missing});
+    });
+
+    ipcMain.handle('products-missing-change', async (e, state) => {
+        return await storeProducts.getProductsMissing(state);
     });
 };

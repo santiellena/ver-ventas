@@ -4,6 +4,7 @@ const storeSells = require('../components/sells/store');
 
 const { 
         returnMainWindow,
+        mainHandlebars,
         
 } = require('../createWindows');
 
@@ -12,9 +13,11 @@ module.exports = ({
 }) => {
     
     ipcMain.on('load-page-main', (e, pageName) => {
-        const mainWindow = returnMainWindow()
+        const mainWindow = returnMainWindow();
+    
         if( mainWindow != null && mainWindow != undefined ) {
             mainWindow.loadFile(mainHandlebars.render(pageName));
+            
         } else {
             console.log('Is still undefinded');
         }

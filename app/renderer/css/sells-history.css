@@ -1,8 +1,14 @@
 .history-table {
-    width: 70%;
+    width: 60%;
 }
 
 .history-table-details {
-    width: 30%;
+    width: 40%;
     border: solid .2rem #333;
+}
+
+
+.div-pag {
+    display: flex;
+    justify-content: right;
 }

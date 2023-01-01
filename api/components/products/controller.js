@@ -5,6 +5,10 @@ const getAll = async () => {
     return await store.getAll();
 };
 
+const getLast7 = async (offset) => {
+    return await store.getLast7(offset);
+};
+
 const getOne = async (id) => {
     return await store.getOne(id);
 };
@@ -67,8 +71,35 @@ const updateFromSell = async (id, minus) => {
     return await store.update(id, {stock: newStock});
 };
 
+const getByDescription = async (description) => {
+    let products = await store.getAll();
+    const matches = []
+    for (const product of products) {
+        let regex = RegExp(description, 'i');
+        let match = product.description.search(regex);
+        if(match != -1){
+            matches.push(product);
+        };
+    }
+    return matches;
+};
+
+const getById = async (id) => {
+    let products = await store.getAll();
+    const matches = []
+    for (const product of products) {
+        let regex = RegExp(id, 'i');
+        let match = product.id.toString().search(regex);
+        if(match != -1){
+            matches.push(product);
+        };
+    }
+    return matches;
+};
+
 module.exports = {
     getAll,
+    getLast7,
     getOne,
     getMissing,
     create,
@@ -77,4 +108,6 @@ module.exports = {
     updateFromSell,
     updateByDetail,
     remove,
+    getByDescription,
+    getById
 };

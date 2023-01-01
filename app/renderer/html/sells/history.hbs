@@ -43,18 +43,17 @@
 											}
 								</script>
                   <button class="btn btn-info" onclick="searchByDate()">Buscar</button>
+                    <button class="btn btn-warning" onclick="resetList()">Reset</button>
                           </div>
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                    <table id="datatable-buttons" class="table table-striped table-compact dt-responsive nowrap table-bordered" style="width:100%;"  cellspacing="0">
+                    <table id="" class="table table-striped table-compact dt-responsive nowrap table-bordered" style="width:100%;"  cellspacing="0">
                      <thead>
                         <tr>
                           <th>ID</th>
                           <th>Fecha</th>
                           <th>Total</th>
-                          <th>Cliente</th>
-                          <th>Empleado</th>
-                          <th>Sucursal</th>
+                          <th>Cliente</th>                   
                           <th>Forma de pago</th>
                           <th>Opciones</th>
                         </tr>
@@ -62,16 +61,14 @@
                       <tbody id="tbody-sells">
                         {{#each sells}}
                         <tr id="tr{{this.id}}">
-                          <th>{{this.id}}</th>
-                          <th>{{this.date}}</th>
-                          <th>$ {{this.totalAmount}}</th>
-                          <th>{{this.customer.person.name}}</th>
-                          <th>{{this.user.emplooy.name}}</th>
-                          <th>{{this.branch.name}}</th>
-                          <th>{{this.howPaid}}</th>
-                          <th>
-                            <button class="btn btn-info" onclick="seeDetail({{this.id}})">Detalles</button>
-                            <button class="btn btn-danger" onclick="deleteSell({{this.id}})"><i class="fa fa-trash"></i></button>
+                          <th style="padding: 0.3rem;">{{this.id}}</th>
+                          <th style="padding: 0.3rem;">{{this.date}}</th>
+                          <th style="padding: 0.3rem;">$ {{this.totalAmount}}</th>
+                          <th style="padding: 0.3rem;">{{this.customer.person.name}}</th>
+                          <th style="padding: 0.3rem;">{{this.howPaid}}</th>
+                          <th style="padding: 0.3rem;">
+                            <button style="margin-top: 0; margin-bottom: 0" class="btn btn-info" onclick="seeDetail({{this.id}})">Detalles</button>
+                            <button style="margin-top: 0; margin-bottom: 0" class="btn btn-danger" onclick="deleteSell({{this.id}})"><i class="fa fa-trash"></i></button>
                             </th>
                         </tr>
                         {{/each}}
@@ -93,9 +90,19 @@
                  </tbody>
                </table>
               </div>
+              <div class="col-md-7 div-pag">
+                <label id="label-pag" for="" style="margin-right: 1rem; margin-bottom: 0">Página 1</label>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                      
+                      <button id="prev" class="btn btn-secondary" type="button">Anterior</button>
+
+                      <button id="next" class="btn btn-warning" type="button">Siguiente</button>
+                    </div>
+                  </div>
               </div>
             </div>
                 </div>
               </div>
 <script src="../../js/seeDetails.js"></script>
 <script src="../../js/searchSellsByDate.js"></script>
+<script src="../../js/sellsHistoryPagination.js"></script>

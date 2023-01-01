@@ -5,6 +5,10 @@ const getAll = async (idBranch) => {
     return await store.getAll(idBranch);
 };
 
+const getLast10 = async (idBranch, offset) => {
+    return await store.getLast10(idBranch, offset);
+};
+
 const getOne = async (id) => {
     return await store.getOne(id);
 };
@@ -23,6 +27,7 @@ const remove = async (id) => {
 
 module.exports = {
     getAll,
+    getLast10,
     getOne,
     create,
     update,

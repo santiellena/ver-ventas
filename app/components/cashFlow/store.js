@@ -32,6 +32,25 @@ async function getAllRegisters () {
     else return response.data;
 };
 
+async function getLast10Registers (state) {
+    const offset = state * 10;
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/cash-flow/last`,
+        data: {
+            idBranch: config.getBranchDataFromConfig().id,
+        },
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+        params: {
+            offset,
+        },
+    });
+    if(response.data.message) return null
+    else return response.data;
+};
+
 async function addRegister ({
     emplooy,
     amount,
@@ -63,5 +82,6 @@ async function addRegister ({
 
 module.exports = {
     getAllRegisters,
+    getLast10Registers,
     addRegister,
 };

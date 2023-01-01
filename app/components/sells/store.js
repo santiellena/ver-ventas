@@ -35,6 +35,22 @@ async function getAllSells () {
     else return response.data;
 };
 
+async function getLastSells (state) {
+    const offset = state * 9;
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/sell/last/`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,
+        },
+        params: {
+            offset,
+        }
+    });
+    if(response.data.message) return null
+    else return response.data;
+};
+
 async function getSell (id) {
     if(id){
         const response = await axios({
@@ -218,6 +234,7 @@ module.exports = {
     getSellDetail,
     getSellsByDate,
     getSellsByCustomer,
+    getLastSells,
     addSell,
     deleteSell,
     getGainsByDepartment,

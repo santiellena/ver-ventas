@@ -5,11 +5,19 @@ const controller = require('./controller');
 const response = require('../../network/response');
 const checkAllow = require('../../utils/middlewares/chechAllow');
 const validator = require('../../utils/middlewares/validator');
-const { getCashFlowSchema, createCashFlowSchema, updateCashFlowSchema, deleteCashFlowSchema, getAllCashFlowSchema } = require('../../utils/schemas/cashFlow.schema');
+const { getCashFlowSchema, get10CashFlowSchema, createCashFlowSchema, updateCashFlowSchema, deleteCashFlowSchema, getAllCashFlowSchema } = require('../../utils/schemas/cashFlow.schema');
 
 router.get('/', checkAllow(['menu-maintenance']), validator(getAllCashFlowSchema, 'body'), (req, res, next) => {
     const { idBranch } = req.body;
     controller.getAll(idBranch)
+    .then(data => response.success(req, res, data, 200))
+    .catch(err => next(err));
+});
+
+router.get('/last', checkAllow(['menu-maintenance']), validator(getAllCashFlowSchema, 'body'), validator(get10CashFlowSchema, 'query'), (req, res, next) => {
+    const { idBranch } = req.body;
+    const { offset } = req.query;
+    controller.getLast10(idBranch, offset)
     .then(data => response.success(req, res, data, 200))
     .catch(err => next(err));
 });

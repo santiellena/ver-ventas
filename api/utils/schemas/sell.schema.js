@@ -13,6 +13,10 @@ const from = joi.string();
 const to = joi.string();
 const date = joi.string();
 
+const offset = joi.number().integer();
+
+const getSellsSchema = joi.object({ offset: offset.required(), })
+
 const getSellSchema = joi.object({ id: id.required(), });
 
 const createSellSchema = joi.object({
@@ -52,6 +56,7 @@ const getSellByDateSchema = joi.object({
 module.exports = {
     updateSellSchema,
     getSellSchema,
+    getSellsSchema,
     createSellSchema,
     deleteSellSchema,
     getSellByDateSchema,

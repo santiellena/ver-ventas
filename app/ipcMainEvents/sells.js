@@ -32,8 +32,7 @@ module.exports = ({
 }) => {
 
     ipcMain.on('open-sells-history', async () => {
-        const sells = await storeSells.getAllSells();
-        sells.reverse();
+        const sells = await storeSells.getLastSells(0);
         createSellsHistoryWindow({sells});
     });
 
@@ -42,6 +41,10 @@ module.exports = ({
         if(sellDetail){
             return sellDetail;
         };
+    });
+
+    ipcMain.handle('sell-history-change', async (e, state) =>{
+        return await storeSells.getLastSells(state);
     });
 
     ipcMain.handle('search-sells-by-date', async (e, {fromDate, toDate}) => {
@@ -59,17 +62,7 @@ module.exports = ({
     });
 
     ipcMain.on('load-search-products-window', async () => {
-        const products = await storeProducts.getAllProducts();
-        let lessData = products.map(e => {
-            return {
-                id: e.id,
-                description: e.description,
-                stock: e.stock,
-                unitPrice: e.unitPrice,
-                wholesalerPrice: e.wholesalerPrice,
-            };
-        });
-        createSearchProductsWindow({products: lessData});
+        createSearchProductsWindow();
     });
 
     let amountCashPivot = 0;
@@ -203,6 +196,19 @@ module.exports = ({
             return 'Producto no encontrado. F10-Buscar'
         }
         return product;
+    });
+
+    ipcMain.handle('search-products-bypartid', async (e, id) => {
+        const product = await storeProducts.getAllProductsById(id);
+        if(product == null){
+            return 'Producto no encontrado. F10-Buscar'
+        }
+        return product;
+    });
+
+    ipcMain.handle('search-products-bydescription', async (e, description) => {
+        const products = await storeProducts.getProductsByDescription(description);
+        return products;
     });
 
     ipcMain.handle('get-tax-percentage', async  (e, args) => {
@@ -428,10 +434,6 @@ module.exports = ({
 
             if(answer == 1){
                 await storeSells.deleteSell(id);
-                const substract = parseFloat(sell.totalAmount) - parseFloat(sell.howMuchPaid);
-                await storeCustomers.removeFromDebts(sell.customer.id, substract);
-                const branch = configs.getBranchDataFromConfig();
-                await storeCashRegister.substractToBox(configs.getCashRegisterId(), branch.id, sell.howMuchPaid);
                 return true;
             } else {
                 return false;

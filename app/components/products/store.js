@@ -3,7 +3,6 @@ const axios = require('axios');
 const { getSessionToken } = require('../../config/auth');
 const fs = require('fs');
 
-const storeSales = require('../sales/store');
 
 const network = fs.readFileSync(`${__dirname}/../../config/network.json`, {encoding: 'utf-8'}, (err, data) => {
     if(err) {
@@ -40,6 +39,23 @@ async function getAllProducts () {
         headers: {
             authorization: `Bearer ${await getSessionToken()}`,   
         },    
+    });
+    if(response.data.message){
+        return null;
+    } else return response.data;
+};
+
+async function getLast7 (state) {
+    const offset = state * 7;
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/product/last`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,   
+        },
+        params: {
+            offset,
+        },
     });
     if(response.data.message){
         return null;
@@ -208,7 +224,20 @@ async function changeSaleStatus (id) {
     } else return null;
 };
 
-async function getProductsMissing () {
+async function getProductsMissing (state) {
+    const offset = state * 10;
+    const products = await getAllProducts();
+    const missing = [];
+    for (let index = offset; missing.length < 10; index++) {
+        const product = products[index];
+        if(parseFloat(product.stock) < parseFloat(product.stockMin)){
+            missing.push(product);
+        };
+    };
+    return missing;
+};
+
+async function getAllProductsMissing () {
     const products = await getAllProducts();
     const missing = products.map(product => {
         if(parseFloat(product.stock) < parseFloat(product.stockMin)){
@@ -218,10 +247,44 @@ async function getProductsMissing () {
     return missing;
 };
 
+async function getProductsByDescription (description) {
+    if(description){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/product/description/${description}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
+};
+
+async function getAllProductsById (id) {
+    if(id){
+        const response = await axios({
+            method: 'GET',
+            url: `${getUrl()}/api/product/ids/${id}`,
+            headers: {
+                authorization: `Bearer ${await getSessionToken()}`,   
+            },
+        });
+        if(response.data.message){
+            return null;
+        } else return response.data;
+    } else return null;
+};
+
+
+
 module.exports = {
     getProduct,
     getAllProducts,
     getProductsMissing,
+    getAllProductsMissing,
+    getLast7,
     updateStockAndPrices,
     updateStockFromSell,
     addProduct,
@@ -229,4 +292,6 @@ module.exports = {
     deleteProduct,
     editProduct,
     changeSaleStatus,
+    getProductsByDescription,
+    getAllProductsById,
 };

@@ -63,21 +63,16 @@ const {
   mainHandlebars,
 } = require('./createWindows');
 
-//Menu
-
-let mainMenu = new Menu();
 
 const { checkInitialConfig } = require('./config/config.js');
 
 if(process.env.NODE_ENV == 'development'){
   devTools();
 };
-
+//Menu.setApplicationMenu(null);
 // Login window
-//app.on('ready', checkInitialConfig); //Production
 app.on('ready', () =>{
   checkInitialConfig();
-  Menu.setApplicationMenu(mainMenu);
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)

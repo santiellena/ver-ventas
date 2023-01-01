@@ -11,6 +11,11 @@ const getAll = async () => {
     return await store.getAll();
 };
 
+const getLast10 = async (params) => {
+    const { offset } = params;
+    return await store.getLast10(parseInt(offset));
+};
+
 const getOne = async (id) => {
     return await store.getOne(id);
 };
@@ -24,7 +29,8 @@ const getByDate = async (from, to) => {
     const toMonth = to.slice(5,7);
     const toDay = to.slice(8,10);
 
-    const sellsByDate = sellsIterable.map(async e => {
+    const sellsByDate = [];
+    for (const e of sellsIterable) {
         const sellYear = e.date.slice(0,4);
         const sellMonth = e.date.slice(5,7);
         const sellDay = e.date.slice(8,10);
@@ -32,14 +38,14 @@ const getByDate = async (from, to) => {
         if(sellYear >= fromYear && sellYear <= toYear){
             if(sellMonth >= fromMonth && sellMonth <= toMonth){
                 if(sellDay >= fromDay && sellDay <= toDay){
-                    return await store.getOne(e.id);
+                    sellsByDate.push(e);
                 }
             }
-        } 
-    });
-
+        }     
+    };
     return sellsByDate;
 };
+
 
 const create = async (data) => {
     const { nextNumber, serie } = await storeBranch.getNextSerieAndNumber(data.idBranch);
@@ -92,9 +98,10 @@ const getDailyReport = async (date) => {
 module.exports = {
     getAll,
     getOne,
+    getLast10,
     create,
     update,
     remove,
     getByDate,
-    getDailyReport
+    getDailyReport,
 };

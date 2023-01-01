@@ -217,7 +217,7 @@ function createPaymentWindow ({
   
     sellsHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1200, height: 700,
+      width: 1300, height: 700,
       title: `Mercado 1990-Historial de Ventas-${date}`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -244,9 +244,7 @@ function createPaymentWindow ({
   }else return null;
   }
 
-  function createSearchProductsWindow ({
-    products
-  }) {
+  function createSearchProductsWindow () {
     if(!searchProductsWindow){
     searchProductsWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
@@ -264,7 +262,7 @@ function createPaymentWindow ({
       frame: false,
     });
   
-    searchProductsWindow.loadFile(historyHandlebars.render('/sells/searchProducts.hbs', { products }));
+    searchProductsWindow.loadFile(__dirname + '/renderer/html/sells/searchProducts.html');
     
     handleErrors(searchProductsWindow);
     
@@ -981,7 +979,7 @@ function createPaymentWindow ({
     if(!cashFlowHistoryWindow){
     cashFlowHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 800, height: 700,
+      width: 1000, height: 700,
       title: `Mercado 1990 - Flujo de Efectivo / Historial`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
