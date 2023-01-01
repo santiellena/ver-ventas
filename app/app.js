@@ -69,7 +69,7 @@ const { checkInitialConfig } = require('./config/config.js');
 if(process.env.NODE_ENV == 'development'){
   devTools();
 };
-//Menu.setApplicationMenu(null);
+Menu.setApplicationMenu(null);
 // Login window
 app.on('ready', () =>{
   checkInitialConfig();
