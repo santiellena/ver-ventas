@@ -1,4 +1,90 @@
 const ipcRenderer = window.app;
+let state = 0;
+const next = document.getElementById('next');
+const prev = document.getElementById('prev');
+const formId  = document.getElementById('search-id-form');
+const formDescription  = document.getElementById('search-description-form');
+
+prev.disabled = true;
+
+function addList(list){
+    const tbody = document.getElementById('tbody-products')
+    tbody.innerHTML = '';
+    for (const product of list) {
+        const tr = document.createElement('tr');
+        tr.id = `tr${product.id}`;
+        const thId = document.createElement('th');
+        thId.innerText = product.id;
+        thId.id = `id${product.id}`;
+        const thDesc = document.createElement('th');
+        thDesc.id = `desc${product.id}`;
+        thDesc.innerText = product.description;
+        const thStock = document.createElement('th');
+        thStock.id = `stock${product.id}`;
+        thStock.innerText = product.stock;
+        const thBPrice = document.createElement('th');
+        thBPrice.id = `buyPrice${product.id}`;
+        thBPrice.innerText = `$ ${product.buyPrice}`
+        const thWPrice = document.createElement('th');
+        thWPrice.id = `wholesalerPrice${product.id}`;
+        thWPrice.innerText = `$ ${product.wholesalerPrice}`
+        const thUPrice = document.createElement('th');
+        thUPrice.id = `unitPrice${product.id}`;
+        thUPrice.innerText = `$ ${product.unitPrice}`
+        const thLocation = document.createElement('th');
+        thLocation.id = `location${product.id}`;
+        thLocation.innerText = `${product.store.description}, ${product.exposition.description}`;
+        const thUnitMeasure = document.createElement('th');
+        thUnitMeasure.id = `unitMeasure${product.id}`;
+        thUnitMeasure.innerText = `${product.unitMeasure.longDescription} (${product.unitMeasure.shortDescription})`;
+        
+        tr.appendChild(thId);
+        tr.appendChild(thDesc);
+        tr.appendChild(thStock);
+        tr.appendChild(thBPrice);
+        tr.appendChild(thWPrice);
+        tr.appendChild(thUPrice);
+        tr.appendChild(thLocation);
+        tr.appendChild(thUnitMeasure);
+
+        tbody.appendChild(tr);
+    };
+};
+
+async function bringNewList(state){
+    const newList = await ipcRenderer.invoke('products-history-change', state);
+    addList(newList);
+    const label = document.getElementById('label-pag');
+    label.innerText = `Página ${state + 1}`;
+};
+
+next.addEventListener('click', async () => {
+    state++;
+    await bringNewList(state);
+    prev.disabled = false;
+});
+
+prev.addEventListener('click', async () => {
+    if(state != 0){
+        state--;
+        prev.disabled = false;
+        if(state == 0){
+            prev.disabled = true;
+        };
+        await bringNewList(state);
+    } else {
+        prev.disabled = true;
+    }
+});
+
+async function resetList() {
+    await bringNewList(0);
+    const label = document.getElementById('label-pag');
+    label.innerText = `Página 1`;
+    next.disabled = false;
+    document.getElementById('description-product').value = '';
+    document.getElementById('id-product').value = '';
+};
 
 document.getElementById('add-product-button').addEventListener('click', () => {
     ipcRenderer.send('load-addproduct-window');
@@ -167,4 +253,99 @@ ipcRenderer.on('update-products-list-byedit', async () => {
     document.getElementById(`unitPrice${product.id}`).innerText = `$ ${product.unitPrice}`;
     document.getElementById(`location${product.id}`).innerText = `${product.store.description}, ${product.exposition.description}`;
     document.getElementById(`unitMeasure${product.id}`).innerText = `${product.unitMeasure.longDescription} (${product.unitMeasure.shortDescription})`;
+});
+
+function noMatchError() {
+    let tbody = document.getElementById('tbody-products');
+    let tr = document.createElement('tr');
+    tr.innerHTML = `<tr class="odd" id="tr-alert">
+    <td valign="top" colspan="8" class="dataTables_empty">No existen coincidencias!</td>
+  </tr>`;
+    tbody.innerHTML = '';
+    tbody.appendChild(tr);
+};
+
+async function searchProductById () {
+    let id = document.getElementById('id-product').value;
+    let products = await ipcRenderer.invoke('search-products-bypartid', id);
+    let tbody = document.getElementById('tbody-products');
+    tbody.innerHTML = '';
+    if(products) {
+        //add product to the html
+        for (const product of products) {
+            addProductToTable(product);
+        };
+        id.value = '';
+    } else {
+        noMatchError();
+    };
+};
+
+async function searchProductByDescription () {
+    let description = document.getElementById('description-product').value;
+    let products = await ipcRenderer.invoke('search-products-bydescription', description);
+    let tbody = document.getElementById('tbody-products');
+    tbody.innerHTML = '';
+    if(products){
+        for (const product of products) {
+            addProductToTable(product);  
+        };
+        const label = document.getElementById('label-pag');
+        label.innerText = `Página de búsqueda`;
+        prev.disabled = true;
+        next.disabled = true;
+    } else {
+        noMatchError();
+    };
+};
+
+function addProductToTable (product) {
+    let tbody = document.getElementById('tbody-products');
+    const tr = document.createElement('tr');
+        tr.id = `tr${product.id}`;
+        const thId = document.createElement('th');
+        thId.innerText = product.id;
+        thId.id = `id${product.id}`;
+        const thDesc = document.createElement('th');
+        thDesc.id = `desc${product.id}`;
+        thDesc.innerText = product.description;
+        const thStock = document.createElement('th');
+        thStock.id = `stock${product.id}`;
+        thStock.innerText = product.stock;
+        const thBPrice = document.createElement('th');
+        thBPrice.id = `buyPrice${product.id}`;
+        thBPrice.innerText = `$ ${product.buyPrice}`
+        const thWPrice = document.createElement('th');
+        thWPrice.id = `wholesalerPrice${product.id}`;
+        thWPrice.innerText = `$ ${product.wholesalerPrice}`
+        const thUPrice = document.createElement('th');
+        thUPrice.id = `unitPrice${product.id}`;
+        thUPrice.innerText = `$ ${product.unitPrice}`
+        const thLocation = document.createElement('th');
+        thLocation.id = `location${product.id}`;
+        thLocation.innerText = `${product.store.description}, ${product.exposition.description}`;
+        const thUnitMeasure = document.createElement('th');
+        thUnitMeasure.id = `unitMeasure${product.id}`;
+        thUnitMeasure.innerText = `${product.unitMeasure.longDescription} (${product.unitMeasure.shortDescription})`;
+        
+        tr.appendChild(thId);
+        tr.appendChild(thDesc);
+        tr.appendChild(thStock);
+        tr.appendChild(thBPrice);
+        tr.appendChild(thWPrice);
+        tr.appendChild(thUPrice);
+        tr.appendChild(thLocation);
+        tr.appendChild(thUnitMeasure);
+
+        tbody.appendChild(tr);
+};
+
+formId.addEventListener('submit', e => {
+    e.preventDefault();
+    searchProductById();
+});
+
+formDescription.addEventListener('submit', e => {
+    e.preventDefault();
+    searchProductByDescription();
 });

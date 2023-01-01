@@ -10,9 +10,8 @@
     <link href="../../css/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
 
 <!-- Custom CSS -->
-
+    <link rel="stylesheet" href="../../css/products.css">
 <!-- Footer CSS -->
-
     <link rel="stylesheet" href="../../css/footer.css">
 
 <!-- page content -->
@@ -30,10 +29,31 @@
                   </div>
                   <div class="x_content" style="margin-bottom: 15rem;">
                       <div class="row">
-                        <div class="history-table">
+                        <div class="history-table" style="width: 100%;">
                           <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                    <table id="datatable-buttons" class="table table-striped table-compact dt-responsive nowrap table-bordered" style="width:100%;" cellspacing="0">
+                              <div style="width: 100%; display: flex;">
+                                <div style="width:40%; display: flex;">
+                                <form class="form-label-left input_mask" style="margin-bottom: 0;"  id="search-id-form">
+                                  <div class="col-md-12 col-sm-6  form-group has-feedback" style="width: 25rem;">
+                                    <i class="fa fa-barcode form-control-feedback left" aria-hidden="true"></i>
+                                    <input type="number" class="form-control has-feedback-left" id="id-product" autofocus placeholder="Código de barra">
+                                  </div>
+                                </form>
+                                <button class="btn btn-info" id="search-product-button" style="height: 2.3rem;" onclick="searchProductById()">Buscar</button>
+                              </div>
+                               <div style="width:40%; display: flex; ">
+                                <form class="form-label-left input_mask" id="search-description-form">
+                                  <div class="col-md-12 col-sm-6  form-group has-feedback" style="width: 25rem;">
+                                    <i class="fa fa-file-text form-control-feedback left" aria-hidden="true"></i>
+                                    <input type="text" class="form-control has-feedback-left" id="description-product" autofocus placeholder="Descripción">
+                                  </div>
+                                </form>
+                                <button class="btn btn-info"  id="search-product-button" style="height: 2.3rem;" onclick="searchProductByDescription()">Buscar</button>
+                              </div>
+                              <button class="btn btn-warning form-control" onclick="resetList()">Reset</button>
+                              </div>
+                    <table id="" class="table table-striped table-compact dt-responsive nowrap table-bordered" style="width:100%;" cellspacing="0">
                      <thead>
                         <tr>
                           <th>Código</th>
@@ -67,6 +87,15 @@
                         {{/if}} -->
                       </tbody>
                     </table>
+                     <div class="col-md-7 div-pag">
+                <label id="label-pag" for="" style="margin-right: 1rem; margin-bottom: 0">Página 1</label>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="...">
+                      
+                      <button id="prev" class="btn btn-secondary" type="button">Anterior</button>
+
+                      <button id="next" class="btn btn-warning" type="button">Siguiente</button>
+                    </div>
+                  </div>
                   
                 </div>
               </div>

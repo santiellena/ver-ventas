@@ -32,8 +32,7 @@ module.exports = ({
 }) => {
 
     ipcMain.on('open-sells-history', async () => {
-        const sells = await storeSells.getAllSells();
-        sells.reverse();
+        const sells = await storeSells.getLastSells(0);
         createSellsHistoryWindow({sells});
     });
 
@@ -42,6 +41,10 @@ module.exports = ({
         if(sellDetail){
             return sellDetail;
         };
+    });
+
+    ipcMain.handle('sell-history-change', async (e, state) =>{
+        return await storeSells.getLastSells(state);
     });
 
     ipcMain.handle('search-sells-by-date', async (e, {fromDate, toDate}) => {
@@ -431,10 +434,6 @@ module.exports = ({
 
             if(answer == 1){
                 await storeSells.deleteSell(id);
-                const substract = parseFloat(sell.totalAmount) - parseFloat(sell.howMuchPaid);
-                await storeCustomers.removeFromDebts(sell.customer.id, substract);
-                const branch = configs.getBranchDataFromConfig();
-                await storeCashRegister.substractToBox(configs.getCashRegisterId(), branch.id, sell.howMuchPaid);
                 return true;
             } else {
                 return false;

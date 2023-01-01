@@ -7,8 +7,27 @@ const getAll = async () => {
         as: 'customer', model: Customer, include: [{as: 'person', model: People}]
     }, 
     {as: 'user', model: User, include: [{ as: 'emplooy', model: Emplooy}]},
-        'branch', 'details']});
+        'branch', 'details'],
+    order: [
+        ['id', 'DESC'],
+    ],
+    });
 };
+
+const getLast10 = async (offset) => {
+    return await Sell.findAll({include: [{
+        as: 'customer', model: Customer, include: [{as: 'person', model: People}]
+    }, 
+    {as: 'user', model: User, include: [{ as: 'emplooy', model: Emplooy}]},
+        'branch', 'details'],
+    limit: 9,
+    offset,
+    order: [
+        ['id', 'DESC'],
+    ],
+    });
+};
+
 
 const getOne = async (id) => {
     const sale = await Sell.findByPk(id, {include: [{
@@ -47,6 +66,7 @@ const getTodaySells = async (date) => {
 module.exports = {
     getAll,
     getOne,
+    getLast10,
     create,
     update,
     remove,

@@ -217,7 +217,7 @@ function createPaymentWindow ({
   
     sellsHistoryWindow = new BrowserWindow({
       icon: `${__dirname}/renderer/images/favicon.png`,
-      width: 1200, height: 700,
+      width: 1300, height: 700,
       title: `Mercado 1990-Historial de Ventas-${date}`,
       backgroundColor: 'F7F7F7',
       webPreferences: { 
@@ -1447,9 +1447,9 @@ function createPaymentWindow ({
           contextIsolation: true,
         },
         parent: mainWindow,
-        modal: false,
-        resizable: false,
-        frame: false,
+        // modal: false,
+        // resizable: false,
+        // frame: false,
       });
     
       missingStockWindow.loadFile(historyHandlebars.render(`stock/missing.hbs`, {missing}));

@@ -13,6 +13,11 @@ const unitPrice = joi.number().precision(2);
 const buyPrice = joi.number().precision(2);
 const wholesalerPrice = joi.number().precision(2);
 const details = joi.array();
+const offset = joi.number().integer();
+
+const getLast7Schema = joi.object({
+    offset: offset.required(),
+});
 
 const getProductSchema = joi.object({
     id: id.required(),
@@ -58,6 +63,7 @@ const updateByDetailSchema = joi.object({
 
 module.exports = {
     getProductSchema,
+    getLast7Schema,
     deleteProductSchema,
     createProductSchema, 
     updateProductSchema,

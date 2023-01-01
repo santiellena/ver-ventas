@@ -5,6 +5,14 @@ const getAll = async () => {
     return await Product.findAll({include: ['department', 'exposition', 'store','unitMeasure']});
 };
 
+const getLast7 = async (offset) => {
+    return await Product.findAll({
+        include: ['department', 'exposition', 'store','unitMeasure'],
+        limit: 7,
+        offset: parseInt(offset),
+    });
+};
+
 const getOne = async (id) => {
     const product = await Product.findByPk(id, {include: ['department', 'exposition', 'store', 'unitMeasure']});
     if(!product){
@@ -42,6 +50,7 @@ const updateFromSellDeleted = async (sell) => {
 module.exports = {
     getAll,
     getOne,
+    getLast7,
     create,
     update,
     remove,

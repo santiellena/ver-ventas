@@ -45,6 +45,23 @@ async function getAllProducts () {
     } else return response.data;
 };
 
+async function getLast7 (state) {
+    const offset = state * 7;
+    const response = await axios({
+        method: 'GET',
+        url: `${getUrl()}/api/product/last`,
+        headers: {
+            authorization: `Bearer ${await getSessionToken()}`,   
+        },
+        params: {
+            offset,
+        },
+    });
+    if(response.data.message){
+        return null;
+    } else return response.data;
+};
+
 async function checkExistance (id) {
     if(id){
         const product = await getProduct(id);
@@ -207,7 +224,20 @@ async function changeSaleStatus (id) {
     } else return null;
 };
 
-async function getProductsMissing () {
+async function getProductsMissing (state) {
+    const offset = state * 10;
+    const products = await getAllProducts();
+    const missing = [];
+    for (let index = offset; missing.length < 10; index++) {
+        const product = products[index];
+        if(parseFloat(product.stock) < parseFloat(product.stockMin)){
+            missing.push(product);
+        };
+    };
+    return missing;
+};
+
+async function getAllProductsMissing () {
     const products = await getAllProducts();
     const missing = products.map(product => {
         if(parseFloat(product.stock) < parseFloat(product.stockMin)){
@@ -253,6 +283,8 @@ module.exports = {
     getProduct,
     getAllProducts,
     getProductsMissing,
+    getAllProductsMissing,
+    getLast7,
     updateStockAndPrices,
     updateStockFromSell,
     addProduct,

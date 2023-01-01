@@ -5,6 +5,10 @@ const getAll = async () => {
     return await store.getAll();
 };
 
+const getLast7 = async (offset) => {
+    return await store.getLast7(offset);
+};
+
 const getOne = async (id) => {
     return await store.getOne(id);
 };
@@ -95,6 +99,7 @@ const getById = async (id) => {
 
 module.exports = {
     getAll,
+    getLast7,
     getOne,
     getMissing,
     create,
