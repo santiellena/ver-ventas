@@ -1,23 +1,23 @@
-'use strict'
+"use strict";
 // Modules
-const { app, ipcMain, Menu, MenuItem } = require('electron');
-const devTools = require('./devtools');
+const { app, ipcMain, Menu, MenuItem } = require("electron");
+const devTools = require("./devtools");
 
 const ipcMainEvents = {
-  main: require('./ipcMainEvents/main'),
-  sells: require('./ipcMainEvents/sells'),
-  login: require('./ipcMainEvents/login'),
-  buys: require('./ipcMainEvents/buys'),
-  stock:  require('./ipcMainEvents/stock'),
-  customers: require('./ipcMainEvents/customers'),
-  cashRegister: require('./ipcMainEvents/cashRegister'),
-  maintenance: require('./ipcMainEvents/maintenance'),
-  security: require('./ipcMainEvents/security'),
-}
+  main: require("./ipcMainEvents/main"),
+  sells: require("./ipcMainEvents/sells"),
+  login: require("./ipcMainEvents/login"),
+  buys: require("./ipcMainEvents/buys"),
+  stock: require("./ipcMainEvents/stock"),
+  customers: require("./ipcMainEvents/customers"),
+  cashRegister: require("./ipcMainEvents/cashRegister"),
+  maintenance: require("./ipcMainEvents/maintenance"),
+  security: require("./ipcMainEvents/security"),
+};
 
 const {
   createLoginWindow,
-  createMainWindow, 
+  createMainWindow,
   createPaymentWindow,
   createSellsHistoryWindow,
   createSettingsWindow,
@@ -61,35 +61,34 @@ const {
   createLocationsWindow,
   historyHandlebars,
   mainHandlebars,
-} = require('./createWindows');
+} = require("./createWindows");
 
+const { checkInitialConfig } = require("./config/config.js");
 
-const { checkInitialConfig } = require('./config/config.js');
-
-if(process.env.NODE_ENV == 'development'){
+if (process.env.NODE_ENV == "development") {
   devTools();
-};
-Menu.setApplicationMenu(null);
+}
+// Menu.setApplicationMenu(null); // Commented for development
 // Login window
-app.on('ready', () =>{
+app.on("ready", () => {
   checkInitialConfig();
 });
 
 // Quit when all windows are closed - (Not macOS - Darwin)
-app.on('window-all-closed', () => {
+app.on("window-all-closed", () => {
   ipcMain.removeAllListeners();
-  if (process.platform !== 'darwin') app.quit();
+  if (process.platform !== "darwin") app.quit();
 });
 
 // When app icon is clicked and app is running, (macOS) recreate the BrowserWindow
-app.on('activate', () => {
+app.on("activate", () => {
   if (mainWindow === null) createMainWindow();
 });
- 
-// removes all rendered files 
+
+// removes all rendered files
 app.on("quit", () => {
-    historyHandlebars.clearTemps();
-    mainHandlebars.clearTemps();
+  historyHandlebars.clearTemps();
+  mainHandlebars.clearTemps();
 });
 
 ipcMainEvents.main({

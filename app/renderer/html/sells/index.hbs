@@ -26,7 +26,14 @@
 											    </div>   
                         
                       </form>
-                      <button class="btn btn-danger navbar-right col-md-2 col-sm-2 button-newsell" id="clear-list" onclick="clearProductList();">F5 - Nueva Venta</button>
+                      <div class="div-carts">
+                        <div id="div-bubble-cart" class="div-bubble-cart">
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(1)">Carrito 1</button>
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(2)">Carrito 2</button>
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(3)">Carrito 3</button>
+                        </div>
+                        <button class="btn btn-danger button-newsell col-sm-7 navbar-right" id="clear-list" onclick="clearProductList();">F5 - Nueva Venta</button>
+                      </div>
 										</div>
                     <section class="content invoice">
 
