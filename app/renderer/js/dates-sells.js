@@ -1,6 +1,3 @@
-
-
-
 const changeBOFDay = () => {
     const dates = document.getElementsByClassName('date-sell');
     const arrDates = [...dates];
@@ -10,7 +7,8 @@ const changeBOFDay = () => {
     });
 }
 
-setInterval(changeBOFDay(), 86400)
+changeBOFDay();
+setInterval(changeBOFDay, 6000);
 
 
 
