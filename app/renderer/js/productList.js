@@ -271,19 +271,19 @@ function updateSubTotal() {
   const subTotalAmount = document.getElementById("subtotal-amount");
 
   const allItems = getAllItemSession(key);
-
   let newSubTotal = 0;
-  allItems.map((e) => {
-    const id = e[0];
+  if (allItems.length > 0 && allItems) {
+    allItems.map((e) => {
+      const id = e[0];
+      const subTotal = document.getElementById(`sub-total${id}`);
 
-    const subTotal = document.getElementById(`sub-total${id}`);
+      const justTheNumberString = subTotal.innerText.slice(2);
 
-    const justTheNumberString = subTotal.innerText.slice(2);
+      const justTheNumber = parseFloat(justTheNumberString);
 
-    const justTheNumber = parseFloat(justTheNumberString);
-
-    newSubTotal += justTheNumber;
-  });
+      newSubTotal += justTheNumber;
+    });
+  }
 
   subTotalAmount.value = newSubTotal;
 

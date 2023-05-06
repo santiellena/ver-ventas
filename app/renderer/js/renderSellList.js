@@ -4,7 +4,7 @@ async function renderList() {
 
   if (items.length != 0) {
     tbody.innerHTML = "";
-    items.map(async (e) => {
+    for (const e of items) {
       const quantity = e[1];
       const id = e[0];
 
@@ -69,10 +69,40 @@ async function renderList() {
       tr.appendChild(tdButton);
 
       tbody.appendChild(tr);
-    });
+      if (items[items.length - 1] == e) {
+        updateSubTotal();
+      }
+    }
+  } else {
+    updateSubTotal();
   }
-
-  updateSubTotal();
 }
 
 renderList();
+
+function clearVisibleList() {
+  const tbody = document.getElementById("tbody-list");
+  tbody.innerHTML = "";
+  const items = getAllItemSession(key);
+  if (items.length > 0) {
+    renderList();
+  } else {
+    const trAlert = document.createElement("tr");
+    trAlert.setAttribute("class", "odd");
+    trAlert.setAttribute("id", "tr-alert");
+    const tdAlert = document.createElement("td");
+    tdAlert.setAttribute("valign", "top");
+    tdAlert.setAttribute("colspan", "8");
+    tdAlert.setAttribute("class", "dataTables_empty");
+    tdAlert.innerText = "Ningún Producto Agregado";
+    trAlert.appendChild(tdAlert);
+
+    tbody.appendChild(trAlert);
+    updateSubTotal();
+  }
+}
+
+function changeList(newKey) {
+  key = newKey;
+  clearVisibleList();
+}

@@ -134,8 +134,8 @@ function createMainWindow() {
         preload: `${__dirname}/preload.js`,
         contextIsolation: true,
       },
-      // fullscreen: true,
-      // frame: false,
+      fullscreen: true,
+      frame: false,
     });
     // Load index.hbs into the new BrowserWindow
     mainWindow.loadFile(mainHandlebars.render("/sells/index.hbs"), {});

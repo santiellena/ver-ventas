@@ -68,7 +68,7 @@ const { checkInitialConfig } = require("./config/config.js");
 if (process.env.NODE_ENV == "development") {
   devTools();
 }
-// Menu.setApplicationMenu(null); // Commented for development
+Menu.setApplicationMenu(null); // Commented for development
 // Login window
 app.on("ready", () => {
   checkInitialConfig();
@@ -86,7 +86,7 @@ app.on("activate", () => {
 });
 
 // removes all rendered files
-app.on("quit", () => {
+app.on("will-quit", () => {
   historyHandlebars.clearTemps();
   mainHandlebars.clearTemps();
 });
