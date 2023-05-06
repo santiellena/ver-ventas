@@ -26,7 +26,34 @@
 											    </div>   
                         
                       </form>
-                      <button class="btn btn-danger navbar-right col-md-2 col-sm-2 button-newsell" id="clear-list" onclick="clearProductList();">F5 - Nueva Venta</button>
+                      <div class="div-carts">
+                        <div class="btn-group btn-group-justified" style="height: 2.3rem;" data-toggle="buttons">
+                        <label class="btn btn-success active" style="width: 5.3rem;" onclick="changeList(1)">
+                          <input type="radio" class="sr-only" id="viewMode0" name="viewMode" value="1" checked>
+                          <span class="docs-tooltip" data-toggle="tooltip">
+                            Lista 1
+                          </span>
+                        </label>
+                        <label class="btn btn-success" style="width: 5.3rem;"  onclick="changeList(2)">
+                          <input type="radio" class="sr-only" id="viewMode1" name="viewMode" value="2">
+                          <span class="docs-tooltip" data-toggle="tooltip" >
+                            Lista 2
+                          </span>
+                        </label>
+                        <label class="btn btn-success" style="width: 5.3rem;"  onclick="changeList(3)">
+                          <input type="radio" class="sr-only" id="viewMode2" name="viewMode" value="3">
+                          <span class="docs-tooltip" data-toggle="tooltip">
+                            Lista 3
+                          </span>
+                        </label>
+                      </div>
+                        {{!-- <div id="div-bubble-cart" class="div-bubble-cart">
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(1)">Carrito 1</button>
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(2)">Carrito 2</button>
+                          <button type="button" class="btn btn-round btn-success col-sm-5" onclick="loadCart(3)">Carrito 3</button>
+                        </div> --}}
+                        <button class="btn btn-danger button-newsell col-sm-7 navbar-right" id="clear-list" onclick="clearProductList();">F5 - Nueva Venta</button>
+                      </div>
 										</div>
                     <section class="content invoice">
 

@@ -45,3 +45,22 @@ td {
     font: inherit;
     margin: 0px;
 }
+
+.div-carts {
+    display: flex; 
+    height: 1.3rem; 
+    align-items: center;
+    width: 23rem;
+    justify-content: right;
+}
+
+.button-newsell {
+    margin-left: .5rem;
+}
+
+.div-bubble-cart {
+    display: flex;
+    height: 1.3rem; 
+    align-items: center;
+    justify-content: right;
+}
