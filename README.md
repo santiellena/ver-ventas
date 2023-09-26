@@ -4,7 +4,6 @@ Sistema de ventas, compras e inventario
 ## El sistema contará con 3 (tres) partes principales:
 
 ### API: 
-(La api aún no ha sido desarrollada, por lo que no existe documentación actualmente).
 Encargada de las peticiones y validaciones con la base de datos y con los clientes (app). 
 Autorización, autenticación, manipulación de datos y comunicación entre clientes.
 Desarrollado con Node.js, Express, Passport, JWT, entre otras tecnologías.
